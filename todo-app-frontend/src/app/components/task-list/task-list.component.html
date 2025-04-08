@@ -1,0 +1,10 @@
+<h2>Task List</h2>
+<ul *ngIf="tasks.length; else noTasks">
+  <li *ngFor="let task of tasks">
+    <strong>{{task.title}}</strong> - {{task.description}} ({{task.status}})
+  </li>
+</ul>
+
+<ng-template #noTasks>
+  <p>No tasks found.</p>
+</ng-template>
