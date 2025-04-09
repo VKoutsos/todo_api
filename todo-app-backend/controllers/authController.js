@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db=require("../config/db");
+const notify=require("../utils/notify");
 require('dotenv').config();
 
 //register a new user
@@ -29,6 +30,8 @@ exports.registerUser=async(req,res)=>{
                 [name,email,hashedPassword],
                 (err,result)=>{
                     if (err) return res.status(500).json({error: err.message});
+
+                    notify(email,"New User Registered",`Hi ${name}! Welcome to my To-Do List Application!`);
 
                     res.status(201).json({message:"User registered successfully"});
                 }
