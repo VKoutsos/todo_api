@@ -1,14 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-export interface Task {
-  id:number;
-  title:string;
-  description:string;
-  status:string;
-  //add any other fields as needed
-}
+import { Task } from '../models/task.model';
 
 @Injectable({
   providedIn: 'root'
