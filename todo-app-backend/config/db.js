@@ -1,5 +1,6 @@
 const mysql=require('mysql2');
 require('dotenv').config({path: '../.env'});
+const util=require('util');
 
 const db=mysql.createConnection({
     host:process.env.DB_HOST,
@@ -7,6 +8,9 @@ const db=mysql.createConnection({
     password:process.env.DB_PASSWORD,
     database:process.env.DB_NAME,
 });
+
+//promisify query method for async/await
+db.query=util.promisify(db.query).bind(db);
 
 db.connect((err)=>{
     if (err){

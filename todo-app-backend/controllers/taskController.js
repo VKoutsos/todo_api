@@ -3,98 +3,96 @@ const logAction = require("../utils/logger");
 const notify=require("../utils/notify");
 
 // Get all tasks for a user
-exports.getTasks = (req, res) => {
-    const userId = req.user.id; // Get user ID from authenticated request
+exports.getTasks=async(req,res)=> {
+    try {
+        const userId = req.user.id;
+        const tasks = await db.query("SELECT * FROM tasks WHERE user_id=?", [userId]);
 
-    db.query("SELECT * FROM tasks WHERE user_id=?", [userId], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (tasks.length === 0) return res.status(404).json({message: "No tasks found"});
 
-        if (results.length===0) return res.status(404).json({message:"No tasks found"});
-
-        res.status(200).json(results);
-    });
+        res.status(200).json(tasks);
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
 };
 
 // Create a new task
-exports.createTask = (req, res) => {
-    const { title, description } = req.body;
-    const userId = req.user.id;
+exports.createTask=async(req,res)=>{
+    try{
+        const{title,description}=req.body;
+        const userId=req.user.id;
 
-    if (!title) return res.status(400).json({ error: "Title is required" });
+        if(!title) return res.status(400).json({error:"Title is required"});
 
-    const sql = "INSERT INTO tasks (user_id, title, description) VALUES (?, ?, ?)";
+        const sql="INSERT INTO tasks (user_id,title,description) VALUES (?,?,?)";
+        const result=await db.query(sql,[userId,title,description]);
 
-    db.query(sql, [userId, title, description], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-
-        logAction(req.user.id,`Created task: ${title}`); //Log action
-
-        // //send email to user & admin
+        logAction(userId,`Created task: ${title}`);
         notify(req.user.email,"Task Created",`Task "${title}" has been created. (User ID: ${userId})`);
 
-        res.status(201).json({ message: "Task created successfully", taskId: result.insertId });
-    });
+        res.status(201).json({message:"Task created successfully",taskId:result.insertId});
+    }catch(err){
+        res.status(500).json({error:err.message});
+    }
 };
 
 // Update a task
-exports.updateTask = (req, res) => {
-    const taskId = req.params.id;
-    const { title, description } = req.body;
-    const userId = req.user.id;
+exports.updateTask=async(req,res)=>{
+    try{
+        const taskId=req.params.id;
+        const{title,description}=req.body;
+        const userId=req.user.id;
 
-    const sql = "UPDATE tasks SET title = ?, description = ? WHERE id = ? AND user_id = ?";
+        const sql="UPDATE tasks SET title=?, description=? WHERE id=? AND user_id=?";
+        const result=await db.query(sql,[title, description, taskId, userId]);
 
-    db.query(sql, [title, description, taskId, userId], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (result.affectedRows === 0) return res.status(404).json({ error: "Task not found or unauthorized" });
+        if(result.affectedRows===0) return res.status(404).json({error:"Task not found or unauthorized "});
 
-        logAction(req.user.id,`Updated task ID ${taskId}: New Title - ${title}`);
+        logAction(userId,`Updated task ID ${taskId}: New Title - ${title}`);
+        notify(req.user.email,"Task Updated",`Task "${title}" has been updated. (User ID: ${userId})`);
 
-        // //send email notifications
-        notify(req.user.email,"Task Updated",`Task "${title}" has been updated successfully. (User ID: ${userId})`);
-
-
-        res.status(200).json({ message: "Task updated successfully" });
-    });
+        res.status(200).json({message:"Task updated successfully"});
+    }catch(err){
+        res.status(500).json({error:err.message});
+    }
 };
 
 // Delete a task
-exports.deleteTask = (req, res) => {
-    const taskId = req.params.id;
-    const userId = req.user.id;
+exports.deleteTask=async(req,res)=>{
+    try{
+        const taskId=req.params.id;
+        const userId=req.user.id;
 
-    const sql = "DELETE FROM tasks WHERE id = ? AND user_id = ?";
+        const sql="DELETE FROM tasks WHERE id=? AND user_id=?";
+        const result=await db.query(sql,[taskId,userId]);
 
-    db.query(sql, [taskId, userId], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (result.affectedRows === 0) return res.status(404).json({ error: "Task not found or unauthorized" });
+        if(result.affectedRows===0) return res.status(404).json({error:"Task not found or unauthorized"});
 
-        logAction(req.user.id,`Deleted task ID ${taskId}`);
+        logAction(userId,`Deleted task ID ${taskId}`);
+        notify(req.user.email,"Task Deleted",`Task "${taskId}" has been deleted. (User ID: ${userId})`);
 
-        // //send email notification
-       notify(req.user.email,"Task Deleted",`Task "${taskId}" has been deleted successfully. (User ID: ${userId})}`);
-
-        res.status(200).json({ message: "Task deleted successfully" });
-    });
+        res.status(200).json({message:"Task deleted successfully"});
+    }catch(err){
+        res.status(500).json({error:err.message});
+    }
 };
 
 // Mark task as completed
-exports.completeTask = (req, res) => {
-    const taskId = req.params.id;
-    const userId = req.user.id;
+exports.completeTask =async(req, res) => {
+    try{
+        const taskId = req.params.id;
+        const userId = req.user.id;
 
-    const sql = "UPDATE tasks SET status = 'completed' WHERE id = ? AND user_id = ?";
+        const sql = "UPDATE tasks SET status = 'completed' WHERE id = ? AND user_id = ?";
+        const result = await db.query(sql, [taskId, userId]);
 
-    db.query(sql, [taskId, userId], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (result.affectedRows === 0) return res.status(404).json({ error: "Task not found or unauthorized" });
+        if (result.affectedRows === 0) return res.status(404).json({error: "Task not found or unauthorized"});
 
+        logAction(req.user.id, `Completed task ID ${taskId}`);
+        notify(req.user.email, "Task Completed", `Task "${taskId}" has been marked as completed. (User ID: ${userId}) `);
 
-        logAction(req.user.id,`Completed task ID ${taskId}`);
-        //
-        // //send email notification
-        notify(req.user.email,"Task Completed",`Task "${taskId}" has been marked as completed. (User ID: ${userId}) `);
-
-        res.status(200).json({ message: "Task marked as completed" });
-    });
+        res.status(200).json({message: "Task marked as completed"});
+    }catch(err){
+        res.status(500).json({error: err.message});
+    }
 };
