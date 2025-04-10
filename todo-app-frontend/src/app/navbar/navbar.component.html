@@ -1,0 +1,15 @@
+<nav class="navbar">
+  <a routerLink="/" class="logo">TodoApp</a>
+
+  <div class="nav-links">
+    <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
+      <a routerLink="/tasks">My Tasks</a>
+      <button (click)="logout()">Logout</button>
+    </ng-container>
+
+   <ng-template #guestLinks>
+    <a routerLink="/login">Login</a>
+    <a routerLink="/register">Register</a>
+    </ng-template>
+  </div>
+</nav>
