@@ -1,12 +1,14 @@
-const db=require("../config/db")
+const db=require("../config/db");
+const {queryDatabase}=require("../utils/dbHelpers");
 
-exports.getUserLogs=(req,res)=>{
-    const userId=req.user.id;
+exports.getUserLogs=async(req,res)=>{
+    try{
+        const userId=req.user.id;
 
-    db.query("SELECT id, action, timestamp FROM logs WHERE user_id=? ORDER BY timestamp DESC",
-        [userId],
-        (err,results)=>{
-        if (err) return res.status(500).json({error:err.message});
-        res.status(200).json(results);
-        });
+        const logs=await queryDatabase("SELECT id, action, timestamp FROM logs WHERE user_id=? ORDER BY timestamp DESC", [userId]);
+
+        res.status(200).json(logs)
+    }catch(err){
+        res.status(500).json({error:err.message});
+    }
 };

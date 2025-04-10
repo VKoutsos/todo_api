@@ -1,45 +1,57 @@
-const db = require("../config/db");
+
 const logAction=require("../utils/logger");
 const {getTaskOwner,getSubtaskOwner,getTaskOwnerEmail}=require("../utils/dbHelpers");
 const notify=require("../utils/notify");
+const {queryDatabase}=require("../utils/dbHelpers");
 
 // Get all users (Admin Only)
-exports.getAllUsers = (req, res) => {
-    db.query("SELECT id, username, email, role FROM users", (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(200).json(results);
-    });
+exports.getAllUsers =async(req, res) => {
+    try {
+        const users = await queryDatabase("SELECT id, username, email, role FROM users");
+        res.status(200).json(users);
+    }catch(err){
+        res.status(500).json({error:err});
+    }
 };
 
 //get all tasks
-exports.getAllTasks=(req,res)=>{
-    db.query("SELECT * FROM tasks", (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(200).json(results);
-    });
+exports.getAllTasks=async(req,res)=> {
+    try {
+        const tasks = await queryDatabase("SELECT * FROM tasks");
+        res.status(200).json(tasks);
+    } catch (err) {
+        res.status(500).json({error: err});
+    }
 };
+
 
 // Get all tasks of a specific user
-exports.getUserTasks = (req, res) => {
+exports.getUserTasks =async(req, res) => {
     const { userId } = req.params;
+    try {
+        const tasks = await queryDatabase("SELECT * FROM tasks WHERE user_id = ?", [userId]);
+        if (tasks.length === 0) return res.status(404).json({message: "No tasks found for this user"});
 
-    db.query("SELECT * FROM tasks WHERE user_id = ?", [userId], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(404).json({ message: "No tasks found for this user" });
-
-        res.status(200).json(results);
-    });
+        res.status(200).json(tasks);
+    }catch(err){
+    res.status(500).json({error:err});
+    }
 };
+
+
 
 //get all subtasks of a user
-exports.getUserSubTasks = (req, res) => {
+exports.getUserSubTasks = async(req, res) => {
     const{userId} = req.params;
-
-    db.query("SELECT subtasks.*FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE tasks.user_id = ?", [userId], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.status(200).json(results);
-    });
+    try {
+        const subtasks = await queryDatabase("SELECT subtasks.*FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE tasks.user_id = ?", [userId]);
+        res.status(200).json(subtasks);
+    }catch(err){
+    res.status(500).json({error:err});
+    }
 };
+
+
 
 //create a new task for a user
 exports.createTaskByAdmin=(req,res)=>{

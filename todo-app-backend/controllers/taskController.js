@@ -1,12 +1,13 @@
-const db = require("../config/db");
+
 const logAction = require("../utils/logger");
 const notify=require("../utils/notify");
+const {queryDatabase}=require("../utils/dbHelpers");
 
 // Get all tasks for a user
 exports.getTasks=async(req,res)=> {
     try {
         const userId = req.user.id;
-        const tasks = await db.query("SELECT * FROM tasks WHERE user_id=?", [userId]);
+        const tasks = await queryDatabase("SELECT * FROM tasks WHERE user_id=?", [userId]);
 
         if (tasks.length === 0) return res.status(404).json({message: "No tasks found"});
 
@@ -25,7 +26,7 @@ exports.createTask=async(req,res)=>{
         if(!title) return res.status(400).json({error:"Title is required"});
 
         const sql="INSERT INTO tasks (user_id,title,description) VALUES (?,?,?)";
-        const result=await db.query(sql,[userId,title,description]);
+        const result=await queryDatabase(sql,[userId,title,description]);
 
         logAction(userId,`Created task: ${title}`);
         notify(req.user.email,"Task Created",`Task "${title}" has been created. (User ID: ${userId})`);
@@ -44,7 +45,7 @@ exports.updateTask=async(req,res)=>{
         const userId=req.user.id;
 
         const sql="UPDATE tasks SET title=?, description=? WHERE id=? AND user_id=?";
-        const result=await db.query(sql,[title, description, taskId, userId]);
+        const result=await queryDatabase(sql,[title, description, taskId, userId]);
 
         if(result.affectedRows===0) return res.status(404).json({error:"Task not found or unauthorized "});
 
@@ -64,7 +65,7 @@ exports.deleteTask=async(req,res)=>{
         const userId=req.user.id;
 
         const sql="DELETE FROM tasks WHERE id=? AND user_id=?";
-        const result=await db.query(sql,[taskId,userId]);
+        const result=await queryDatabase(sql,[taskId,userId]);
 
         if(result.affectedRows===0) return res.status(404).json({error:"Task not found or unauthorized"});
 
@@ -84,7 +85,7 @@ exports.completeTask =async(req, res) => {
         const userId = req.user.id;
 
         const sql = "UPDATE tasks SET status = 'completed' WHERE id = ? AND user_id = ?";
-        const result = await db.query(sql, [taskId, userId]);
+        const result = await queryDatabase(sql, [taskId, userId]);
 
         if (result.affectedRows === 0) return res.status(404).json({error: "Task not found or unauthorized"});
 

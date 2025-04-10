@@ -36,3 +36,12 @@ exports.getSubtaskOwnerEmail=(subtaskId,callback)=>{
         callback(null,result[0].email);
         });
 };
+
+exports.queryDatabase=(query,params)=>{
+    return new Promise((resolve,reject)=>{
+        db.query(query,params,(err,results)=>{
+            if(err) return reject(err);
+            resolve(results);
+        });
+    });
+};

@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const db=require("../config/db");
+const {queryDatabase}=require("../utils/dbHelpers");
 const notify=require("../utils/notify");
 require('dotenv').config();
 
@@ -12,38 +12,31 @@ exports.registerUser=async(req,res)=>{
         return res.status(400).json({error:"All fields are required"});
     }
 
-    try{
+    try {
         //check if user already exists
-        db.query("SELECT * FROM users WHERE email=?",[email],async(err,results)=>{
-            if(err) return res.status(500).json({error:err.message});
+        const existingUser = await queryDatabase("SELECT * FROM users WHERE email=?", [email]);
 
-            if (results.length>0){
-                return res.status(400).json({error:"User already exists"});
-            }
+        if (existingUser.length > 0) {
+            return res.status(400).json({error: "User already exists"});
+        }
+        //Hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-            //Hash password
-            const hashedPassword=await bcrypt.hash(password,10);
+        //Insert new user
+        await queryDatabase("INSERT INTO users (username,email,password) VALUES (?,?,?)",
+            [name, email, hashedPassword]);
 
-            //Insert new user
-            db.query(
-                "INSERT INTO users (username,email,password) VALUES (?,?,?)",
-                [name,email,hashedPassword],
-                (err,result)=>{
-                    if (err) return res.status(500).json({error: err.message});
+        notify(email, "New User Registered", `Hi ${name}! Welcome to my To-Do List Application!`);
 
-                    notify(email,"New User Registered",`Hi ${name}! Welcome to my To-Do List Application!`);
-
-                    res.status(201).json({message:"User registered successfully"});
-                }
-            );
-        });
-    }catch(error){
-        res.status(500).json({error:"Server error"});
+        res.status(201).json({message: "User registered successfully"});
+    }catch(err){
+    res.status(500).json({error:"Server Error"});
     }
 };
 
+
 //User login
-exports.loginUser=(req,res)=>{
+exports.loginUser=async(req,res)=>{
     const {email,password}=req.body;
 
     if(!email||!password){
@@ -51,26 +44,25 @@ exports.loginUser=(req,res)=>{
     }
 
     try{
-        db.query("SELECT * FROM users WHERE email=?",[email],async(err,results)=>{
-            if (err) return res.status(500).json({error:err.message});
+       const userResults=await queryDatabase("SELECT * FROM users WHERE email=?",[email]);
 
-            if (results.length===0){
+            if (userResults.length===0){
                 return res.status(400).json({error:"Invalid credentials"});
             }
 
-            const user=results[0];
-
+            const user=userResults[0];
             //Compare password
             const isMatch=await bcrypt.compare(password,user.password);
+
             if(!isMatch){
                 return res.status(400).json({error:"Invalid credentials"});
             }
 
             //Generate JWT token
-            const token=jwt.sign({id:user.id,email:user.email,role:user.role},process.env.JWT_SECRET,{expiresIn:"1h"});
+            const token=jwt.sign({id:user.id,email:user.email,role:user.role},
+                process.env.JWT_SECRET,{expiresIn:"1h"});
 
             res.status(200).json({message:"Login successful",token});
-        });
     }catch(error){
         res.status(500).json({error:"Server error"});
     }

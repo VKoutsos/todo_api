@@ -1,21 +1,28 @@
-const db=require("../config/db");
+
 const logAction=require("../utils/logger");
 const notify=require("../utils/notify");
+const {queryDatabase}=require("../utils/dbHelpers");
+const err = require("jsonwebtoken/lib/JsonWebTokenError");
 
 //get all subtasks for a task
-exports.getSubtasks=(req,res)=>{
+exports.getSubtasks=async(req,res)=>{
     const{taskId}=req.params;
 
-    db.query("SELECT subtasks.* FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.task_id=? AND tasks.user_id=?",
-        [taskId,req.user.id],(err,results)=>{
-        if(err) return res.status(500).json({error:err.message});
-        if(results.length===0) return res.status(404).json({ error: "You are not allowed to view these subtasks" });
-        res.status(200).json(results);
-    });
+    try{
+        const results=await queryDatabase("SELECT subtasks.* FROM subtasks JOIN tasks ON subtasks.task_id WHERE subtasks.task_id=? AND tasks.user_id=?",
+            [taskId,req.user.id]);
+
+        if(results.length===0) {
+            return res.status(404).json({error: "You are not allowed to view these subtasks"});
+        }
+            res.status(200).json(results);
+        }catch(err){
+            res.status(500).json({error:err.message});
+        }
 };
 
 //create a subtask
-exports.createSubtask=(req,res)=>{
+exports.createSubtask=async(req,res)=>{
     const{taskId}=req.params;
     const{description}=req.body;
 
@@ -23,92 +30,104 @@ exports.createSubtask=(req,res)=>{
         return res.status(400).json({error:"Subtask description is required"});
     }
 
-    db.query("SELECT id FROM tasks WHERE id=? AND user_id=?",[taskId,req.user.id],(err,results)=>{
-        if (err) return res.status(500).json({error:err.message});
-        if(results.length===0){
+    try{
+        const taskCheck=await queryDatabase("SELECT id FROM tasks WHERE id=? AND user_id=?",[taskId,req.user.id]);
+
+        if(taskCheck.length===0){
             return res.status(403).json({error:"You are not allowed to add subtasks to this task"});
         }
 
-    db.query("INSERT INTO subtasks (task_id,title) VALUES (?,?)",[taskId,description],(err,result)=>{
-        if(err) return res.status(500).json({error:err.message});
+        const result=await queryDatabase("INSERT INTO subtasks (task_id, title) VALUES (?,?)",[taskId,description]);
 
         logAction(req.user.id,`Created subtask: ${description} for Task ID: ${taskId}`);
-
         notify(req.user.email,"Subtask created",`Subtask created for Task ID: ${taskId}.`);
 
         res.status(201).json({message:"Subtask created successfully",subtaskId:result.insertId});
-    });
-    });
+    }catch(err){
+        res.status(500).json({error:err.message});
+    }
 };
 
 //update a subtask
-exports.updateSubtask=(req,res)=>{
+exports.updateSubtask=async(req,res)=>{
     const{subtaskId}=req.params;
     const{description}=req.body;
 
-    db.query("SELECT subtasks.id FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.id=? AND tasks.user_id=?",
-        [subtaskId,req.user.id],(err,results)=>{
-        if(err) return res.status(500).json({error:err.message});
-        if(results.length===0) return res.status(403).json({error:"You are not allowed to update this subtask"});
+    try{
+        const check=await queryDatabase(
+            "SELECT subtasks.id FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.id=? AND tasks.user_id=?",
+            [subtaskId,req.user.id]
+        );
 
+        if(check.length===0){
+            return res.status(403).json({error:"You are not allowed to update this subtask"});
+        }
 
-    db.query("UPDATE subtasks SET title=? WHERE id=?",[description,subtaskId],(err,result)=>{
-        if(err) return res.status(500).json({error:err.message});
-        if(result.affectedRows===0) return res.status(404).json({error:"Subtask not found"});
+        const result=await queryDatabase("UPDATE subtasks SET title=? WHERE id=?",
+            [description,subtaskId]);
 
-        logAction(req.user.id,`Updated subtask ${subtaskId}`)
+        if(result.affectedRows===0){
+            return res.status(404).json({error:"Subtask not found"});
+        }
 
-        notify(req.user.email,"Subtask updated",`Subtask ID: ${subtaskId} has been updated.`)
+        logAction(req.user.id, `Updated subtask ${subtaskId}`);
+        notify(req.user.email, "Subtask updated", `Subtask ID: ${subtaskId} has been updated.`);
 
         res.status(200).json({message:"Subtask updated successfully"});
-    });
-    });
+    }catch(err){
+        res.status(500).json({error:err.message});
+    }
 };
+
 
 //mark a subtask as completed
-exports.completeSubtask=(req,res)=>{
-    const{subtaskId}=req.params;
+exports.completeSubtask=async(req,res)=> {
+    const {subtaskId} = req.params;
 
-    db.query("SELECT subtasks.id FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.id=? AND tasks.user_id=?",
-        [subtaskId,req.user.id],(err,results)=>{
-            if(err) return res.status(500).json({error:err.message});
-            if(results.length===0) return res.status(403).json({error:"You are not allowed to complete this subtask"});
+    try {
+        const check = await queryDatabase("SELECT subtasks.id FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.id=? AND tasks.user_id=?",
+            [subtaskId, req.user.id]);
 
-    db.query("UPDATE subtasks SET status='completed' WHERE id=?",[subtaskId],(err,result)=>{
-        if (err) return res.status(500).json({error:err.message});
-        if(result.affectedRows===0) return res.status(404).json({error:"Subtask not found"});
+        if (check.length === 0) return res.status(403).json({error: "You are not allowed to complete this subtask"});
 
-        logAction(req.user.id,`Completed subtask ${subtaskId}`);
 
-        notify(req.user.email,"Subtask completed",`Subtask ID: ${subtaskId} has been marked as completed.`);
+        const result =await queryDatabase("UPDATE subtasks SET status='completed' WHERE id=?", [subtaskId]);
 
-        res.status(200).json({message:"Subtask marked as completed"});
-    });
-    });
+        if (result.affectedRows === 0) return res.status(404).json({error: "Subtask not found"});
+
+        logAction(req.user.id, `Completed subtask ${subtaskId}`);
+        notify(req.user.email, "Subtask completed", `Subtask ID: ${subtaskId} has been marked as completed.`);
+
+        res.status(200).json({message: "Subtask marked as completed"});
+    } catch (err) {
+        res.status(500).json({error:err.message});
+    }
 };
 
+
 //delete a subtask
-exports.deleteSubtask=(req,res)=>{
+exports.deleteSubtask=async(req,res)=>{
     const{subtaskId}=req.params;
 
-    db.query("SELECT subtasks.id FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.id=? AND tasks.user_id=?",
-        [subtaskId,req.user.id],(err,results)=>{
-            if(err) return res.status(500).json({error:err.message});
-            if(results.length===0) return res.status(403).json({error:"You are not allowed to delete this subtask"});
+    try{
+       const check=await queryDatabase("SELECT subtasks.id FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.id=? AND tasks.user_id=?",
+            [subtaskId,req.user.id]);
 
-    db.query("DELETE FROM subtasks WHERE id=?",[subtaskId],
-        (err,result)=>{
-        if (err) return res.status(500).json({error:err.message});
+        if(check.length===0) return res.status(403).json({error:"You are not allowed to delete this subtask"});
+
+        const result=await queryDatabase("DELETE FROM subtasks WHERE id=?",[subtaskId]);
+
         if(result.affectedRows===0) return res.status(404).json({error:"Subtask not found"});
 
         logAction(req.user.id,`Deleted subtask ${subtaskId}`);
-
         notify(req.user.email,"Subtask deleted",`Subtask ID: ${subtaskId} has been deleted successfully.`);
 
         res.status(200).json({message:"Subtask deleted successfully"});
-    });
-    });
+    }catch{
+        res.status(500).json({error:err.message});
+    }
 };
+
 
 
 //CAN ACCESS OTHER USERS SUBTASKS!! (CAN BE FIXED BUT NOT IMPORTANT RIGHT NOW)
