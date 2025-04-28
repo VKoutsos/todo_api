@@ -45,24 +45,30 @@ export class TaskListComponent implements OnInit {
   }
 
   onCompleteTask(taskId: number, event: Event): void {
-    const checkbox = event.target as HTMLInputElement; // Cast to HTMLInputElement
-    const completed = checkbox.checked; // Get the checked state
+    const checkbox = event.target as HTMLInputElement;
+    const completed = checkbox.checked;
 
-    if (completed && this.token) {
-      this.taskService.completeTask(taskId, this.token).subscribe({
-        next: () => {
-          const task = this.tasks.find(t => t.id === taskId);
-          if (task) {
-            task.status = 'completed';
-          }
-        },
-        error: (err) => console.error('Error completing task:', err)
-      });
-    } else if (!completed) {
-      // Handle the case where the task is marked as not completed
-      const task = this.tasks.find(t => t.id === taskId);
-      if (task) {
-        task.status = 'pending'; // or whatever status you use for incomplete tasks
+    if (this.token) {
+      if (completed) {
+        this.taskService.completeTask(taskId, this.token).subscribe({
+          next: () => {
+            const task = this.tasks.find(t => t.id === taskId);
+            if (task) {
+              task.status = 'completed';
+            }
+          },
+          error: (err) => console.error('Error completing task:', err)
+        });
+      } else {
+        this.taskService.incompleteTask(taskId, this.token).subscribe({
+          next: () => {
+            const task = this.tasks.find(t => t.id === taskId);
+            if (task) {
+              task.status = 'pending';
+            }
+          },
+          error: (err) => console.error('Error incompleting task:', err)
+        });
       }
     }
   }

@@ -37,5 +37,14 @@ export class TaskService {
     const headers = new HttpHeaders({'Authorization': `Bearer ${token}` });
     return this.http.put(`${this.apiUrl}/complete/${taskId}`,{},{headers});
   }
+
+  incompleteTask(taskId:number,token:string): Observable<any>{
+    const headers=new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+    return this.http.put(`${this.apiUrl}/incomplete/${taskId}`,{},{headers});
+  }
 }
+
+
 
