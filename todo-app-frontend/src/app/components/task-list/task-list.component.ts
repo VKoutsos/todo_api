@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService} from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-task-list',
@@ -12,11 +13,10 @@ export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   token: string | null = null;
 
-  constructor(private taskService: TaskService) {
-  }
+  constructor(private taskService: TaskService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.token = localStorage.getItem('token');
+    this.token = this.authService.getToken();
 
     if (this.token) {
       this.taskService.getTasks(this.token).subscribe({
