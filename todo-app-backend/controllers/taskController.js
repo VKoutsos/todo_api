@@ -97,3 +97,21 @@ exports.completeTask =async(req, res) => {
         res.status(500).json({error: err.message});
     }
 };
+
+// Mark task as incomplete
+exports.incompleteTask=async(req,res)=>{
+    const taskId=req.params.id;
+    const userId=req.user.id;
+
+    try{
+        const sql="UPDATE tasks SET status='pending' WHERE id=? AND user_id=?";
+        const result=await queryDatabase(sql,[taskId,userId]);
+
+        if(result.affectedRows===0) return res.status(404).json({message:"Task not found or unauthorized"});
+
+        res.status(200).json({message:"Task marked as pending again"});
+    }catch(err){
+        res.status(500).json({error:err.message});
+    }
+};
+//doesn't send notification
