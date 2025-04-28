@@ -1,4 +1,8 @@
 <h2>Task List</h2>
+
+<!-- Add New Task Button -->
+<button [routerLink]="['/tasks/add']">New Task</button>
+
 <ul *ngIf="tasks.length; else noTasks">
   <div *ngFor="let task of tasks" class="task-item">
     <div>
