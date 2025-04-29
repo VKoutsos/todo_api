@@ -93,7 +93,7 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  createSubtask(taskId:number):void{
+  addSubtask(taskId:number):void{
     const title=this.newSubtaskTitle[taskId];
     if(title&&this.token){
       const newSubtask: Partial<Subtask>={
