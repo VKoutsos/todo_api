@@ -4,15 +4,26 @@
 
 <ul *ngIf="tasks.length; else noTasks">
   <div *ngFor="let task of tasks" class="task-item">
-    <div>
-      <input
-        type="checkbox"
-        [checked]="task.status === 'completed'"
-        (change)="onCompleteTask(task.id, $event)"
-      />
-      <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
+    <!-- Task Header -->
+    <div class="task-header">
+      <div class="task-title">
+        <input
+          type="checkbox"
+          [checked]="task.status === 'completed'"
+          (change)="onCompleteTask(task.id, $event)"
+        />
+        <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
+      </div>
+      <button
+        *ngIf="task.subtasks?.length"
+        (click)="toggleDetails(task)"
+        class="toggle-btn"
+      >
+        {{ task.showDetails ? 'Hide Subtasks ▲' : 'Show Subtasks ▼' }}
+      </button>
     </div>
-    <p>{{ task.description }}</p>
+
+    <p *ngIf="task.description">{{ task.description }}</p>
 
     <!-- Subtasks Section -->
     <div [class.subtasks-container]="true" [class.show]="task.showDetails">
@@ -38,10 +49,11 @@
     />
     <button (click)="addSubtask(task.id)">Add Subtask</button>
 
-    <br />
-    <button (click)="deleteTask(task.id)">Delete Task</button>
-    <button [routerLink]="['/tasks/edit', task.id]">Edit Task</button>
-
+    <!-- Task Action Buttons -->
+    <div class="task-actions">
+      <button (click)="deleteTask(task.id)">Delete Task</button>
+      <button [routerLink]="['/tasks/edit', task.id]">Edit Task</button>
+    </div>
     <hr />
   </div>
 </ul>

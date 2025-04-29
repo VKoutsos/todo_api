@@ -1,5 +1,10 @@
-/* Basic layout */
+/* Heading */
 h2 {
+  margin-bottom: 20px;
+}
+
+/* New Task Button */
+.add-task-btn {
   margin-bottom: 20px;
 }
 
@@ -12,11 +17,18 @@ h2 {
   background-color: #f9f9f9;
 }
 
-/* Task header (title + buttons) */
+/* Task header (title + toggle) */
 .task-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.task-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Completed tasks */
@@ -25,7 +37,7 @@ h2 {
   color: grey;
 }
 
-/* Buttons styling */
+/* Buttons */
 button {
   margin-top: 5px;
   margin-right: 5px;
@@ -42,6 +54,26 @@ button:hover {
   background-color: #0056b3;
 }
 
+/* Subtask delete button */
+.subtask-item button {
+  background-color: #dc3545;
+}
+
+.subtask-item button:hover {
+  background-color: #c82333;
+}
+
+/* Toggle Button */
+.toggle-btn {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  background-color: #6c757d;
+}
+
+.toggle-btn:hover {
+  background-color: #5a6268;
+}
+
 /* Input styling */
 input[type="text"] {
   padding: 8px;
@@ -50,7 +82,7 @@ input[type="text"] {
   box-sizing: border-box;
 }
 
-/* Subtasks section (collapsible effect) */
+/* Subtasks section with animation */
 .subtasks-container {
   max-height: 0;
   overflow: hidden;
@@ -59,7 +91,7 @@ input[type="text"] {
 }
 
 .subtasks-container.show {
-  max-height: 500px; /* large enough to fit all subtasks */
+  max-height: 500px;
   padding-left: 20px;
 }
 
@@ -71,11 +103,7 @@ input[type="text"] {
   gap: 8px;
 }
 
-/* Subtask button */
-.subtask-item button {
-  background-color: #dc3545;
-}
-
-.subtask-item button:hover {
-  background-color: #c82333;
+/* Task actions (delete/edit) */
+.task-actions {
+  margin-top: 10px;
 }
