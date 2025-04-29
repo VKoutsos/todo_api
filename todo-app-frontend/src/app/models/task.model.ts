@@ -7,4 +7,5 @@ export interface Task{
   status:'pending'|'completed';
   created_at?:string;
   subtasks?:Subtask[];
+  showDetails?:boolean;
 }

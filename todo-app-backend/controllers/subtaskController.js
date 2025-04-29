@@ -9,7 +9,7 @@ exports.getSubtasks=async(req,res)=>{
     const{taskId}=req.params;
 
     try{
-        const results=await queryDatabase("SELECT subtasks.* FROM subtasks JOIN tasks ON subtasks.task_id WHERE subtasks.task_id=? AND tasks.user_id=?",
+        const results=await queryDatabase("SELECT subtasks.* FROM subtasks JOIN tasks ON subtasks.task_id = tasks.id WHERE subtasks.task_id = ? AND tasks.user_id = ?",
             [taskId,req.user.id]);
 
         if(results.length===0) {
@@ -96,7 +96,7 @@ exports.completeSubtask=async(req,res)=> {
         if (result.affectedRows === 0) return res.status(404).json({error: "Subtask not found"});
 
         logAction(req.user.id, `Completed subtask ${subtaskId}`);
-        notify(req.user.email, "Subtask completed", `Subtask ID: ${subtaskId} has been marked as completed.`);
+     /*   notify(req.user.email, "Subtask completed", `Subtask ID: ${subtaskId} has been marked as completed.`);*/
 
         res.status(200).json({message: "Subtask marked as completed"});
     } catch (err) {

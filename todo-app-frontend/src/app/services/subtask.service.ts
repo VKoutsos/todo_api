@@ -33,6 +33,6 @@ export class SubtaskService {
 
   completeSubtask(subtaskId:number,token:string):Observable<any>{
     const headers=new HttpHeaders({'Authorization': `Bearer ${token}`});
-    return this.http.delete(`${this.apiUrl}/complete/${subtaskId}`,{headers});
+    return this.http.put(`${this.apiUrl}/complete/${subtaskId}`,{},{headers});
   }
 }
