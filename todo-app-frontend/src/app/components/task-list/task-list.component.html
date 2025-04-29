@@ -15,10 +15,10 @@
     <p>{{ task.description }}</p>
 
     <!-- Subtasks Section -->
-    <div *ngIf="task.subtasks?.length">
-      <h4>Subtasks</h4>
-      <ul>
-        <li *ngFor="let subtask of task.subtasks">
+    <div [class.subtasks-container]="true" [class.show]="task.showDetails">
+      <h4 *ngIf="task.subtasks?.length">Subtasks</h4>
+      <ul *ngIf="task.subtasks?.length">
+        <li *ngFor="let subtask of task.subtasks" class="subtask-item">
           <input
             type="checkbox"
             [checked]="subtask.status === 'completed'"
