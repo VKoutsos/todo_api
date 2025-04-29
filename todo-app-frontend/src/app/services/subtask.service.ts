@@ -26,8 +26,13 @@ export class SubtaskService {
     return this.http.put(`${this.apiUrl}/update/${subtaskId}`,subtask, { headers });
   }
 
-  deleteTask(subtaskId:number,token:string):Observable<any>{
+  deleteSubtask(subtaskId:number,token:string):Observable<any>{
     const headers=new HttpHeaders({'Authorization': `Bearer ${token}`});
     return this.http.delete(`${this.apiUrl}/delete/${subtaskId}`,{headers});
+  }
+
+  completeSubtask(subtaskId:number,token:string):Observable<any>{
+    const headers=new HttpHeaders({'Authorization': `Bearer ${token}`});
+    return this.http.delete(`${this.apiUrl}/complete/${subtaskId}`,{headers});
   }
 }
