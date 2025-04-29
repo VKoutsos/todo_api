@@ -12,9 +12,6 @@ exports.getSubtasks=async(req,res)=>{
         const results=await queryDatabase("SELECT subtasks.* FROM subtasks JOIN tasks ON subtasks.task_id = tasks.id WHERE subtasks.task_id = ? AND tasks.user_id = ?",
             [taskId,req.user.id]);
 
-        if(results.length===0) {
-            return res.status(404).json({error: "You are not allowed to view these subtasks"});
-        }
             res.status(200).json(results);
         }catch(err){
             res.status(500).json({error:err.message});
