@@ -1,8 +1,4 @@
 <h2>Task List</h2>
-
-<!-- Add New Task Button -->
-<button [routerLink]="['/tasks/add']">New Task</button>
-
 <ul *ngIf="tasks.length; else noTasks">
   <div *ngFor="let task of tasks" class="task-item">
     <div>
@@ -14,8 +10,36 @@
       <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
     </div>
     <p>{{ task.description }}</p>
-    <button (click)="deleteTask(task.id)">Delete</button>
-    <button [routerLink]="['/tasks/edit', task.id]">Edit</button>
+
+    <!-- Subtasks Section -->
+    <div *ngIf="task.subtasks?.length">
+      <h4>Subtasks</h4>
+      <ul>
+        <li *ngFor="let subtask of task.subtasks">
+          <input
+            type="checkbox"
+            [checked]="subtask.status === 'completed'"
+            (change)="completeSubtask(task.id, subtask.id, $event)"
+          />
+          <span [class.completed]="subtask.status === 'completed'">{{ subtask.title }}</span>
+          <button (click)="deleteSubtask(task.id, subtask.id)">Delete Subtask</button>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Add New Subtask -->
+    <input
+      type="text"
+      placeholder="New subtask title"
+      [(ngModel)]="newSubtaskTitle[task.id]"
+    />
+    <button (click)="addSubtask(task.id)">Add Subtask</button>
+
+    <br />
+    <button (click)="deleteTask(task.id)">Delete Task</button>
+    <button [routerLink]="['/tasks/edit', task.id]">Edit Task</button>
+
+    <hr />
   </div>
 </ul>
 

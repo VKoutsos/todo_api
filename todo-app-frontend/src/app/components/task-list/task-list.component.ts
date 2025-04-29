@@ -93,26 +93,35 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  addSubtask(taskId:number):void{
-    const title=this.newSubtaskTitle[taskId];
-    if(title&&this.token){
-      const newSubtask: Partial<Subtask>={
-        title,
-        description:'',
-        status:'pending',
-        task_id:taskId
-      };
-      this.subtaskService.createSubtask(taskId,newSubtask,this.token).subscribe({
-        next:()=>{
-          this.loadSubtasks(this.tasks.find(t=>t.id===taskId)!);//reload subtasks
-          this.newSubtaskTitle[taskId]='';//clear input
-        },
-        error:(err)=>console.error('Error creating subtask:',err)
-      });
-    }
+  addSubtask(taskId: number): void {
+    const description = this.newSubtaskTitle[taskId];
+    if (!description || !this.token) return;
+
+    // Send the correct structure to the backend
+    this.subtaskService.createSubtask(taskId, { description }, this.token).subscribe({
+      next: () => {
+        console.log('Subtask created');
+        this.newSubtaskTitle[taskId] = '';
+
+        // Instead of pushing manually, refresh subtasks
+        this.subtaskService.getSubtasks(taskId, this.token!).subscribe({
+          next: (subtasks) => {
+            const task = this.tasks.find(t => t.id === taskId);
+            if (task) {
+              task.subtasks = subtasks; // <--- reset the list properly
+            }
+          },
+          error: (err) => console.error('Error refreshing subtasks:', err)
+        });
+      },
+      error: (err) => console.error('Error creating subtask:', err)
+    });
   }
 
-  completeSubtask(taskId:number,subtaskId:number,completed:boolean):void{
+  completeSubtask(taskId:number,subtaskId:number,event:Event):void{
+    const checkbox=event.target as HTMLInputElement;
+    const completed=checkbox.checked;
+
     if(this.token){
       if(completed){
         this.subtaskService.completeSubtask(subtaskId,this.token).subscribe({
