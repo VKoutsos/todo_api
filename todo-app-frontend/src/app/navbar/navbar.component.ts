@@ -11,6 +11,10 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   constructor(public authService: AuthService, private router: Router){}
 
+  get isAdmin():boolean{
+    return this.authService.isAdmin();
+  }
+
   logout():void{
     this.authService.logout();
     this.router.navigate(['/login']);

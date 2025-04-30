@@ -45,5 +45,13 @@ export class AuthService {
   logout():void{
     localStorage.removeItem('token');
   }
+
+  isAdmin():boolean{
+    const token=this.getToken();
+    if(!token) return false;
+
+    const payload=JSON.parse(atob(token.split('.')[1]));
+    return payload.role==='admin'; //decode the jwt payload assuming token payload has 'role'
+  }
 }
 
