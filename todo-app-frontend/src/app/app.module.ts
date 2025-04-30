@@ -18,6 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { TaskAddComponent } from './components/task-add/task-add.component';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
+import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TaskEditComponent } from './components/task-edit/task-edit.component';
     LoginComponent,
     NavbarComponent,
     TaskAddComponent,
-    TaskEditComponent
+    TaskEditComponent,
+    AdminUsersComponent
   ],
   imports: [
     BrowserModule,

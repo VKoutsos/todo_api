@@ -7,6 +7,7 @@ import { authGuard} from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { TaskAddComponent} from './components/task-add/task-add.component';
+import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 
 const routes: Routes = [
   {path:'tasks',component: TaskListComponent,canActivate: [authGuard]},//protect the tasks
@@ -15,7 +16,9 @@ const routes: Routes = [
   {path:'',redirectTo:'/login',pathMatch:'full'},//Redirect to log in by default
   {path:'login',component:LoginComponent, canActivate: [loginGuard]},
   {path:'register',component:RegisterComponent, canActivate: [loginGuard]},
-  {path:'**',redirectTo:'/login'}//Redirect to log in for any unknown routes
+  {path:'**',redirectTo:'/login'}, //Redirect to log in for any unknown routes
+  {path:'admin/users',component:AdminUsersComponent},
+  {path:'admin/users/:userId',component:AdminUserDetailComponent}
 ];
 
 @NgModule({
