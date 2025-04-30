@@ -1,0 +1,12 @@
+<h2>All Users</h2>
+
+<ul *ngIf="users.length; else noUsers">
+  <li *ngFor="let user of users">
+    {{user.username}} {{user.email}}
+    <button (click)="viewUserTasks(user.id)">View Tasks</button>
+  </li>
+</ul>
+
+<ng-template #noUsers>
+  <p>No users found.</p>
+</ng-template>
