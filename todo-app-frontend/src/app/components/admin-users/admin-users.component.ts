@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
-
-interface User{
-  id:number;
-  username:string;
-  email:string;
-  role:'user'|'admin';
-}
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-admin-users',

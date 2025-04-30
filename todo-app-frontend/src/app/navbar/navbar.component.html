@@ -8,7 +8,7 @@
   <div class="nav-links">
     <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
       <a routerLink="/tasks">My Tasks</a>
-      <a *ngIf="isAdmin" routerLink="/admin/users">Admin Panel</a>
+      <a *ngIf="isAdmin" [routerLink]="['/admin/users']">Admin Panel</a>
       <button (click)="logout()">Logout</button>
     </ng-container>
 
