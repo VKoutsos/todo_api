@@ -18,7 +18,7 @@ const routes: Routes = [
   {path:'register',component:RegisterComponent, canActivate: [loginGuard]},
   {path:'**',redirectTo:'/login'}, //Redirect to log in for any unknown routes
   {path:'admin/users',component:AdminUsersComponent},
-  {path:'admin/users/:userId',component:AdminUserDetailComponent}
+  /*{path:'admin/users/:userId',component:AdminUserDetailComponent}*/
 ];
 
 @NgModule({

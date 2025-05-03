@@ -30,7 +30,6 @@ import { AdminUsersComponent } from './components/admin-users/admin-users.compon
     NavbarComponent,
     TaskAddComponent,
     TaskEditComponent,
-    AdminUsersComponent
   ],
   imports: [
     BrowserModule,
