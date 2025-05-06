@@ -19,6 +19,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { TaskAddComponent } from './components/task-add/task-add.component';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
+import { AdminDetailComponent } from './components/admin-detail/admin-detail.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AdminUsersComponent } from './components/admin-users/admin-users.compon
     NavbarComponent,
     TaskAddComponent,
     TaskEditComponent,
-    AdminUsersComponent
+    AdminUsersComponent,
+    AdminDetailComponent
   ],
   imports: [
     BrowserModule,

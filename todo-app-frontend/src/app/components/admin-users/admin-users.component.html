@@ -4,7 +4,9 @@
   <div *ngIf="users.length>0; else noUsers">
     <ul>
       <li *ngFor="let user of users">
-        {{user.username}} {{user.email}}
+        <a [routerLink]="['/admin/users',user.id]" class="user-link">
+          {{user.username}} {{user.email}}
+        </a>
       </li>
     </ul>
   </div>

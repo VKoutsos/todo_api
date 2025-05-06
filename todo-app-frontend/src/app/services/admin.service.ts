@@ -40,5 +40,42 @@ export class AdminService {
     });
   }
 
+  updateUserTask(taskId:number):Observable<any>{
+    return this.http.put(`${this.baseUrl}/tasks/${taskId}`,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
+  updateUserSubtask(taskId:number,subtaskId:number):Observable<any>{
+    return this.http.put(`${this.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}`,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
+  deleteUserTask(userId:number,taskId:number):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/users/${userId}/tasks/${taskId}`,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
+  deleteUserSubtask(taskId:number,subtaskId:number):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}`,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
+  createUserTask():Observable<any>{
+    return this.http.post(`${this.baseUrl}/tasks/create`,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
+  createUserSubtask(taskId:number,title:string,userId:number):Observable<any>{
+    return this.http.post(`${this.baseUrl}/subtasks/create/${taskId}`,
+      {description:title,userId:userId},
+      {headers:this.getAuthHeaders()}
+    );
+  }
+
 
 }
