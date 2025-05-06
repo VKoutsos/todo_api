@@ -63,23 +63,18 @@ export class AdminDetailComponent implements OnInit {
     }
   }
 
-  deleteSubtask(taskId:number,subtaskId:number):void{
-    if(confirm('Are you sure you wan to delete this subtask?')){
-      this.adminService.deleteUserSubtask(taskId,subtaskId).subscribe({
-        next:()=>{
-          const task=this.tasks.find((t)=>t.id===taskId);
-          if(task){
-            this.adminService.getUserSubtasks(this.userId).subscribe({
-              next:(subtasks)=>{
-                task.subtasks=subtasks.filter((st:any)=>st.task_id===taskId);
-              }
-            });
-          }
-        },
-        error:(err)=>console.error('Error deleting subtask:', err),
-      })
-    }
+  deleteSubtask(taskId: number, subtaskId: number): void {
+    this.adminService.deleteUserSubtask(taskId, subtaskId).subscribe({
+      next: () => {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task?.subtasks) {
+          task.subtasks = task.subtasks.filter(s => s.id !== subtaskId);
+        }
+      },
+      error: (err) => console.error('Error deleting subtask:', err),
+    });
   }
+
 
   addSubtask(taskId:number):void {
     const title = this.newSubtaskTitle[taskId];
