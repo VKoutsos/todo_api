@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { authGuard} from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
+import { adminGuard } from './guards/admin.guard';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { TaskAddComponent} from './components/task-add/task-add.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
@@ -23,7 +24,7 @@ const routes: Routes = [
  //Protected admin routes
   {
     path: 'admin',
-    canActivate: [authGuard],
+    canActivate: [authGuard,adminGuard],
     children: [
       {path: 'users', component: AdminUsersComponent},
       {path: 'users/:userId', component: AdminDetailComponent},
