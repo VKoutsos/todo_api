@@ -4,6 +4,7 @@ import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-admin-users',
+  standalone: false,
   templateUrl: './admin-users.component.html',
   styleUrls: ['./admin-users.component.css']
 })

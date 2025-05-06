@@ -10,15 +10,26 @@ import { TaskAddComponent} from './components/task-add/task-add.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 
 const routes: Routes = [
-  {path:'tasks',component: TaskListComponent,canActivate: [authGuard]},//protect the tasks
-  {path:'tasks/add',component: TaskAddComponent,canActivate: [authGuard]},
-  {path:'tasks/edit/:id',component: TaskEditComponent, canActivate: [authGuard]},
   {path:'',redirectTo:'/login',pathMatch:'full'},//Redirect to log in by default
   {path:'login',component:LoginComponent, canActivate: [loginGuard]},
   {path:'register',component:RegisterComponent, canActivate: [loginGuard]},
+
+  //Protected task routes
+  {path:'tasks',component: TaskListComponent,canActivate: [authGuard]},//protect the tasks
+  {path:'tasks/add',component: TaskAddComponent,canActivate: [authGuard]},
+  {path:'tasks/edit/:id',component: TaskEditComponent, canActivate: [authGuard]},
+
+ //Protected admin routes
+  {
+    path: 'admin',
+    canActivate: [authGuard],
+    children: [
+      {path: 'users', component: AdminUsersComponent},
+    ]
+  },
+
   {path:'**',redirectTo:'/login'}, //Redirect to log in for any unknown routes
-  {path:'admin/users',component:AdminUsersComponent},
-  /*{path:'admin/users/:userId',component:AdminUserDetailComponent}*/
+  /* {path:'admin/users/:userId',component:AdminUserDetailComponent}*/
 ];
 
 @NgModule({
