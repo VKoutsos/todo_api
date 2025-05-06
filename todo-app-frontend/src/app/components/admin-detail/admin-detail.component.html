@@ -1,0 +1,20 @@
+<h2>Tasks for user ID: {{userId}}</h2>
+
+<div *ngFor="let task of tasks" class="task">
+  <h3>{{task.title}}</h3>
+  <p>{{task.description}}</p>
+  <button (click)="toggleDetails(task)">Toggle Subtasks</button>
+  <button (click)="deleteTask(task.id)">Delete Task</button>
+
+  <div *ngIf="task.showDetails">
+    <ul>
+      <li *ngFor="let subtask of task.subtasks">
+        {{subtask.title}}
+        <button (click)="deleteSubtask(task.id,subtask.id)">Delete</button>
+      </li>
+    </ul>
+
+    <input [(ngModel)]="newSubtaskTitle[task.id]" placeholder="New subtask title">
+    <button (click)="addSubtask(task.id)">Add Subtask</button>
+  </div>
+</div>
