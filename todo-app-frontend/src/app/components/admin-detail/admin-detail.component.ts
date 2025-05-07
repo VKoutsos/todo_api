@@ -1,99 +1,124 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AdminService} from '../../services/admin.service';
-import { AuthService } from '../../services/auth.service';
+import { AdminService } from '../../services/admin.service';
 import { Task } from '../../models/task.model';
 
 @Component({
   selector: 'app-admin-detail',
-  standalone: false,
   templateUrl: './admin-detail.component.html',
-  styleUrl: './admin-detail.component.css'
+  styleUrls: ['./admin-detail.component.css']
 })
 export class AdminDetailComponent implements OnInit {
   tasks: Task[] = [];
-  token: string | null = null;
   userId!: number;
-  newSubtaskTitle: { [taskId: number]: string } = {};
+  newTaskTitle = '';
+  newSubtaskTitles: { [taskId: number]: string } = {};
 
   constructor(
     private route: ActivatedRoute,
-    private adminService: AdminService,
-    private authService: AuthService
-  ) {
-  }
+    private adminService: AdminService
+  ) {}
 
   ngOnInit(): void {
     this.userId = +this.route.snapshot.params['userId'];
-    this.loadUserTasks();
+    this.loadTasks();
   }
 
-  loadUserTasks(): void {
+  // Task Methods
+  loadTasks(): void {
     this.adminService.getUserTasks(this.userId).subscribe({
-      next: (tasks) => {
-        this.tasks = tasks.map((task:any) => ({
+      next: (tasks:Task[]) => {
+        this.tasks = tasks.map(task => ({
           ...task,
           showDetails: false,
-          subtasks: [],
+          subtasks: []
         }));
       },
-      error: (err) => console.error('Failed to load tasks:', err),
+      error: (err) => console.error('Failed to load tasks:', err)
     });
   }
 
-  toggleDetails(task:any):void{
-    task.showDetails=!task.showDetails;
+  createTask(): void {
+    if (!this.newTaskTitle) return;
 
-    if(task.showDetails) {
-      this.adminService.getUserSubtasks(this.userId).subscribe({
-        next: (subtasks) => {
-          task.subtasks = subtasks.filter((st: any) => st.task_id === task.id);
-        },
-        error: (err) => console.error('Failed to load subtasks:', err),
+    this.adminService.createUserTask({
+      title: this.newTaskTitle,
+      user_id: this.userId
+    }).subscribe({
+      next: () => {
+        this.newTaskTitle = '';
+        this.loadTasks();
+      },
+      error: (err) => console.error('Error creating task:', err)
+    });
+  }
+
+  updateTask(task: Task): void {
+    this.adminService.updateUserTask(task.id, task).subscribe({
+      next: () => this.loadTasks(),
+      error: (err) => console.error('Error updating task:', err)
+    });
+  }
+
+  deleteTask(taskId: number): void {
+    if (confirm('Delete this task?')) {
+      this.adminService.deleteUserTask(this.userId, taskId).subscribe({
+        next: () => this.loadTasks(),
+        error: (err) => console.error('Error deleting task:', err)
       });
     }
   }
 
-  deleteTask(taskId:number):void{
-    if (confirm('Are you sure you want to delete this task?')) {
-      this.adminService.deleteUserTask(this.userId, taskId).subscribe({
-        next: () => this.loadUserTasks(),//reload full list
-        error: (err) => console.error('Error deleting task:', err),
-      });
+  // Subtask Methods
+  toggleSubtasks(task: Task): void {
+    task.showDetails = !task.showDetails;
+    if (task.showDetails && !task.subtasks?.length) {
+      this.loadSubtasks(task);
     }
+  }
+
+  loadSubtasks(task: Task): void {
+    this.adminService.getUserSubtasks(this.userId).subscribe({
+      next: (subtasks) => {
+        task.subtasks = subtasks.filter((st: any) => st.task_id === task.id);
+      },
+      error: (err) => console.error('Failed to load subtasks:', err)
+    });
+  }
+
+  createSubtask(taskId: number): void {
+    const title = this.newSubtaskTitles[taskId];
+    if (!title) return;
+
+    this.adminService.createUserSubtask(taskId, title, this.userId).subscribe({
+      next: () => {
+        this.newSubtaskTitles[taskId] = '';
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task) this.loadSubtasks(task);
+      },
+      error: (err) => console.error('Error adding subtask:', err)
+    });
+  }
+
+  updateSubtask(taskId: number, subtask: any): void {
+    this.adminService.updateUserSubtask(taskId, subtask.id, subtask).subscribe({
+      next: () => {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task) this.loadSubtasks(task);
+      },
+      error: (err) => console.error('Error updating subtask:', err)
+    });
   }
 
   deleteSubtask(taskId: number, subtaskId: number): void {
-    this.adminService.deleteUserSubtask(taskId, subtaskId).subscribe({
-      next: () => {
-        const task = this.tasks.find(t => t.id === taskId);
-        if (task?.subtasks) {
-          task.subtasks = task.subtasks.filter(s => s.id !== subtaskId);
-        }
-      },
-      error: (err) => console.error('Error deleting subtask:', err),
-    });
-  }
-
-
-  addSubtask(taskId:number):void {
-    const title = this.newSubtaskTitle[taskId];
-    if (!title) return;
-
-    this.adminService.createUserSubtask(taskId,title,this.userId).subscribe({
-      next:()=>{
-        this.newSubtaskTitle[taskId]='';
-
-        const task=this.tasks.find((t)=>t.id===taskId);
-        if(task){
-          this.adminService.getUserSubtasks(this.userId).subscribe({
-            next:(subtasks)=>{
-              task.subtasks=subtasks.filter((st:any)=>st.task_id===taskId);
-            }
-          });
-        }
-      },
-      error:(err)=>console.error('Error adding subtask:',err),
-    });
+    if (confirm('Delete this subtask?')) {
+      this.adminService.deleteUserSubtask(taskId, subtaskId).subscribe({
+        next: () => {
+          const task = this.tasks.find(t => t.id === taskId);
+          if (task) this.loadSubtasks(task);
+        },
+        error: (err) => console.error('Error deleting subtask:', err)
+      });
+    }
   }
 }

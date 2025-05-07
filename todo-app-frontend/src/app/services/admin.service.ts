@@ -28,26 +28,21 @@ export class AdminService {
     });
   }
 
+  //Task Operations
+  createUserTask(taskData:any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/tasks/create`,taskData,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
   getUserTasks(userId:number):Observable<any> {
     return this.http.get(`${this.baseUrl}/users/${userId}/tasks`,{
       headers:this.getAuthHeaders()
     });
   }
 
-  getUserSubtasks(userId:number):Observable<any> {
-    return this.http.get(`${this.baseUrl}/users/${userId}/subtasks`,{
-      headers:this.getAuthHeaders()
-    });
-  }
-
-  updateUserTask(taskId:number):Observable<any>{
-    return this.http.put(`${this.baseUrl}/tasks/${taskId}`,{
-      headers:this.getAuthHeaders()
-    });
-  }
-
-  updateUserSubtask(taskId:number,subtaskId:number):Observable<any>{
-    return this.http.put(`${this.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}`,{
+  updateUserTask(taskId:number,taskData:any):Observable<any>{
+    return this.http.put(`${this.baseUrl}/tasks/${taskId}`,taskData,{
       headers:this.getAuthHeaders()
     });
   }
@@ -58,23 +53,30 @@ export class AdminService {
     });
   }
 
-  deleteUserSubtask(taskId:number,subtaskId:number):Observable<any>{
-    return this.http.delete(`${this.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}`,{
-      headers:this.getAuthHeaders()
-    });
-  }
-
-  createUserTask():Observable<any>{
-    return this.http.post(`${this.baseUrl}/tasks/create`,{
-      headers:this.getAuthHeaders()
-    });
-  }
-
+  //Subtask Operations
   createUserSubtask(taskId:number,title:string,userId:number):Observable<any>{
     return this.http.post(`${this.baseUrl}/subtasks/create/${taskId}`,
       {description:title,userId:userId},
       {headers:this.getAuthHeaders()}
     );
+  }
+
+  getUserSubtasks(userId:number):Observable<any> {
+    return this.http.get(`${this.baseUrl}/users/${userId}/subtasks`,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
+  updateUserSubtask(taskId:number,subtaskId:number,subtaskData:any):Observable<any>{
+    return this.http.put(`${this.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}`,subtaskData,{
+      headers:this.getAuthHeaders()
+    });
+  }
+
+  deleteUserSubtask(taskId:number,subtaskId:number):Observable<any>{
+    return this.http.delete(`${this.baseUrl}/tasks/${taskId}/subtasks/${subtaskId}`,{
+      headers:this.getAuthHeaders()
+    });
   }
 
 
