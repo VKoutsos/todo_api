@@ -44,7 +44,7 @@ exports.getUserTasks =async(req, res) => {
 exports.getUserSubTasks = async(req, res) => {
     const{userId} = req.params;
     try {
-        const subtasks = await queryDatabase("SELECT subtasks.*FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE tasks.user_id = ?", [userId]);
+        const subtasks = await queryDatabase("SELECT subtasks.* FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE tasks.user_id = ?", [userId]);
         if (subtasks.length===0) return res.status(404).json({message:"No subtasks found for this user"});
 
         res.status(200).json(subtasks);

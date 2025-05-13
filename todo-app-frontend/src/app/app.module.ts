@@ -32,7 +32,7 @@ import { AdminDetailComponent } from './components/admin-detail/admin-detail.com
     TaskAddComponent,
     TaskEditComponent,
     AdminUsersComponent,
-    AdminDetailComponent
+    AdminDetailComponent,
   ],
   imports: [
     BrowserModule,

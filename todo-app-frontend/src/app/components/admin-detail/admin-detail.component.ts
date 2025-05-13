@@ -6,6 +6,7 @@ import { Task } from '../../models/task.model';
 @Component({
   selector: 'app-admin-detail',
   templateUrl: './admin-detail.component.html',
+  standalone: false,
   styleUrls: ['./admin-detail.component.css']
 })
 export class AdminDetailComponent implements OnInit {
@@ -43,7 +44,7 @@ export class AdminDetailComponent implements OnInit {
 
     this.adminService.createUserTask({
       title: this.newTaskTitle,
-      user_id: this.userId
+      userId: this.userId
     }).subscribe({
       next: () => {
         this.newTaskTitle = '';
@@ -87,13 +88,13 @@ export class AdminDetailComponent implements OnInit {
   }
 
   createSubtask(taskId: number): void {
-    const title = this.newSubtaskTitles[taskId];
-    if (!title) return;
+    const description = this.newSubtaskTitles[taskId];
+    if (!description) return;
 
-    this.adminService.createUserSubtask(taskId, title, this.userId).subscribe({
+    this.adminService.createUserSubtask(taskId, description, this.userId).subscribe({
       next: () => {
         this.newSubtaskTitles[taskId] = '';
-        const task = this.tasks.find(t => t.id === taskId);
+        const task = (this.tasks.find(t => t.id === taskId)!);
         if (task) this.loadSubtasks(task);
       },
       error: (err) => console.error('Error adding subtask:', err)
