@@ -28,6 +28,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { MatTableModule } from '@angular/material/table';
     MatCardModule,
     MatCheckboxModule,
     MatTableModule,
+    MatListModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

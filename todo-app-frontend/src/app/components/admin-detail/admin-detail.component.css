@@ -1,0 +1,28 @@
+.admin-detail-container {
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.task-card {
+  margin-bottom: 20px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.subtasks-section {
+  margin-top: 10px;
+}
+
+mat-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

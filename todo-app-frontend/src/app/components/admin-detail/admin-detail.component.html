@@ -1,47 +1,61 @@
 <div class="admin-detail-container">
-  <h2>Manage Tasks for User ID: {{userId}}</h2>
+  <h2>Manage Tasks for User ID: {{ userId }}</h2>
 
-  <!-- Task Creation Form -->
-  <div class="task-creation">
-    <input type="text" [(ngModel)]="newTaskTitle" placeholder="New task title">
-    <button (click)="createTask()">Add Task</button>
-  </div>
+  <!-- Task Creation -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>New Task Title</mat-label>
+    <input matInput [(ngModel)]="newTaskTitle" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="createTask()">Add Task</button>
 
   <!-- Tasks List -->
-  <div class="tasks-list" *ngIf="tasks.length > 0; else noTasks">
-    <div class="task-item" *ngFor="let task of tasks">
-      <div class="task-header">
-        <p><strong>{{task.title}}</strong></p>
+  <div *ngIf="tasks.length > 0; else noTasks" class="task-list">
+    <mat-card class="task-card" *ngFor="let task of tasks">
+      <mat-card-header>
+        <mat-card-title>{{ task.title }}</mat-card-title>
+        <mat-card-subtitle>Task ID: {{ task.id }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
         <div class="task-actions">
-          <button (click)="toggleSubtasks(task)">
-            {{task.showDetails ? 'Hide' : 'Show'}} Subtasks
+          <button mat-stroked-button (click)="toggleSubtasks(task)">
+            {{ task.showDetails ? 'Hide' : 'Show' }} Subtasks
           </button>
-          <button (click)="deleteTask(task.id)">Delete</button>
-        </div>
-      </div>
-
-      <!-- Subtasks Section -->
-      <div class="subtasks-container" *ngIf="task.showDetails">
-        <div class="subtask-creation">
-          <input type="text"
-                 [(ngModel)]="newSubtaskTitles[task.id]"
-                 placeholder="New subtask description">
-          <button (click)="createSubtask(task.id)">Add Subtask</button>
+          <button mat-stroked-button color="warn" (click)="deleteTask(task.id)">
+            Delete Task
+          </button>
         </div>
 
-        <div class="subtasks-list" *ngIf="task.subtasks?.length">
-          <div class="subtask-item" *ngFor="let subtask of task.subtasks">
-            {{subtask.title}}
-            <button (click)="deleteSubtask(task.id, subtask.id)">Delete</button>
-          </div>
+        <!-- Subtasks Section -->
+        <div *ngIf="task.showDetails" class="subtasks-section">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>New Subtask Description</mat-label>
+            <input matInput [(ngModel)]="newSubtaskTitles[task.id]" />
+          </mat-form-field>
+          <button mat-raised-button color="accent" (click)="createSubtask(task.id)">
+            Add Subtask
+          </button>
+
+          <mat-list *ngIf="task.subtasks?.length">
+            <mat-list-item *ngFor="let subtask of task.subtasks">
+              {{ subtask.title }}
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteSubtask(task.id, subtask.id)"
+                matTooltip="Delete subtask"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-list-item>
+          </mat-list>
         </div>
-      </div>
-    </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
+  <!-- No Tasks Template -->
   <ng-template #noTasks>
-    <div class="no-tasks-message">
-      No tasks found for this user.
-    </div>
+    <p>No tasks found for this user.</p>
   </ng-template>
 </div>
