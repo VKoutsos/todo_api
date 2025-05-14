@@ -1,20 +1,22 @@
-<nav class="navbar">
-  <a *ngIf="authService.isLoggedIn(); else guestLogo" routerLink="/tasks" class="logo">TodoApp</a>
+<mat-toolbar color="primary" class="mat-elevation-z4">
+  <span class="logo" *ngIf="authService.isLoggedIn(); else guestLogo" routerLink="/tasks" style="cursor: pointer;">
+    TodoApp</span>
 
   <ng-template #guestLogo>
     <span class="logo">TodoApp</span> <!-- Just display the logo as text for guests -->
   </ng-template>
 
-  <div class="nav-links">
+  <span class="spacer"></span>
+
     <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
-      <a routerLink="/tasks">My Tasks</a>
-      <a *ngIf="isAdmin" [routerLink]="['/admin/users']">Admin Panel</a>
-      <button (click)="logout()">Logout</button>
+      <button mat-button routerLink="/tasks">My Tasks</button>
+      <button mat-button *ngIf="isAdmin" [routerLink]="['/admin/users']">Admin Panel</button>
+      <button mat-button (click)="logout()">Logout</button>
     </ng-container>
 
-   <ng-template #guestLinks>
-    <a routerLink="/login">Login</a>
-    <a routerLink="/register">Register</a>
+    <ng-template #guestLinks>
+      <button mat-button routerLink="/login">Login</button>
+      <button mat-button routerLink="/register">Register</button>
     </ng-template>
-  </div>
-</nav>
+
+</mat-toolbar>
