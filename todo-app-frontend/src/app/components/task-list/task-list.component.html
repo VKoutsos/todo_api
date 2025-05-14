@@ -1,20 +1,23 @@
 <h2>Task List</h2>
 
-<button [routerLink]="['/tasks/add']" class="add-task-btn">New Task</button>
+<button mat-raised-button color="primary" [routerLink]="['/tasks/add']" class="add-task-btn">
+  New Task
+</button>
 
-<ul *ngIf="tasks.length; else noTasks">
-  <div *ngFor="let task of tasks" class="task-item">
-    <!-- Task Header -->
+<ng-container *ngIf="tasks.length; else noTasks">
+  <mat-card class="task-item" *ngFor="let task of tasks">
     <div class="task-header">
       <div class="task-title">
-        <input
-          type="checkbox"
+        <mat-checkbox
           [checked]="task.status === 'completed'"
-          (change)="onCompleteTask(task.id, $event)"
-        />
+          (change)="onCompleteTask(task.id, $event)">
+        </mat-checkbox>
         <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
       </div>
+
       <button
+        mat-stroked-button
+        color="accent"
         *ngIf="task.subtasks?.length"
         (click)="toggleDetails(task)"
         class="toggle-btn"
@@ -25,38 +28,37 @@
 
     <p *ngIf="task.description">{{ task.description }}</p>
 
-    <!-- Subtasks Section -->
+    <!-- Subtasks -->
     <div [class.subtasks-container]="true" [class.show]="task.showDetails">
       <h4 *ngIf="task.subtasks?.length">Subtasks</h4>
-      <ul *ngIf="task.subtasks?.length">
-        <li *ngFor="let subtask of task.subtasks" class="subtask-item">
-          <input
-            type="checkbox"
-            [checked]="subtask.status === 'completed'"
-            (change)="completeSubtask(task.id, subtask.id, $event)"
-          />
-          <span [class.completed]="subtask.status === 'completed'">{{ subtask.title }}</span>
-          <button (click)="deleteSubtask(task.id, subtask.id)">Delete Subtask</button>
-        </li>
-      </ul>
+      <div *ngFor="let subtask of task.subtasks" class="subtask-item">
+        <mat-checkbox
+          [checked]="subtask.status === 'completed'"
+          (change)="completeSubtask(task.id, subtask.id, $event)">
+        </mat-checkbox>
+        <span [class.completed]="subtask.status === 'completed'">{{ subtask.title }}</span>
+        <button mat-button color="warn" (click)="deleteSubtask(task.id, subtask.id)">
+          Delete Subtask
+        </button>
+      </div>
     </div>
 
-    <!-- Add New Subtask -->
-    <input
-      type="text"
-      placeholder="New subtask title"
-      [(ngModel)]="newSubtaskTitle[task.id]"
-    />
-    <button (click)="addSubtask(task.id)">Add Subtask</button>
+    <!-- Add subtask -->
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>New subtask title</mat-label>
+      <input matInput [(ngModel)]="newSubtaskTitle[task.id]" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="addSubtask(task.id)">
+      Add Subtask
+    </button>
 
-    <!-- Task Action Buttons -->
+    <!-- Actions -->
     <div class="task-actions">
-      <button (click)="deleteTask(task.id)">Delete Task</button>
-      <button [routerLink]="['/tasks/edit', task.id]">Edit Task</button>
+      <button mat-button color="warn" (click)="deleteTask(task.id)">Delete Task</button>
+      <button mat-button color="accent" [routerLink]="['/tasks/edit', task.id]">Edit Task</button>
     </div>
-    <hr />
-  </div>
-</ul>
+  </mat-card>
+</ng-container>
 
 <ng-template #noTasks>
   <p>No tasks found.</p>

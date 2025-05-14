@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
 import { SubtaskService } from '../../services/subtask.service';
-import { Subtask } from '../../models/subtask.model';
 import { AuthService } from '../../services/auth.service';
+import { MatCheckboxChange} from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-task-list',
@@ -73,9 +73,8 @@ export class TaskListComponent implements OnInit {
     }
   }
 
-  onCompleteTask(taskId: number, event: Event): void {
-    const checkbox = event.target as HTMLInputElement;
-    const completed = checkbox.checked;
+  onCompleteTask(taskId: number, event: MatCheckboxChange): void {
+    const completed=event.checked;
 
     if (this.token) {
       const update$ = completed
@@ -116,9 +115,8 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  completeSubtask(taskId: number, subtaskId: number, event: Event): void {
-    const checkbox = event.target as HTMLInputElement;
-    const completed = checkbox.checked;
+  completeSubtask(taskId: number, subtaskId: number, event: MatCheckboxChange): void {
+    const completed=event.checked;
 
     if (this.token) {
       if (completed) {
