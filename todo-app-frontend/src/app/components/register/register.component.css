@@ -41,7 +41,15 @@
 .sign-in-btn {
   width: 100%;
   background: linear-gradient(to right, #f857a6, #ff5858);
+  transition: all 0.5s ease;
   color: white;
+}
+
+.sign-in-btn[disabled] {
+  background:#e0e0e0 !important;
+  color: #9e9e9e !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
 }
 
 .error-message {
