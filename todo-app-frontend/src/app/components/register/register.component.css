@@ -1,4 +1,9 @@
-.error-message{
-  color:red;
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.error-message {
+  color: red;
   margin-top: 10px;
 }

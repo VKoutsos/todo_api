@@ -1,16 +1,21 @@
 <h2>Register</h2>
 <form [formGroup]="profileForm" (ngSubmit)="register()">
-  <label for="name">Name:</label>
-  <input type="text" id="name" formControlName="name" name="name" required>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Name</mat-label>
+    <input matInput type="text" formControlName="name" required>
+  </mat-form-field>
 
-  <label for="email">Email:</label>
-  <input type="email" id="email" formControlName="email" name="email" required>
+  <mat-form-field appearance="outline" formControlName="name" required>
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="email" required>
+  </mat-form-field>
 
-  <label for="password">Password:</label>
-  <input type="password" id="password" formControlName="password" name="password" required>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Password</mat-label>
+    <input matInput type="password" formControlName="password" required>
+  </mat-form-field>
 
-  <button type="submit" [disabled]="!profileForm.valid">Register</button>
+  <button mat-raised-button color="accent" type="submit" [disabled]="!profileForm.valid">Register</button>
 
   <div *ngIf="errorMessage" class="error_message">{{ errorMessage }}</div>
-
 </form>
