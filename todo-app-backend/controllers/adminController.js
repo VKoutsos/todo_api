@@ -7,7 +7,7 @@ const {queryDatabase}=require("../utils/dbHelpers");
 // Get all users (Admin Only)
 exports.getAllUsers =async(req, res) => {
     try {
-        const users = await queryDatabase("SELECT id, username, email, role FROM users");
+        const users = await queryDatabase("SELECT id, username, email, role, created_at FROM users");
         res.status(200).json(users);
     }catch(err){
         res.status(500).json({error:err});
