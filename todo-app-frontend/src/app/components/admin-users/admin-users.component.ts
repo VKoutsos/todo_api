@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { User } from '../../models/user.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-users',
@@ -10,8 +11,11 @@ import { User } from '../../models/user.model';
 })
 export class AdminUsersComponent{
   users: User[]=[];
+  displayedColumns: string[]=['id','username','email','created_at'];
 
-  constructor(private adminService: AdminService){}
+  constructor(private adminService: AdminService,
+              private router: Router
+  ){}
 
   ngOnInit(): void{
     this.adminService.getAllUsers().subscribe({
@@ -22,5 +26,9 @@ export class AdminUsersComponent{
         console.error('Error fetching users:',err);
       }
     });
+  }
+
+  goToUser(id:number):void{
+    this.router.navigate(['/admin/users',id]);
   }
 }

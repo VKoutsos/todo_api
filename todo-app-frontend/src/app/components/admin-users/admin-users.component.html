@@ -1,15 +1,35 @@
 <div class="admin-users">
   <h2>Users List</h2>
 
-  <div *ngIf="users.length>0; else noUsers">
-    <ul>
-      <li *ngFor="let user of users">
-        <a [routerLink]="['/admin/users',user.id]" class="user-link">
-          {{user.username}} {{user.email}}
-        </a>
-      </li>
-    </ul>
-  </div>
+<table mat-table [dataSource]="users" class="mat-elevation-z2 user-table" *ngIf="users.length>0; else noUsers">
+  <!--ID Column-->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let user">{{user.id}}</td>
+  </ng-container>
+
+  <!--Username Column-->
+  <ng-container matColumnDef="username">
+    <th mat-header-cell *matHeaderCellDef>Username</th>
+    <td mat-cell *matCellDef="let user">{{user.username}}</td>
+  </ng-container>
+
+  <!--Email Column-->
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let user">{{user.email}}</td>
+  </ng-container>
+
+  <!--Created At Column-->
+  <ng-container matColumnDef="created_at">
+    <th mat-header-cell *matHeaderCellDef>Created At</th>
+    <td mat-cell *matCellDef="let user">{{user.created_at}}</td>
+  </ng-container>
+
+  <!--Row Definitions-->
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToUser(row.id)" class="clickable-row"></tr>
+</table>
 
 
 <ng-template #noUsers>
