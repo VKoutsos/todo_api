@@ -1,20 +1,41 @@
-<h2>Login</h2>
-<form [formGroup]="loginForm" (ngSubmit)="login()">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Email</mat-label>
-    <input matInput type="email" formControlName="email" required>
-  </mat-form-field>
+<div class="login-container">
+  <div class="login-box">
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" formControlName="password" required>
-  </mat-form-field>
+    <!--Left: Login Form-->
+    <div class="login-left">
+      <h2>Sign In</h2>
 
-  <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
-    Login
-  </button>
+      <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
+        </mat-form-field>
 
-  <div *ngIf="errorMessage" class="error-message">
-    {{errorMessage}}
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" required>
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" class="sign-in-btn" type="submit" [disabled]="!loginForm.valid">
+          Sign In
+        </button>
+
+        <div class="login-options">
+          <mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox>
+          <a class="forgot-link" href="#">Forgot Password</a>
+        </div>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+
+    <!--Right: Welcome Panel-->
+    <div class="login-right">
+      <h2>Welcome to my Todo API</h2>
+      <p>Don't have an account?</p>
+      <button mat-stroked-button color="primary" [routerLink]="['/register']">Sign Up</button>
+    </div>
   </div>
-</form>
+</div>

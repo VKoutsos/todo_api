@@ -1,21 +1,40 @@
-<h2>Register</h2>
-<form [formGroup]="profileForm" (ngSubmit)="register()">
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Name</mat-label>
-    <input matInput type="text" formControlName="name" required>
-  </mat-form-field>
+<div class="login-container">
+  <div class="login-box">
+    <!-- Left Side: Registration Form -->
+    <div class="login-left">
+      <h2>Register</h2>
 
-  <mat-form-field appearance="outline" formControlName="name" required>
-    <mat-label>Email</mat-label>
-    <input matInput type="email" formControlName="email" required>
-  </mat-form-field>
+      <form [formGroup]="profileForm" (ngSubmit)="register()">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="name" required>
+        </mat-form-field>
 
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Password</mat-label>
-    <input matInput type="password" formControlName="password" required>
-  </mat-form-field>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
+        </mat-form-field>
 
-  <button mat-raised-button color="accent" type="submit" [disabled]="!profileForm.valid">Register</button>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" required>
+        </mat-form-field>
 
-  <div *ngIf="errorMessage" class="error_message">{{ errorMessage }}</div>
-</form>
+        <button mat-raised-button color="accent" class="sign-in-btn" type="submit" [disabled]="!profileForm.valid">
+          Register
+        </button>
+
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+
+    <!-- Right Side: Redirect to Login -->
+    <div class="login-right">
+      <h2>Welcome Back!</h2>
+      <p>Already have an account?</p>
+      <button mat-stroked-button color="primary" [routerLink]="['/login']">Sign In</button>
+    </div>
+  </div>
+</div>
