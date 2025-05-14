@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { TaskListComponent } from './components/task-list/task-list.component';
-import { TaskFormComponent } from './components/task-form/task-form.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 
@@ -21,11 +20,14 @@ import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 import { AdminDetailComponent } from './components/admin-detail/admin-detail.component';
 
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [
     AppComponent,
     TaskListComponent,
-    TaskFormComponent,
     RegisterComponent,
     LoginComponent,
     NavbarComponent,
@@ -41,6 +43,9 @@ import { AdminDetailComponent } from './components/admin-detail/admin-detail.com
     HttpClientModule,
     RouterModule.forRoot([]),
     ReactiveFormsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
