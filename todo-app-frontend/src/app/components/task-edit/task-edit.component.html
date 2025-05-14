@@ -1,6 +1,16 @@
 <div class="task-form">
   <h2>Edit Task</h2>
-  <input [(ngModel)]="title" placeholder="Task Title" />
-  <textarea [(ngModel)]="description" placeholder="Task Description"></textarea>
-  <button (click)="updateTask()">Update Task</button>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Task Title</mat-label>
+    <input matInput [(ngModel)]="title" placeholder="Task Title" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="description" placeholder="Enter task description"></textarea>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="updateTask()" [disabled]="!title">Update Task</button>
+
 </div>

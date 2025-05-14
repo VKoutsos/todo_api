@@ -1,6 +1,15 @@
 <div class="task-form">
   <h2>Create New Task</h2>
-  <input [(ngModel)]="title" placeholder="Task Title" />
-  <textarea [(ngModel)]="description" placeholder="Task Description"></textarea>
-  <button (click)="createTask()">Create Task</button>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Task Title</mat-label>
+    <input matInput [(ngModel)]="title" placeholder="Enter task title" required>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Task Description</mat-label>
+    <textarea matInput [(ngModel)]="description" placeholder="Enter task description"></textarea>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="createTask()" [disabled]="!title">Create Task</button>
 </div>
