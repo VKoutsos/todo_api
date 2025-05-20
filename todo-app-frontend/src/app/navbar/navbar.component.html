@@ -10,6 +10,7 @@
 
     <ng-container *ngIf="authService.isLoggedIn(); else guestLinks">
       <button mat-button routerLink="/tasks">My Tasks</button>
+      <button mat-button routerLink="/users/logs">My Logs</button>
       <button mat-button *ngIf="isAdmin" [routerLink]="['/admin/users']">Admin Panel</button>
       <button mat-button (click)="logout()">Logout</button>
     </ng-container>
