@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { AuthService } from './auth.service';
+import { Log } from "../models/log.model";
 
 @Injectable({
   providedIn: "root",
@@ -14,12 +15,12 @@ export class LogService {
     private authService: AuthService
   ){}
 
-  getUserLogs(): Observable<any[]> {
+  getUserLogs(): Observable<{logs:Log[]; created_at:string}> {
     const token=this.authService.getToken();
     const headers=new HttpHeaders({
       Authorization:`Bearer ${token}`,
     });
 
-    return this.http.get<any[]>(this.baseUrl,{headers});
+    return this.http.get<{logs:Log[]; created_at:string}>(this.baseUrl,{headers});
   }
 }

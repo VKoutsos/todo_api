@@ -11,13 +11,17 @@ import { Log } from '../../models/log.model';
 })
 export class LogsComponent implements OnInit{
   logs:Log[]=[];
+  createdAt:string|null=null;
   displayedColumns:string[]=['id','action','timestamp'];
 
   constructor(private logService: LogService) { }
 
   ngOnInit():void{
     this.logService.getUserLogs().subscribe({
-      next:(logs)=>this.logs=logs,
+      next:({logs,created_at})=>{
+        this.logs=logs;
+        this.createdAt=created_at;
+      },
       error:(err)=>console.error('Error fetching logs:',err)
     });
   }
