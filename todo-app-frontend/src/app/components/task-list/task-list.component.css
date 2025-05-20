@@ -1,27 +1,41 @@
+:root{
+  --primary-bg:#1e1e1e;
+  --card-bg:#2a2a2a;
+  --text-color:#eaeaea;
+  --accent-color:#007bff;
+  --hover-bg:#333;
+}
+
+body{
+  background:var(--primary-bg);
+  color:var(--text-color);
+  font-family:'Roboto', sans-serif;
+}
+
 .task-container {
   padding: 2rem 4rem;
-  min-height: 100vh;
-  transition: background 0.4s ease;
 }
 
 /* Heading */
-h2 {
-  margin-bottom: 20px;
-  margin-left: 20px;
+.heading{
+  margin: 1.5rem 1rem 0.5rem;
+  font-size:2rem;
 }
 
 /* New Task Button */
 .add-task-btn {
+  display: flex;
+  justify-content: flex-start;
   margin-left: 1rem;
 }
 
 /* Each task item */
 .task-item {
-  border: 1px solid #2c2c2c;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 15px;
-  background-color: #1e1e1e;
+  background:var(--card-bg);
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 /* Task header (title + toggle) */
@@ -29,19 +43,19 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
 }
 
 .task-title {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight:500;
 }
 
 /* Completed tasks */
 .completed {
   text-decoration: line-through;
-  color: grey;
+  color: #888;
 }
 
 /* Buttons */
@@ -103,7 +117,7 @@ input[type="text"] {
 
 .subtasks-container.show {
   max-height: 500px;
-  padding-left: 20px;
+  padding-left: 1rem;
 }
 
 /* Subtask item */
@@ -111,12 +125,14 @@ input[type="text"] {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-  gap: 8px;
+  gap: 6px 0;
 }
 
 /* Task actions (delete/edit) */
 .task-actions {
-  margin-top: 10px;
+  display: flex;
+  gap:0.5rem;
+  margin-top: 1rem;
 }
 
 mat-card.task-item {
@@ -126,8 +142,21 @@ mat-card.task-item {
 
 .full-width {
   width: 100%;
+  margin-top: 10px;
 }
 
 mat-form-field {
+  background:#3a3a3a;
+  border-radius:6px;
   margin-top: 10px;
+}
+
+button mat-icon{
+  margin-right: 0.3rem;
+}
+
+.no-tasks-msg{
+  text-align: center;
+  margin-top: 2rem;
+  color: #aaa;
 }
