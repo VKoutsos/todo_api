@@ -1,18 +1,25 @@
+.task-container {
+  padding: 2rem 4rem;
+  min-height: 100vh;
+  transition: background 0.4s ease;
+}
+
 /* Heading */
 h2 {
   margin-bottom: 20px;
+  margin-left: 20px;
 }
 
 /* New Task Button */
 .add-task-btn {
-  margin-bottom: 20px;
+  margin-left: 1rem;
 }
 
 /* Each task item */
 .task-item {
   border: 1px solid #2c2c2c;
   border-radius: 8px;
-  padding: 15px;
+  padding: 10px;
   margin-bottom: 15px;
   background-color: #1e1e1e;
 }
