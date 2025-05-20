@@ -1,8 +1,12 @@
 <h2>Task List</h2>
 
-<button mat-raised-button color="primary" [routerLink]="['/tasks/add']" class="add-task-btn">
-  New Task
-</button>
+<div class="add-task-btn">
+  <button mat-raised-button color="primary" [routerLink]="['/tasks/add']">
+    <mat-icon>add</mat-icon>
+    New Task
+  </button>
+</div>
+
 
 <div class="task-container">
   <div class="task-wrapper">
@@ -18,13 +22,13 @@
           </div>
 
           <button
-            mat-stroked-button
-            color="accent"
+            mat-icon-button
             *ngIf="task.subtasks?.length"
             (click)="toggleDetails(task)"
             class="toggle-btn"
+            aria-label="Toggle Subtasks"
           >
-            {{ task.showDetails ? 'Hide Subtasks ▲' : 'Show Subtasks ▼' }}
+            <mat-icon>{{ task.showDetails ? 'expand_less' : 'expand_more' }}</mat-icon>
           </button>
         </div>
 
@@ -40,7 +44,7 @@
             </mat-checkbox>
             <span [class.completed]="subtask.status === 'completed'">{{ subtask.title }}</span>
             <button mat-button color="warn" (click)="deleteSubtask(task.id, subtask.id)">
-              Delete Subtask
+              <mat-icon>delete</mat-icon>
             </button>
           </div>
         </div>
@@ -51,13 +55,18 @@
           <input matInput [(ngModel)]="newSubtaskTitle[task.id]" />
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="addSubtask(task.id)">
+          <mat-icon>add</mat-icon>
           Add Subtask
         </button>
 
         <!-- Actions -->
         <div class="task-actions">
-          <button mat-button color="warn" (click)="deleteTask(task.id)">Delete Task</button>
-          <button mat-button color="accent" [routerLink]="['/tasks/edit', task.id]">Edit Task</button>
+          <button mat-button color="warn" (click)="deleteTask(task.id)" aria-label="Delete Task">
+            <mat-icon>delete</mat-icon>
+            </button>
+          <button mat-button color="accent" [routerLink]="['/tasks/edit', task.id]" aria-label="Edit Task">
+            <mat-icon>edit</mat-icon>
+          </button>
         </div>
       </mat-card>
     </ng-container>
