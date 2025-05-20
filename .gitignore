@@ -7,6 +7,5 @@ dist/
 build/
 coverage/
 *.log
-logs/
 *.pem
 Database/

@@ -10,6 +10,7 @@ import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { TaskAddComponent} from './components/task-add/task-add.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 import { AdminDetailComponent} from './components/admin-detail/admin-detail.component';
+import { LogsComponent } from './components/logs/logs.component';
 
 const routes: Routes = [
   {path:'',redirectTo:'/login',pathMatch:'full'},//Redirect to log in by default
@@ -20,6 +21,9 @@ const routes: Routes = [
   {path:'tasks',component: TaskListComponent,canActivate: [authGuard]},//protect the tasks
   {path:'tasks/add',component: TaskAddComponent,canActivate: [authGuard]},
   {path:'tasks/edit/:id',component: TaskEditComponent, canActivate: [authGuard]},
+
+  //protected log route
+  {path:'users/logs',component:LogsComponent,canActivate: [authGuard]},
 
  //Protected admin routes
   {

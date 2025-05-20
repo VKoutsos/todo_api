@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
   providedIn: "root",
 })
 export class LogService {
-  private baseUrl='http://localhost:5000/logs';
+  private baseUrl='http://localhost:5000/users/logs';
 
   constructor(
     private http: HttpClient,
