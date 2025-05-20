@@ -8,16 +8,16 @@
 
 .login-box {
   display: flex;
-  width: 800px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
+  width: 50rem;
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.75rem;
   overflow: hidden;
   background: white;
 }
 
 .login-left, .login-right {
   flex: 1;
-  padding: 40px;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -35,7 +35,7 @@
 
 .full-width {
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .sign-in-btn {
@@ -56,7 +56,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 0.75rem;
 }
 
 .forgot-link {
@@ -66,5 +66,5 @@
 
 .error-message {
   color: red;
-  margin-top: 10px;
+  margin-top: 0.625rem;
 }

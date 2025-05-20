@@ -1,8 +1,7 @@
 const express=require('express');
 const cors=require('cors'); //later for angular
 require('dotenv').config();
-const bodyParser=require('body-parser');
-const db=require('./config/db');
+
 
 const taskRoutes=require("./routes/taskRoutes");
 const authRoutes=require("./routes/authRoutes");
