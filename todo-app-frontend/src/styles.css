@@ -3,6 +3,15 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+body{
+  background-color: #e7ceb5;
+  color: #653024;
+}
+
+.mat-icon-button:hover{
+  color:#8a5f3f!important;
+}
+
 .mat-mdc-snack-bar-container {
   --mdc-snackbar-supporting-text-color:white;
 

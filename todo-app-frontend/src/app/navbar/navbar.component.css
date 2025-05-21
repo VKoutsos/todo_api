@@ -1,10 +1,36 @@
-.spacer{
-  flex: 1 1 auto;
+/* Remove any conflicting Material theme overrides */
+.mat-toolbar.mat-primary {
+  background: #653024 !important;
+  color: white !important;
 }
 
-.logo{
-  font-weight:bold;
+/* Ensure your custom class takes precedence */
+.custom-toolbar {
+  background-color: #653024 !important;
+  color: white !important;
+}
+
+/* Button styles */
+.custom-toolbar .mat-button {
+  color: white !important;
+  margin: 0 8px;
+  transition: all 0.2s ease;
+}
+
+.custom-toolbar .mat-button:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Logo styles */
+.logo {
+  font-weight: bold;
   font-size: 20px;
-  color:white;
+  color: white;
   text-decoration: none;
+  padding: 0 16px;
+  letter-spacing: 0.5px;
+}
+
+.spacer {
+  flex: 1 1 auto;
 }
