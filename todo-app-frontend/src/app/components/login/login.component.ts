@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService,LoginUser } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { ToastService} from '../../services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,11 @@ export class LoginComponent {
 loginForm: FormGroup;
 errorMessage:string|null=null;
 
-constructor(private authService: AuthService, private router: Router){
+constructor(
+  private authService: AuthService,
+  private router: Router,
+  private toastService: ToastService,)
+{
   this.loginForm=new FormGroup({
     email:new FormControl('',[Validators.required,Validators.email]),
     password:new FormControl('',[Validators.required]),
@@ -33,6 +38,7 @@ constructor(private authService: AuthService, private router: Router){
 
   this.authService.login(user).subscribe(
     response=>{
+      this.toastService.showSuccess('Logged in successfully!');
       this.authService.setToken(response.token);
       this.errorMessage=null;//clear any previous error message
       this.loginForm.reset();
@@ -40,6 +46,7 @@ constructor(private authService: AuthService, private router: Router){
       this.router.navigate(['/tasks']);
     },
     error=>{
+      this.toastService.showError('Login Failed.');
       console.error('Login Failed',error);
       this.errorMessage='Invalid email or password. Please try again.';//set error message
 
