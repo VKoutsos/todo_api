@@ -3,17 +3,21 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.toast-success {
-  background-color: #4caf50 !important;
-  color: white !important;
-}
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-supporting-text-color:white;
 
-.toast-error {
-  background-color: #f44336 !important;
-  color: white !important;
-}
+  &.toast-success{
+    --mdc-snackbar-container-color:#4caf50;
+    --mat-mdc-snack-bar-button-color:white;
+  }
 
-.toast-info {
-  background-color: #2196f3 !important;
-  color: white !important;
+  &.toast-error {
+    --mdc-snackbar-container-color: #F44336;
+    --mat-mdc-snack-bar-button-color: white;
+  }
+
+  &.toast-info {
+    --mdc-snackbar-container-color: #2196F3;
+    --mat-mdc-snack-bar-button-color: white;
+  }
 }
