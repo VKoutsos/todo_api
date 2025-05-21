@@ -108,6 +108,12 @@ export class TaskListComponent implements OnInit {
         this.toastService.showSuccess('Subtask added successfully.');
         this.newSubtaskTitle[taskId] = '';
 
+        //automatically open the dropdown
+        const task=this.tasks.find(t=>t.id===taskId);
+        if (task) {
+          task.showDetails = true;
+        }
+
         this.subtaskService.getSubtasks(taskId, this.token!).subscribe({
           next: (subtasks) => {
             const task = this.tasks.find(t => t.id === taskId);
