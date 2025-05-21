@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
 import { Task } from '../../models/task.model';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-admin-detail',
@@ -17,7 +18,8 @@ export class AdminDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -48,23 +50,36 @@ export class AdminDetailComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.newTaskTitle = '';
+        this.toastService.showSuccess('Task created successfully!');
         this.loadTasks();
       },
-      error: (err) => console.error('Error creating task:', err)
+      error: (err) => {
+        this.toastService.showError('Failed to create task.');
+        console.error('Error creating task:', err)
+      }
     });
   }
 
   updateTask(task: Task): void {
     this.adminService.updateUserTask(task.id, task).subscribe({
-      next: () => this.loadTasks(),
-      error: (err) => console.error('Error updating task:', err)
+      next: () => {
+        this.toastService.showSuccess('Task updated successfully!');
+        this.loadTasks()
+      },
+      error: (err) => {
+        this.toastService.showError('Failed to update task.');
+        console.error('Error updating task:', err)
+      }
     });
   }
 
   deleteTask(taskId: number): void {
     if (confirm('Delete this task?')) {
       this.adminService.deleteUserTask(this.userId, taskId).subscribe({
-        next: () => this.loadTasks(),
+          next: () => {
+            this.toastService.showSuccess('Task deleted successfully!');
+            this.loadTasks()
+        },
         error: (err) => console.error('Error deleting task:', err)
       });
     }
@@ -93,21 +108,29 @@ export class AdminDetailComponent implements OnInit {
 
     this.adminService.createUserSubtask(taskId, description, this.userId).subscribe({
       next: () => {
+        this.toastService.showSuccess('Subtask created!')
         this.newSubtaskTitles[taskId] = '';
         const task = (this.tasks.find(t => t.id === taskId)!);
         if (task) this.loadSubtasks(task);
       },
-      error: (err) => console.error('Error adding subtask:', err)
+      error: (err) => {
+        this.toastService.showError('Failed to create subtask.');
+        console.error('Error adding subtask:', err)
+      }
     });
   }
 
   updateSubtask(taskId: number, subtask: any): void {
     this.adminService.updateUserSubtask(taskId, subtask.id, subtask).subscribe({
       next: () => {
+        this.toastService.showSuccess('Subtask updated!')
         const task = this.tasks.find(t => t.id === taskId);
         if (task) this.loadSubtasks(task);
       },
-      error: (err) => console.error('Error updating subtask:', err)
+      error: (err) => {
+        this.toastService.showError('Failed to update subtask.');
+        console.error('Error updating subtask:', err)
+      }
     });
   }
 
@@ -115,6 +138,7 @@ export class AdminDetailComponent implements OnInit {
     if (confirm('Delete this subtask?')) {
       this.adminService.deleteUserSubtask(taskId, subtaskId).subscribe({
         next: () => {
+          this.toastService.showSuccess('Subtask deleted!')
           const task = this.tasks.find(t => t.id === taskId);
           if (!task) return;
 
@@ -124,7 +148,10 @@ export class AdminDetailComponent implements OnInit {
             task.showDetails = false;
           }
         },
-        error: (err) => console.error('Error deleting subtask:', err)
+        error: (err) => {
+          this.toastService.showError('Failed to delete subtask.');
+          console.error('Error deleting subtask:', err)
+        }
       });
     }
   }
