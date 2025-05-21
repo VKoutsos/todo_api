@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../../services/task.service'
 import { AuthService } from '../../services/auth.service';
 import { Task } from '../../models/task.model';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-task-edit',
@@ -15,7 +16,11 @@ export class TaskEditComponent implements OnInit {
   title:string='';
   description:string='';
 
-  constructor(private route:ActivatedRoute,private taskService:TaskService,private authService: AuthService, private router:Router) {}
+  constructor(private route:ActivatedRoute,
+              private taskService:TaskService,
+              private authService: AuthService,
+              private router:Router,
+              private toastService:ToastService) { }
 
   ngOnInit():void{
     this.taskId=Number(this.route.snapshot.paramMap.get('id'));//fetch the task details first
@@ -32,10 +37,14 @@ export class TaskEditComponent implements OnInit {
 
     this.taskService.updateTask(this.taskId, updatedTask, token).subscribe({
       next:(res)=>{
+        this.toastService.showSuccess('Task updated successfully.');
         console.log('Task updated:',res);
         this.router.navigate(['/tasks']);
       },
-      error:(err)=>console.error('Error updating task:',err)
+      error:(err)=>{
+        this.toastService.showError('Error updating task.');
+        console.error('Error updating task:',err)
+      }
     });
   }
 }

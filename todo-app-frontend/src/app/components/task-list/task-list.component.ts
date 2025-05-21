@@ -4,6 +4,7 @@ import { Task } from '../../models/task.model';
 import { SubtaskService } from '../../services/subtask.service';
 import { AuthService } from '../../services/auth.service';
 import { MatCheckboxChange} from '@angular/material/checkbox';
+import { ToastService} from '../../services/toast.service';
 
 @Component({
   selector: 'app-task-list',
@@ -19,7 +20,8 @@ export class TaskListComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private subtaskService: SubtaskService,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastService: ToastService,
   ) {}
 
   ngOnInit(): void {
@@ -66,9 +68,13 @@ export class TaskListComponent implements OnInit {
     if (confirm('Are you sure you want to delete this task?')) {
       this.taskService.deleteTask(taskId, this.token).subscribe({
         next: () => {
+          this.toastService.showSuccess('Task deleted successfully.');
           this.tasks = this.tasks.filter(task => task.id !== taskId);
         },
-        error: (err) => console.error('Error deleting task:', err)
+        error: (err) => {
+          this.toastService.showError('Error deleting task');
+          console.error('Error deleting task:', err)
+        }
       });
     }
   }
@@ -99,6 +105,7 @@ export class TaskListComponent implements OnInit {
 
     this.subtaskService.createSubtask(taskId, { description }, this.token).subscribe({
       next: () => {
+        this.toastService.showSuccess('Subtask added successfully.');
         this.newSubtaskTitle[taskId] = '';
 
         this.subtaskService.getSubtasks(taskId, this.token!).subscribe({
@@ -111,7 +118,10 @@ export class TaskListComponent implements OnInit {
           error: (err) => console.error('Error refreshing subtasks:', err)
         });
       },
-      error: (err) => console.error('Error creating subtask:', err)
+      error: (err) => {
+        this.toastService.showError('Error creating subtask.');
+        console.error('Error creating subtask:', err)
+      }
     });
   }
 
@@ -141,12 +151,16 @@ export class TaskListComponent implements OnInit {
       if (confirm('Are you sure you want to delete this subtask?')) {
         this.subtaskService.deleteSubtask(subtaskId, this.token).subscribe({
           next: () => {
+            this.toastService.showSuccess('Subtask deleted successfully.');
             const task = this.tasks.find(t => t.id === taskId);
             if (task?.subtasks) {
               task.subtasks = task.subtasks.filter(s => s.id !== subtaskId);
             }
           },
-          error: (err) => console.error('Error deleting subtask:', err)
+          error: (err) => {
+            this.toastService.showError('Error deleting subtask.', err)
+            console.error('Error deleting subtask:', err)
+          }
         });
       }
     }

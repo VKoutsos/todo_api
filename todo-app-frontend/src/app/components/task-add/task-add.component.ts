@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-task-add',
@@ -13,7 +14,10 @@ export class TaskAddComponent {
   title: string = '';
   description: string = '';
 
-  constructor(private taskService: TaskService, private authService: AuthService, private router: Router) {
+  constructor(private taskService: TaskService,
+              private authService: AuthService,
+              private router: Router,
+              private toastService: ToastService) {
   }
 
   createTask(): void {
@@ -27,10 +31,14 @@ export class TaskAddComponent {
 
     this.taskService.createTask(newTask, token).subscribe({
       next: (res) => {
+        this.toastService.showSuccess('Task created successfully.');
         console.log('Task created:', res);
         this.router.navigate(['/tasks']);
       },
-      error: (err) => console.error('Error creating task:', err)
+      error: (err) => {
+        this.toastService.showError('Error creating task');
+        console.error('Error creating task:', err)
+      }
     });
   }
 }

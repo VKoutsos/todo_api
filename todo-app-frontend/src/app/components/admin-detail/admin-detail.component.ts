@@ -50,7 +50,7 @@ export class AdminDetailComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.newTaskTitle = '';
-        this.toastService.showSuccess('Task created successfully!');
+        this.toastService.showSuccess('Task created successfully.');
         this.loadTasks();
       },
       error: (err) => {
@@ -63,7 +63,7 @@ export class AdminDetailComponent implements OnInit {
   updateTask(task: Task): void {
     this.adminService.updateUserTask(task.id, task).subscribe({
       next: () => {
-        this.toastService.showSuccess('Task updated successfully!');
+        this.toastService.showSuccess('Task updated successfully.');
         this.loadTasks()
       },
       error: (err) => {
@@ -77,7 +77,7 @@ export class AdminDetailComponent implements OnInit {
     if (confirm('Delete this task?')) {
       this.adminService.deleteUserTask(this.userId, taskId).subscribe({
           next: () => {
-            this.toastService.showSuccess('Task deleted successfully!');
+            this.toastService.showSuccess('Task deleted successfully.');
             this.loadTasks()
         },
         error: (err) => console.error('Error deleting task:', err)
@@ -108,7 +108,7 @@ export class AdminDetailComponent implements OnInit {
 
     this.adminService.createUserSubtask(taskId, description, this.userId).subscribe({
       next: () => {
-        this.toastService.showSuccess('Subtask created!')
+        this.toastService.showSuccess('Subtask created successfully.');
         this.newSubtaskTitles[taskId] = '';
         const task = (this.tasks.find(t => t.id === taskId)!);
         if (task) this.loadSubtasks(task);
@@ -123,7 +123,7 @@ export class AdminDetailComponent implements OnInit {
   updateSubtask(taskId: number, subtask: any): void {
     this.adminService.updateUserSubtask(taskId, subtask.id, subtask).subscribe({
       next: () => {
-        this.toastService.showSuccess('Subtask updated!')
+        this.toastService.showSuccess('Subtask updated successfully.');
         const task = this.tasks.find(t => t.id === taskId);
         if (task) this.loadSubtasks(task);
       },
@@ -138,7 +138,7 @@ export class AdminDetailComponent implements OnInit {
     if (confirm('Delete this subtask?')) {
       this.adminService.deleteUserSubtask(taskId, subtaskId).subscribe({
         next: () => {
-          this.toastService.showSuccess('Subtask deleted!')
+          this.toastService.showSuccess('Subtask deleted successfully.');
           const task = this.tasks.find(t => t.id === taskId);
           if (!task) return;
 
