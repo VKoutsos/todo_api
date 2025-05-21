@@ -13,8 +13,8 @@
     </ng-container>
 
     <ng-container matColumnDef="timestamp">
-      <th mat-header-cell *matHeaderCellDef>Timestamp</th>
-      <td mat-cell *matCellDef="let log">{{log.timestamp}}</td>
+      <th mat-header-cell *matHeaderCellDef>Date, Time</th>
+      <td mat-cell *matCellDef="let log">{{log.timestamp|date:'medium'}}</td>
     </ng-container>
 
     <ng-container matColumnDef="action">
