@@ -8,11 +8,33 @@
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="createTask()">Add Task</button>
 
-  <!-- Tasks List -->
   <div *ngIf="tasks.length > 0; else noTasks" class="task-list">
     <mat-card class="task-card" *ngFor="let task of tasks">
       <mat-card-header>
-        <mat-card-title>{{ task.title }}</mat-card-title>
+
+        <!-- Task Edit -->
+        <mat-card-title>
+          <div *ngIf="editingTaskId !== task.id; else editForm">
+            {{ task.title }}
+            <button mat-icon-button (click)="startEdit(task)" matTooltip="Edit task">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+          <ng-template #editForm>
+            <div class="edit-form">
+              <mat-form-field appearance="outline">
+                <input matInput [(ngModel)]="tempTaskTitle" required>
+              </mat-form-field>
+              <button mat-icon-button color="primary" (click)="saveEdit(task)" [disabled]="!tempTaskTitle.trim()">
+                <mat-icon>save</mat-icon>
+              </button>
+              <button mat-icon-button (click)="cancelEdit()">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </div>
+          </ng-template>
+        </mat-card-title>
+
         <mat-card-subtitle>Task ID: {{ task.id }}</mat-card-subtitle>
       </mat-card-header>
 

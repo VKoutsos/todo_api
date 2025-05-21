@@ -15,6 +15,8 @@ export class AdminDetailComponent implements OnInit {
   userId!: number;
   newTaskTitle = '';
   newSubtaskTitles: { [taskId: number]: string } = {};
+  editingTaskId:number|null = null;
+  tempTaskTitle='';
 
   constructor(
     private route: ActivatedRoute,
@@ -158,5 +160,29 @@ export class AdminDetailComponent implements OnInit {
         }
       });
     }
+  }
+
+  startEdit(task:Task):void{
+    this.editingTaskId=task.id;
+    this.tempTaskTitle=task.title;
+  }
+
+  cancelEdit():void{
+    this.editingTaskId=null;
+  }
+
+  saveEdit(task: Task):void{
+    const updatedTask={...task,title:this.tempTaskTitle};
+    this.adminService.updateUserTask(updatedTask.id,updatedTask).subscribe({
+      next:()=>{
+        this.toastService.showSuccess('Task updated successfully.');
+        this.editingTaskId=null;
+        this.loadTasks();
+      },
+      error:(err)=>{
+        this.toastService.showError('Failed to update task.');
+        console.error('Error updating task:', err)
+      }
+    });
   }
 }
