@@ -77,10 +77,14 @@ export class AdminDetailComponent implements OnInit {
     if (confirm('Delete this task?')) {
       this.adminService.deleteUserTask(this.userId, taskId).subscribe({
           next: () => {
+            this.tasks=this.tasks.filter(task => task.id !== taskId);
             this.toastService.showSuccess('Task deleted successfully.');
             this.loadTasks()
         },
-        error: (err) => console.error('Error deleting task:', err)
+        error: (err) => {
+            this.toastService.showError('Error deleting task.');
+            console.error('Error deleting task:', err)
+        }
       });
     }
   }
