@@ -96,16 +96,6 @@ button:hover {
   background-color: #5a6268;
 }
 
-/* Input styling */
-input[type="text"] {
-  background-color: #2a2a2a;
-  color: #eaeaea;
-  border: 1px solid #444;
-  padding: 8px;
-  margin-top: 10px;
-  width: 100%;
-  box-sizing: border-box;
-}
 
 /* Subtasks section with animation */
 .subtasks-container {
@@ -159,4 +149,30 @@ button mat-icon{
   text-align: center;
   margin-top: 2rem;
   color: #aaa;
+}
+
+mat-form-field.full-width {
+  width: 100%;
+  margin-top: 10px;
+  background-color: var(--card-bg);
+  border-radius: 6px;
+}
+
+mat-form-field.full-width.mat-form-field {
+  padding: 0;
+}
+
+mat-form-field input.mat-input-element {
+  color: var(--text-color);
+  background-color: transparent;
+  padding: 10px 0;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--accent-color);
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-end {
+  border-color: var(--accent-color);
 }
