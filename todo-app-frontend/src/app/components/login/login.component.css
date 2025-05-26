@@ -28,7 +28,7 @@
 }
 
 .login-right {
-  background: linear-gradient(to right, #f857a6, #ff5858);
+  background: linear-gradient(to right, #a67b5b, #653024);
   color: white;
   text-align: center;
 }
@@ -40,7 +40,7 @@
 
 .sign-in-btn {
   width: 100%;
-  background: linear-gradient(to right, #f857a6, #ff5858);
+  background: linear-gradient(to right, #a67b5b, #653024);
   transition: all 0.5s ease;
   color: white;
 }
