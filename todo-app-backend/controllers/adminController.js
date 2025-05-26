@@ -4,6 +4,17 @@ const {getTaskOwner,getSubtaskOwner,getTaskOwnerEmail}=require("../utils/dbHelpe
 const notify=require("../utils/notify");
 const {queryDatabase}=require("../utils/dbHelpers");
 
+//helper function to send socket.io notifications
+const sendSocketNotification=(req,userId,event,data)=>{
+    const io=req.app.get("io");
+    const connectedUsers=req.app.get('connectedUsers');
+
+    if(connectedUsers&&connectedUsers[userId]){
+        io.to(connectedUsers[userId]).emit(event,data);
+        console.log(`Sent ${event} to user ${userId}`);
+    }
+};
+
 // Get all users (Admin Only)
 exports.getAllUsers =async(req, res) => {
     try {
@@ -69,6 +80,14 @@ exports.createTaskByAdmin = async (req, res) => {
         logAction(userId, `Admin has created a new task: ${title}`);
         notify(userEmail, "New Task Created", `Admin has created a new task: "${title}" for user: ${userId}.`);
 
+        //socket.io notify the user in real-time
+        sendSocketNotification(req,userId,'taskCreated',{
+            taskId,
+            title,
+            message:`Admin created a new task for you: "${title}"`,
+            timestamp: new Date()
+        });
+
         res.status(201).json({ message: "Task created successfully by admin", taskId });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -91,7 +110,6 @@ exports.createSubtaskByAdmin=async(req,res)=>{
 
         logAction(userId, `Admin has created a new subtask under Task ID: ${taskId}`);
         notify(userEmail, "Subtask Created", `Admin has created a new Subtask: "${description}" under Task ID: ${taskId}.`);
-
         res.status(201).json({message: "Subtask created successfully by admin", subtaskId});
     }catch(err){
         res.status(500).json({error:err.message});
@@ -119,6 +137,13 @@ exports.updateTaskByAdmin = async (req, res) => {
 
         logAction(user_id, `Admin updated Task ID ${taskId}`);
         notify(userEmail, "Task Updated", `Admin has updated your task with ID "${taskId}": ${title}.`);
+
+        //socket.io notify the user in real-time
+        sendSocketNotification(req,user_id,'taskUpdated',{
+            taskId,
+            title,
+            message:`Admin updated your task: "${title}" for ID: ${taskId}`
+        });
 
         res.status(200).json({ message: "Task updated successfully" });
     } catch (err) {
@@ -170,6 +195,12 @@ exports.deleteUserTask = async (req, res) => {
 
         logAction(userId, `Admin deleted Task ID ${taskId}`);
         notify(userEmail, "Task Deleted", `Admin has deleted your (ID:${userId}) task with ID: ${taskId}.`);
+
+        //socket.io notify the user in real-time
+        sendSocketNotification(req,userId,'taskDeleted',{
+            taskId,
+            message:`Admin has deleted you task (ID: ${taskId})`
+        });
 
         res.status(200).json({ message: "Task deleted successfully" });
     } catch (err) {
