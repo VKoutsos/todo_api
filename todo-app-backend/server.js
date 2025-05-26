@@ -1,7 +1,10 @@
 const express=require('express');
-const cors=require('cors'); //later for angular
+const cors=require('cors');
+const http=require('http');
 require('dotenv').config();
 
+//import socket.io initialization
+const initSocket=require('./socket');
 
 const taskRoutes=require("./routes/taskRoutes");
 const authRoutes=require("./routes/authRoutes");
@@ -11,6 +14,13 @@ const userRoutes=require("./routes/userRoutes");
 
 
 const app = express();
+const server=http.createServer(app);
+
+const {io,connectedUsers}=initSocket(server);
+
+//attach socket.io to app for use in routes
+app.set('io',io);//lets routes access io
+app.set('connectedUsers',connectedUsers);//share online users
 
 //Middleware
 app.use(cors());
