@@ -52,7 +52,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    RouterModule.forRoot([]),
     ReactiveFormsModule,
     MatToolbarModule,
     MatButtonModule,
