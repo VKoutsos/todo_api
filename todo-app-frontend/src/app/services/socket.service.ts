@@ -22,7 +22,7 @@ export class SocketService {
       const token = this.authService.getToken();
       if (token) {
         const payload = JSON.parse(atob(token.split('.')[1]));
-        const userId = payload.userId;  // assuming token contains userId
+        const userId = payload.id;  // assuming token contains userId
         this.socket.emit('user_connected', userId);
         console.log(`Emitted user_connected for userId: ${userId}`);
       }
