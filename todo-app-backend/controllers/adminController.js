@@ -9,8 +9,8 @@ const sendSocketNotification=(req,userId,event,data)=>{
     const io=req.app.get("io");
     const connectedUsers=req.app.get('connectedUsers');
 
-    if(connectedUsers&&connectedUsers[userId]){
-        io.to(connectedUsers[userId]).emit(event,data);
+    if(connectedUsers&&connectedUsers.get(userId)){
+        io.to(connectedUsers.get(userId)).emit(event,data);
         console.log(`Sent ${event} to user ${userId}`);
     }
 };
@@ -80,13 +80,7 @@ exports.createTaskByAdmin = async (req, res) => {
         logAction(userId, `Admin has created a new task: ${title}`);
         notify(userEmail, "New Task Created", `Admin has created a new task: "${title}" for user: ${userId}.`);
 
-        //socket.io notify the user in real-time
-        sendSocketNotification(req,userId,'taskCreated',{
-            taskId,
-            title,
-            message:`Admin created a new task for you: "${title}"`,
-            timestamp: new Date()
-        });
+        sendSocketNotification(req,userId,"task_created",{taskId,title,description});
 
         res.status(201).json({ message: "Task created successfully by admin", taskId });
     } catch (err) {
@@ -138,12 +132,7 @@ exports.updateTaskByAdmin = async (req, res) => {
         logAction(user_id, `Admin updated Task ID ${taskId}`);
         notify(userEmail, "Task Updated", `Admin has updated your task with ID "${taskId}": ${title}.`);
 
-        //socket.io notify the user in real-time
-        sendSocketNotification(req,user_id,'taskUpdated',{
-            taskId,
-            title,
-            message:`Admin updated your task: "${title}" for ID: ${taskId}`
-        });
+        sendSocketNotification(req,user_id,"task_updated",{taskId,title,description,status});
 
         res.status(200).json({ message: "Task updated successfully" });
     } catch (err) {
@@ -196,11 +185,7 @@ exports.deleteUserTask = async (req, res) => {
         logAction(userId, `Admin deleted Task ID ${taskId}`);
         notify(userEmail, "Task Deleted", `Admin has deleted your (ID:${userId}) task with ID: ${taskId}.`);
 
-        //socket.io notify the user in real-time
-        sendSocketNotification(req,userId,'taskDeleted',{
-            taskId,
-            message:`Admin has deleted you task (ID: ${taskId})`
-        });
+        sendSocketNotification(req,userId,"task_deleted",{taskId});
 
         res.status(200).json({ message: "Task deleted successfully" });
     } catch (err) {

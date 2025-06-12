@@ -1,39 +1,36 @@
-const socketIo = require('socket.io');
+const { Server } = require("socket.io");
 
-//stores online users:{userId:socketId}
-const connectedUsers={};
-
-const initSocket=(server)=>{
-    const io = socketIo(server,{
-        cors:{
-            origin:"http://localhost:4200",//angular frontend
-            methods:["GET","POST","PUT","DELETE"]
+function initSocket(server) {
+    const io = new Server(server, {
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST", "DELETE"]
         }
     });
 
-    io.on('connection',(socket)=>{
-        console.log("New client connected:", socket.id);
+    const connectedUsers = new Map();
 
-        //register user when they log in (frontend emits "register")
-        socket.on('register',(userId)=>{
-            connectedUsers[userId]=socket.id;
-            console.log(`User ${userId} connected (Socket ID: ${socket.id})`);
+    io.on("connection", (socket) => {
+        console.log("A user connected", socket.id);
+
+        // Track which user is assigned to this socket
+        let currentUserId = null;
+
+        socket.on("user_connected", (userId) => {
+            connectedUsers.set(userId, socket.id);
+            currentUserId = userId;
+            console.log(`User ${userId} connected with socket ${socket.id}`);
         });
 
-        //clean up on disconnect
-        socket.on('disconnect',()=>{
-            console.log('Client disconnected:', socket.id);
-            for (const [userId,socketId] of Object.entries(connectedUsers)) {
-                if (socketId===socket.id ) {
-                    delete connectedUsers[userId];
-                    console.log(`Removed user ${userId} from connections`);
-                    break;
-                }
+        socket.on("disconnect", () => {
+            console.log("A user disconnected", socket.id);
+            if (currentUserId && connectedUsers.get(currentUserId) === socket.id) {
+                connectedUsers.delete(currentUserId);
             }
         });
     });
 
-    return {io,connectedUsers};
-};
+    return { io, connectedUsers };
+}
 
-module.exports=initSocket;
+module.exports = initSocket;
