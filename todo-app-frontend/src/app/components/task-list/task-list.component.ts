@@ -5,6 +5,7 @@ import { SubtaskService } from '../../services/subtask.service';
 import { AuthService } from '../../services/auth.service';
 import { MatCheckboxChange} from '@angular/material/checkbox';
 import { ToastService} from '../../services/toast.service';
+import { SocketService } from '../../services/socket.service';
 
 @Component({
   selector: 'app-task-list',
@@ -22,6 +23,7 @@ export class TaskListComponent implements OnInit {
     private subtaskService: SubtaskService,
     private authService: AuthService,
     private toastService: ToastService,
+    private socketService: SocketService,
   ) {}
 
   ngOnInit(): void {
@@ -38,6 +40,37 @@ export class TaskListComponent implements OnInit {
 
           // Load subtasks for each task
           this.tasks.forEach(task => this.loadSubtasks(task));
+
+          //connect socket after loading tasks
+          this.socketService.connect();
+
+          //task updated
+          this.socketService.listen('task_updated').subscribe((updatedTask: Task)=>{
+            const index=this.tasks.findIndex(t=>t.id===updatedTask.id);
+            if(index!==-1){
+              this.tasks[index]={
+                ...this.tasks[index],
+                ...updatedTask
+              };
+              this.toastService.showSuccess("A task was updated by the admin!");
+            }
+          });
+
+          //task created
+          this.socketService.listen('task_created').subscribe((newTask: Task)=>{
+            this.tasks.push({
+              ...newTask,
+              showDetails:false
+            });
+            this.toastService.showSuccess('A new task was created by the admin!');
+          });
+
+          //task deleted
+          this.socketService.listen('task_deleted').subscribe((data: {taskId:number})=>{
+            this.tasks=this.tasks.filter(task=>task.id!==data.taskId);
+            this.toastService.showSuccess('A task was deleted by the admin!');
+          });
+
         },
         error: (err) => console.error('Error fetching tasks:', err)
       });

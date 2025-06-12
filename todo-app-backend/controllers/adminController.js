@@ -80,7 +80,13 @@ exports.createTaskByAdmin = async (req, res) => {
         logAction(userId, `Admin has created a new task: ${title}`);
         notify(userEmail, "New Task Created", `Admin has created a new task: "${title}" for user: ${userId}.`);
 
-        sendSocketNotification(req,userId,"task_created",{taskId,title,description});
+        sendSocketNotification(req,userId,"task_created",{
+            id: taskId,
+            title,
+            description,
+            status:'pending',
+            user_id: userId
+        });
 
         res.status(201).json({ message: "Task created successfully by admin", taskId });
     } catch (err) {
@@ -132,7 +138,13 @@ exports.updateTaskByAdmin = async (req, res) => {
         logAction(user_id, `Admin updated Task ID ${taskId}`);
         notify(userEmail, "Task Updated", `Admin has updated your task with ID "${taskId}": ${title}.`);
 
-        sendSocketNotification(req,user_id,"task_updated",{taskId,title,description,status});
+        sendSocketNotification(req,user_id,"task_updated",{
+            id:parseInt(taskId),
+            title,
+            description,
+            status,
+            user_id
+        });
 
         res.status(200).json({ message: "Task updated successfully" });
     } catch (err) {
@@ -176,6 +188,9 @@ exports.deleteUserTask = async (req, res) => {
     const { userId, taskId } = req.params;
 
     try {
+        const realOwnerId=await getTaskOwner(taskId);
+        if(!realOwnerId) return res.status(404).json({error: "Task not found"});
+
         const userEmail = await getTaskOwnerEmail(taskId);
         if (!userEmail) return res.status(404).json({ error: "Task not found" });
 
@@ -185,7 +200,7 @@ exports.deleteUserTask = async (req, res) => {
         logAction(userId, `Admin deleted Task ID ${taskId}`);
         notify(userEmail, "Task Deleted", `Admin has deleted your (ID:${userId}) task with ID: ${taskId}.`);
 
-        sendSocketNotification(req,userId,"task_deleted",{taskId});
+        sendSocketNotification(req,realOwnerId,"task_deleted",{taskId: parseInt(taskId)});
 
         res.status(200).json({ message: "Task deleted successfully" });
     } catch (err) {
