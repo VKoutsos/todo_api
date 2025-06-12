@@ -1,11 +1,34 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SocketService } from './services/socket.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  standalone: false,
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'todo-app-frontend';
+export class AppComponent implements OnInit, OnDestroy {
+  title = 'Task Management';
+
+  constructor(private socketService: SocketService) {}
+
+  ngOnInit(): void {
+    this.socketService.connect();
+
+    this.socketService.listen('task_created').subscribe((data) => {
+      console.log('Task Created:', data);
+      // Optionally show notification/snackbar
+    });
+
+    this.socketService.listen('task_updated').subscribe((data) => {
+      console.log('Task Updated:', data);
+    });
+
+    this.socketService.listen('task_deleted').subscribe((data) => {
+      console.log('Task Deleted:', data);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.socketService.disconnect();
+  }
 }
