@@ -17,7 +17,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     this.socketService.listen('task_created').subscribe((data) => {
       console.log('Task Created:', data);
-      // Optionally show notification/snackbar
     });
 
     this.socketService.listen('task_updated').subscribe((data) => {
