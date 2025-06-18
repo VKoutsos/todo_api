@@ -35,4 +35,9 @@ export class SubtaskService {
     const headers=new HttpHeaders({'Authorization': `Bearer ${token}`});
     return this.http.put(`${this.apiUrl}/complete/${subtaskId}`,{},{headers});
   }
+
+  incompleteSubtask(subtaskId:number,token:string):Observable<any>{
+    const headers=new HttpHeaders({'Authorization': `Bearer ${token}`});
+    return this.http.put(`${this.apiUrl}/incomplete/${subtaskId}`,{},{headers});
+  }
 }

@@ -169,23 +169,23 @@ export class TaskListComponent implements OnInit {
   }
 
   completeSubtask(taskId: number, subtaskId: number, event: MatCheckboxChange): void {
-    const completed=event.checked;
+    const completed = event.checked;
 
     if (this.token) {
-      if (completed) {
-        this.subtaskService.completeSubtask(subtaskId, this.token).subscribe({
-          next: () => {
-            const task = this.tasks.find(t => t.id === taskId);
-            const subtask = task?.subtasks?.find(s => s.id === subtaskId);
-            if (subtask) {
-              subtask.status = 'completed';
-            }
-          },
-          error: (err) => console.error('Error completing subtask:', err)
-        });
-      } else {
-        console.log('Unchecking subtask - no incomplete API yet.');
-      }
+      const update$ = completed
+        ? this.subtaskService.completeSubtask(subtaskId, this.token)
+        : this.subtaskService.incompleteSubtask(subtaskId, this.token);
+
+      update$.subscribe({
+        next: () => {
+          const task = this.tasks.find(t => t.id === taskId);
+          const subtask = task?.subtasks?.find(s => s.id === subtaskId);
+          if (subtask) {
+            subtask.status = completed ? 'completed' : 'pending';
+          }
+        },
+        error: (err) => console.error('Error updating subtask status:', err)
+      });
     }
   }
 

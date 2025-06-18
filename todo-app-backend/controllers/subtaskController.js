@@ -37,7 +37,7 @@ exports.createSubtask=async(req,res)=>{
         const result=await queryDatabase("INSERT INTO subtasks (task_id, title) VALUES (?,?)",[taskId,description]);
 
         logAction(req.user.id,`Created subtask: ${description} for Task ID: ${taskId}`);
-        notify(req.user.email,"Subtask created",`Subtask created for Task ID: ${taskId}.`);
+        /*notify(req.user.email,"Subtask created",`Subtask created for Task ID: ${taskId}.`);*/
 
         res.status(201).json({message:"Subtask created successfully",subtaskId:result.insertId});
     }catch(err){
@@ -68,7 +68,7 @@ exports.updateSubtask=async(req,res)=>{
         }
 
         logAction(req.user.id, `Updated subtask ${subtaskId}`);
-        notify(req.user.email, "Subtask updated", `Subtask ID: ${subtaskId} has been updated.`);
+        /*notify(req.user.email, "Subtask updated", `Subtask ID: ${subtaskId} has been updated.`);*/
 
         res.status(200).json({message:"Subtask updated successfully"});
     }catch(err){
@@ -101,6 +101,29 @@ exports.completeSubtask=async(req,res)=> {
     }
 };
 
+//mark subtasks as incomplete
+exports.incompleteSubtask=async(req,res)=> {
+    const {subtaskId} = req.params;
+
+    try {
+        const check = await queryDatabase("SELECT subtasks.id FROM subtasks JOIN tasks ON subtasks.task_id=tasks.id WHERE subtasks.id=? AND tasks.user_id=?",
+            [subtaskId, req.user.id]);
+
+        if (check.length === 0) return res.status(403).json({error: "You are not allowed to mark this subtask as pending"});
+
+
+        const result =await queryDatabase("UPDATE subtasks SET status='pending' WHERE id=?", [subtaskId]);
+
+        if (result.affectedRows === 0) return res.status(404).json({error: "Subtask not found"});
+
+        logAction(req.user.id, `Subtask ${subtaskId} marked as incomplete`);
+        /*   notify(req.user.email, "Subtask completed", `Subtask ID: ${subtaskId} has been marked as completed.`);*/
+
+        res.status(200).json({message: "Subtask marked as completed"});
+    } catch (err) {
+        res.status(500).json({error:err.message});
+    }
+}
 
 //delete a subtask
 exports.deleteSubtask=async(req,res)=>{
@@ -117,7 +140,7 @@ exports.deleteSubtask=async(req,res)=>{
         if(result.affectedRows===0) return res.status(404).json({error:"Subtask not found"});
 
         logAction(req.user.id,`Deleted subtask ${subtaskId}`);
-        notify(req.user.email,"Subtask deleted",`Subtask ID: ${subtaskId} has been deleted successfully.`);
+        /*notify(req.user.email,"Subtask deleted",`Subtask ID: ${subtaskId} has been deleted successfully.`);*/
 
         res.status(200).json({message:"Subtask deleted successfully"});
     }catch{
