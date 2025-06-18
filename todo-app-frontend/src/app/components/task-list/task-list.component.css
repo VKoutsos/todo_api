@@ -35,7 +35,7 @@ body{
   border: 1px solid #444;
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
 /* Task header (title + toggle) */
@@ -89,11 +89,11 @@ button:hover {
 .toggle-btn {
   padding: 4px 10px;
   font-size: 0.8rem;
-  background-color: #6c757d;
+  background-color: var(--accent-color);
 }
 
 .toggle-btn:hover {
-  background-color: #5a6268;
+  background-color: #8a5f3f;
 }
 
 
@@ -118,11 +118,27 @@ button:hover {
   gap: 6px 0;
 }
 
+/*subtask form */
+.subtask-form-row{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top:10px;
+}
+.subtask-input{
+  flex:1;
+  background-color:var(--card-bg);
+  margin-left: 8px;
+}
+.subtask-input-text{
+  color: var(--text-color);
+  margin-left:12px;
+}
+
 /* Task actions (delete/edit) */
 .task-actions {
   display: flex;
   gap:0.5rem;
-  margin-top: 1rem;
 }
 
 mat-card.task-item {
@@ -136,7 +152,6 @@ mat-card.task-item {
 }
 
 mat-form-field {
-  background:#3a3a3a;
   border-radius:6px;
   margin-top: 10px;
 }
@@ -149,27 +164,6 @@ button mat-icon{
   text-align: center;
   margin-top: 2rem;
   color: #aaa;
-}
-
-mat-form-field.full-width {
-  width: 100%;
-  margin-top: 10px;
-  background-color: var(--card-bg);
-  border-radius: 6px;
-}
-
-mat-form-field.full-width.mat-form-field {
-  padding: 0;
-}
-
-mat-form-field input.mat-input-element {
-  color: var(--text-color);
-  background-color: transparent;
-  padding: 10px 0;
-}
-
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: var(--accent-color);
 }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
