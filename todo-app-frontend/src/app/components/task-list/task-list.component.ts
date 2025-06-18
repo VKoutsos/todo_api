@@ -125,6 +125,10 @@ export class TaskListComponent implements OnInit {
           const task = this.tasks.find(t => t.id === taskId);
           if (task) {
             task.status = completed ? 'completed' : 'pending';
+            //collapse dropdown when completed
+            if (completed){
+              task.showDetails = false;
+            }
           }
         },
         error: (err) => console.error(`Error updating task status:`, err)
