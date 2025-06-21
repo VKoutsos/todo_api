@@ -1,29 +1,163 @@
+/* Import the same variables for a consistent theme */
+:host {
+  --primary-bg: #e7ceb5;
+  --card-bg: #f5e2cf;
+  --text-color: #653024;
+  --accent-color: #a67b5b;
+  --hover-bg: white;
+  --warn-color: #d9534f; /* Added for delete buttons */
+}
+
+/* Main container styling */
 .admin-detail-container {
-  padding: 20px;
+  padding: 2rem 4rem;
+  background-color: var(--primary-bg);
+  font-family: 'Roboto', sans-serif;
+  color: var(--text-color);
 }
 
-.full-width {
-  width: 100%;
-  margin-bottom: 0.5rem;
+/* Heading styling */
+h2 {
+  margin: 1.5rem 0 1rem;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--text-color);
 }
 
+/* Styling for the task creation form at the top */
+.add-task-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.add-task-form mat-form-field {
+  flex-grow: 1;
+  margin-top: 0; /* Override default margin */
+}
+
+/* General button styling to match the user view */
+button, .mat-raised-button, .mat-stroked-button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button:hover, .mat-raised-button:hover, .mat-stroked-button:hover {
+  background-color: var(--hover-bg);
+  color: var(--text-color);
+}
+
+/* Specific styling for warning/delete buttons */
+button[color="warn"], .mat-stroked-button[color="warn"] {
+  border-color: var(--warn-color);
+  color: var(--warn-color);
+  background-color: transparent;
+}
+
+button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
+  background-color: var(--warn-color);
+  color: white;
+}
+
+/* Icon button styling */
+.mat-icon-button {
+  background-color: transparent;
+  border: none;
+}
+.mat-icon-button[color="primary"] {
+  color: var(--accent-color);
+}
+.mat-icon-button[color="warn"] {
+  color: var(--warn-color);
+}
+
+/* Card styling to match .task-item */
 .task-card {
+  background: var(--card-bg);
+  border: 1px solid #444;
+  border-radius: 10px;
+  padding: 16px;
   margin-bottom: 20px;
-  margin-top: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 
+/* Edit form within the card title */
+.edit-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.edit-form mat-form-field {
+  flex-grow: 1;
+  margin-top: 0;
+}
+
+.task-card mat-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Task actions (Show/Delete buttons) */
 .task-actions {
   display: flex;
   gap: 10px;
-  margin-bottom: 15px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(101, 48, 36, 0.2);
 }
 
+/* Subtasks section styling */
 .subtasks-section {
-  margin-top: 10px;
+  margin-top: 15px;
+  padding: 15px;
+  background-color: rgba(0,0,0,0.02);
+  border-radius: 8px;
 }
 
-mat-list-item {
+.subtasks-section .add-subtask-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtasks-section .add-subtask-form mat-form-field {
+  flex-grow: 1;
+}
+
+.subtasks-section mat-list-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(101, 48, 36, 0.1);
+}
+
+/* Form field customization */
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: var(--accent-color);
+}
+
+.mat-input-element {
+  color: var(--text-color);
+}
+
+.mat-form-field-label {
+  color: var(--accent-color);
+}
+
+/* No tasks message */
+.no-tasks-message {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  color: var(--text-color);
 }

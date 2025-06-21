@@ -1,29 +1,29 @@
 <div class="admin-detail-container">
   <h2>Manage Tasks for User ID: {{ userId }}</h2>
 
-  <!-- Task Creation -->
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>New Task Title</mat-label>
-    <input matInput [(ngModel)]="newTaskTitle" />
-  </mat-form-field>
-  <button mat-raised-button color="primary" (click)="createTask()">Add Task</button>
+  <div class="add-task-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>New Task Title</mat-label>
+      <input matInput [(ngModel)]="newTaskTitle" (keyup.enter)="createTask()" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="createTask()">Add Task</button>
+  </div>
 
   <div *ngIf="tasks.length > 0; else noTasks" class="task-list">
     <mat-card class="task-card" *ngFor="let task of tasks">
       <mat-card-header>
-
-        <!-- Task Edit -->
         <mat-card-title>
-          <div *ngIf="editingTaskId !== task.id; else editForm">
-            {{ task.title }}
+          <div *ngIf="editingTaskId !== task.id; else editForm" class="task-title-view">
+            <span>{{ task.title }}</span>
             <button mat-icon-button (click)="startEdit(task)" matTooltip="Edit task">
               <mat-icon>edit</mat-icon>
             </button>
           </div>
           <ng-template #editForm>
             <div class="edit-form">
-              <mat-form-field appearance="outline">
-                <input matInput [(ngModel)]="tempTaskTitle" required>
+              <mat-form-field appearance="outline" class="compact-form-field">
+                <mat-label>Edit Title</mat-label>
+                <input matInput [(ngModel)]="tempTaskTitle" required (keyup.enter)="saveEdit(task)">
               </mat-form-field>
               <button mat-icon-button color="primary" (click)="saveEdit(task)" [disabled]="!tempTaskTitle.trim()">
                 <mat-icon>save</mat-icon>
@@ -34,33 +34,23 @@
             </div>
           </ng-template>
         </mat-card-title>
-
         <mat-card-subtitle>Task ID: {{ task.id }}</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
-        <div class="task-actions">
-          <button mat-stroked-button (click)="toggleSubtasks(task)">
-            {{ task.showDetails ? 'Hide' : 'Show' }} Subtasks
-          </button>
-          <button mat-stroked-button color="warn" (click)="deleteTask(task.id)">
-            Delete Task
-          </button>
-        </div>
-
-        <!-- Subtasks Section -->
         <div *ngIf="task.showDetails" class="subtasks-section">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>New Subtask Description</mat-label>
-            <input matInput [(ngModel)]="newSubtaskTitles[task.id]" />
-          </mat-form-field>
-          <button mat-raised-button color="accent" (click)="createSubtask(task.id)">
-            Add Subtask
-          </button>
+          <div class="add-subtask-form">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>New Subtask Title</mat-label>
+              <input matInput [(ngModel)]="newSubtaskTitles[task.id]" (keyup.enter)="createSubtask(task.id)" />
+            </mat-form-field>
+            <button mat-raised-button (click)="createSubtask(task.id)">Add Subtask</button>
+          </div>
 
           <mat-list *ngIf="task.subtasks?.length">
+            <h3 mat-subheader>Subtasks</h3>
             <mat-list-item *ngFor="let subtask of task.subtasks">
-              {{ subtask.title }}
+              <span mat-line>{{ subtask.title }}</span>
               <button
                 mat-icon-button
                 color="warn"
@@ -73,11 +63,21 @@
           </mat-list>
         </div>
       </mat-card-content>
+
+      <mat-card-actions class="task-actions">
+        <button mat-stroked-button (click)="toggleSubtasks(task)">
+          <mat-icon>{{ task.showDetails ? 'visibility_off' : 'visibility' }}</mat-icon>
+          {{ task.showDetails ? 'Hide' : 'Show' }} Subtasks
+        </button>
+        <button mat-stroked-button color="warn" (click)="deleteTask(task.id)">
+          <mat-icon>delete_outline</mat-icon>
+          Delete Task
+        </button>
+      </mat-card-actions>
     </mat-card>
   </div>
 
-  <!-- No Tasks Template -->
   <ng-template #noTasks>
-    <p>No tasks found for this user.</p>
+    <p class="no-tasks-message">No tasks found for this user.</p>
   </ng-template>
 </div>
