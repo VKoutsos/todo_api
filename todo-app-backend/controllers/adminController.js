@@ -110,6 +110,14 @@ exports.createSubtaskByAdmin=async(req,res)=>{
 
         logAction(userId, `Admin has created a new subtask under Task ID: ${taskId}`);
         notify(userEmail, "Subtask Created", `Admin has created a new Subtask: "${description}" under Task ID: ${taskId}.`);
+
+        sendSocketNotification(req,userId,"subtask_created",{
+            id: subtaskId,
+            task_id: parseInt(taskId),
+            title:description,
+            status:'pending'
+        });
+
         res.status(201).json({message: "Subtask created successfully by admin", subtaskId});
     }catch(err){
         res.status(500).json({error:err.message});
@@ -224,6 +232,11 @@ exports.deleteSubtaskByAdmin = async (req, res) => {
 
         logAction(user_id, `Admin deleted Subtask ID ${subtaskId} under Task ID ${taskId}`);
         notify(userEmail, "Subtask deleted", `Admin has deleted your (ID:${user_id}) subtask with ID: ${subtaskId}.`);
+
+        sendSocketNotification(req,user_id,"subtask_deleted", {
+            subtaskId: parseInt(subtaskId),
+            taskId: parseInt(taskId)
+        });
 
         res.status(200).json({ message: "Subtask deleted successfully" });
     } catch (err) {
