@@ -3,7 +3,7 @@
   --card-bg: #f5e2cf;         /* Lighter beige or soft tan */
   --text-color: #653024;      /* Deep brown */
   --accent-color: #a67b5b;    /* Soft brown/gold */
-  --hover-bg: #dec2a5;        /* Hover effect on beige */
+  --hover-bg: white;        /* Hover effect on beige */
 }
 
 body{
@@ -65,24 +65,24 @@ button {
   padding: 6px 12px;
   border: none;
   background-color: var(--accent-color);
-  color: white;
+  color: var(--text-color);
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 button:hover {
-  background-color: #8a5f3f;
+  background-color: white;
 }
 
 /* Subtask delete button */
 .subtask-item button {
   background-color: var(--accent-color);
-  color: white;
+  color: var(--text-color);
 }
 
 .subtask-item button:hover {
-  background-color: #8a5f3f;
+  background-color: white;
 }
 
 /* Toggle Button */
@@ -90,10 +90,11 @@ button:hover {
   padding: 4px 10px;
   font-size: 0.8rem;
   background-color: var(--accent-color);
+  color: var(--text-color);
 }
 
 .toggle-btn:hover {
-  background-color: #8a5f3f;
+  background-color: white;
 }
 
 
