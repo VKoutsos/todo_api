@@ -78,7 +78,7 @@ exports.createTaskByAdmin = async (req, res) => {
         if (!userEmail) return res.status(404).json({ error: "Task not found" });
 
         logAction(userId, `Admin has created a new task: ${title}`);
-        notify(userEmail, "New Task Created", `Admin has created a new task: "${title}" for user: ${userId}.`);
+        /*notify(userEmail, "New Task Created", `Admin has created a new task: "${title}" for user: ${userId}.`);*/
 
         sendSocketNotification(req,userId,"task_created",{
             id: taskId,
@@ -109,7 +109,7 @@ exports.createSubtaskByAdmin=async(req,res)=>{
         const subtaskId = result.insertId;
 
         logAction(userId, `Admin has created a new subtask under Task ID: ${taskId}`);
-        notify(userEmail, "Subtask Created", `Admin has created a new Subtask: "${description}" under Task ID: ${taskId}.`);
+       /* notify(userEmail, "Subtask Created", `Admin has created a new Subtask: "${description}" under Task ID: ${taskId}.`);*/
 
         sendSocketNotification(req,userId,"subtask_created",{
             id: subtaskId,
@@ -144,7 +144,7 @@ exports.updateTaskByAdmin = async (req, res) => {
         if (result.affectedRows === 0) return res.status(404).json({ error: "Task not found" });
 
         logAction(user_id, `Admin updated Task ID ${taskId}`);
-        notify(userEmail, "Task Updated", `Admin has updated your task with ID "${taskId}": ${title}.`);
+       /* notify(userEmail, "Task Updated", `Admin has updated your task with ID "${taskId}": ${title}.`);*/
 
         sendSocketNotification(req,user_id,"task_updated",{
             id:parseInt(taskId),
@@ -182,7 +182,7 @@ exports.updateUserSubTask = async (req, res) => {
         if (result.affectedRows === 0) return res.status(404).json({ error: "Subtask not found" });
 
         logAction(user_id, `Admin updated Subtask ID ${subtaskId} under Task ID ${taskId}`);
-        notify(userEmail, "Subtask updated", `Admin has updated Subtask ID ${subtaskId}: "${title}".`);
+        /*notify(userEmail, "Subtask updated", `Admin has updated Subtask ID ${subtaskId}: "${title}".`);*/
 
         res.status(200).json({ message: "Subtask updated successfully" });
     } catch (err) {
@@ -206,7 +206,7 @@ exports.deleteUserTask = async (req, res) => {
         if (result.affectedRows === 0) return res.status(404).json({ message: "Task not found or already deleted" });
 
         logAction(userId, `Admin deleted Task ID ${taskId}`);
-        notify(userEmail, "Task Deleted", `Admin has deleted your (ID:${userId}) task with ID: ${taskId}.`);
+     /*   notify(userEmail, "Task Deleted", `Admin has deleted your (ID:${userId}) task with ID: ${taskId}.`);*/
 
         sendSocketNotification(req,realOwnerId,"task_deleted",{taskId: parseInt(taskId)});
 
@@ -231,7 +231,7 @@ exports.deleteSubtaskByAdmin = async (req, res) => {
         if (result.affectedRows === 0) return res.status(404).json({ error: "Subtask not found" });
 
         logAction(user_id, `Admin deleted Subtask ID ${subtaskId} under Task ID ${taskId}`);
-        notify(userEmail, "Subtask deleted", `Admin has deleted your (ID:${user_id}) subtask with ID: ${subtaskId}.`);
+     /*   notify(userEmail, "Subtask deleted", `Admin has deleted your (ID:${user_id}) subtask with ID: ${subtaskId}.`);*/
 
         sendSocketNotification(req,user_id,"subtask_deleted", {
             subtaskId: parseInt(subtaskId),
