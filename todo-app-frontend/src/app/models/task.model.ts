@@ -8,4 +8,6 @@ export interface Task{
   created_at?:string;
   subtasks?:Subtask[];
   showDetails?:boolean;
+  editing?:boolean;
+  tempTitle?:string;
 }

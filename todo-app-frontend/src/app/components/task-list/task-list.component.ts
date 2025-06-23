@@ -198,6 +198,39 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  startEdit(task:Task):void{
+    task.editing=true;
+    task.tempTitle=task.title;
+  }
+
+  cancelEdit(task:Task):void{
+    task.editing=false;
+    task.tempTitle='';
+  }
+
+  saveEdit(task: Task):void{
+    if (!task.tempTitle?.trim()||!this.token){
+      this.toastService.showError('Task title cannot be empty.');
+      return;
+    }
+    const updatedTask={
+      ...task,title:task.tempTitle.trim(),
+      description:task.description||''
+    };
+    this.taskService.updateTask(updatedTask.id,updatedTask,this.token).subscribe({
+      next:()=>{
+        this.toastService.showSuccess('Task updated successfully.');
+        task.title=updatedTask.title;
+        task.editing=false;
+        task.tempTitle='';
+      },
+      error:(err) => {
+        this.toastService.showError('Error updating task');
+        console.error('Error updating task:', err)
+      }
+    })
+  }
+
   addSubtask(taskId: number): void {
     const description = this.newSubtaskTitle[taskId];
     if (!description || !this.token) return;
