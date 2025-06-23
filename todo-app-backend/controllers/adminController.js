@@ -184,6 +184,13 @@ exports.updateUserSubTask = async (req, res) => {
         logAction(user_id, `Admin updated Subtask ID ${subtaskId} under Task ID ${taskId}`);
         /*notify(userEmail, "Subtask updated", `Admin has updated Subtask ID ${subtaskId}: "${title}".`);*/
 
+        sendSocketNotification(req,user_id,"subtask_updated",{
+            id:parseInt(subtaskId),
+            task_id: parseInt(taskId),
+            title: title,
+            status: 'pending'
+        });
+
         res.status(200).json({ message: "Subtask updated successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });

@@ -96,6 +96,24 @@ export class TaskListComponent implements OnInit {
             }
           });
 
+          //subtask updated
+          this.socketService.listen('subtask_updated').subscribe((updatedSubtask: Subtask)=>{
+            const task=this.tasks.find(t=>t.id===updatedSubtask.task_id);
+            if (task&&task.subtasks){
+              const subtaskIndex=task.subtasks.findIndex(t=>t.id===updatedSubtask.id);
+              if(subtaskIndex!==-1){
+                task.subtasks[subtaskIndex]={
+                  ...task.subtasks[subtaskIndex],
+                  ...updatedSubtask,
+                  editing:false,
+                  tempTitle:''
+                };
+                task.showDetails=true;
+
+                this.toastService.showSuccess('A subtask was updated by the admin!');
+              }
+            }
+          });
         },
         error: (err) => console.error('Error fetching tasks:', err)
       });

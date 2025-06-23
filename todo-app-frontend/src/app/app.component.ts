@@ -47,6 +47,10 @@ export class AppComponent implements OnInit, OnDestroy {
     this.socketService.listen('subtask_deleted').subscribe((data) => {
       console.log('Subtask Deleted:', data);
     });
+
+    this.socketService.listen('subtask_updated').subscribe((data) => {
+      console.log('Subtask Updated:', data);
+    });
   }
 
   ngOnDestroy(): void {
