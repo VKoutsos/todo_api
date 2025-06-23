@@ -15,7 +15,6 @@ import { LoginComponent } from './components/login/login.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
-import { TaskAddComponent } from './components/task-add/task-add.component';
 import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 import { AdminDetailComponent } from './components/admin-detail/admin-detail.component';
@@ -41,7 +40,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RegisterComponent,
     LoginComponent,
     NavbarComponent,
-    TaskAddComponent,
     TaskEditComponent,
     AdminUsersComponent,
     AdminDetailComponent,
