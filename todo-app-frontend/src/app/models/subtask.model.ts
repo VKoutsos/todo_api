@@ -5,4 +5,6 @@ export interface Subtask{
   description:string;
   status:'pending'|'completed';
   created_at?:string;
+  editing?:boolean;
+  tempTitle?:string;
 }

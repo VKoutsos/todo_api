@@ -303,4 +303,41 @@ export class TaskListComponent implements OnInit {
       }
     }
   }
+
+  // --- Subtask In-place editing methods ---
+  startEditSubtask(subtask: Subtask): void {
+    subtask.editing = true;
+    subtask.tempTitle = subtask.title;
+  }
+
+  cancelEditSubtask(subtask: Subtask): void {
+    subtask.editing = false;
+    subtask.tempTitle = '';
+  }
+
+  saveEditSubtask(taskId: number, subtask: Subtask): void {
+    if (!subtask.tempTitle?.trim() || !this.token) {
+      this.toastService.showError('Subtask title cannot be empty.');
+      return;
+    }
+
+    const updatedSubtaskData: Partial<Subtask> = {
+      id: subtask.id, // Ensure ID is part of the object if needed by service
+      title: subtask.tempTitle.trim(),
+      // status: subtask.status // Include other relevant fields if your API expects them
+    };
+
+    this.subtaskService.updateSubtask(subtask.id, updatedSubtaskData, this.token).subscribe({
+      next: () => {
+        this.toastService.showSuccess('Subtask updated successfully.');
+        subtask.title = updatedSubtaskData.title!; // Update the actual subtask title
+        subtask.editing = false; // Exit editing mode
+        subtask.tempTitle = ''; // Clear tempTitle
+      },
+      error: (err) => {
+        this.toastService.showError('Failed to update subtask.');
+        console.error('Error updating subtask:', err);
+      }
+    });
+  }
 }

@@ -48,7 +48,7 @@ exports.createSubtask=async(req,res)=>{
 //update a subtask
 exports.updateSubtask=async(req,res)=>{
     const{subtaskId}=req.params;
-    const{description}=req.body;
+    const{title}=req.body;
 
     try{
         const check=await queryDatabase(
@@ -61,7 +61,7 @@ exports.updateSubtask=async(req,res)=>{
         }
 
         const result=await queryDatabase("UPDATE subtasks SET title=? WHERE id=?",
-            [description,subtaskId]);
+            [title,subtaskId]);
 
         if(result.affectedRows===0){
             return res.status(404).json({error:"Subtask not found"});

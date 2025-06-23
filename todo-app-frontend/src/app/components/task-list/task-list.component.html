@@ -21,13 +21,13 @@
               [checked]="task.status === 'completed'"
               (change)="onCompleteTask(task.id, $event)">
             </mat-checkbox>
-            <div *ngIf="!task.editing; else editForm" class="task-title-view">
+            <div *ngIf="!task.editing; else editTaskForm" class="task-title-view">
               <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
             </div>
-            <ng-template #editForm>
+            <ng-template #editTaskForm>
               <div class="edit-form">
                 <mat-form-field appearance="outline" class="compact-form-field">
-                  <mat-label>Edit Title</mat-label>
+                  <mat-label>Edit Task Title</mat-label>
                   <input matInput [(ngModel)]="task.tempTitle" required (keyup.enter)="saveEdit(task)">
                 </mat-form-field>
                 <button mat-icon-button color="primary" (click)="saveEdit(task)" [disabled]="!task.tempTitle?.trim()">
@@ -51,8 +51,6 @@
           </button>
         </div>
 
-        <p *ngIf="task.description">{{ task.description }}</p>
-
         <div [class.subtasks-container]="true" [class.show]="task.showDetails">
           <h4 *ngIf="task.subtasks?.length">Subtasks</h4>
           <div *ngFor="let subtask of task.subtasks" class="subtask-item">
@@ -60,7 +58,42 @@
               [checked]="subtask.status === 'completed'"
               (change)="completeSubtask(task.id, subtask.id, $event)">
             </mat-checkbox>
-            <span [class.completed]="subtask.status === 'completed'">{{ subtask.title }}</span>
+
+            <!-- Subtask Title View vs Edit Form -->
+            <div *ngIf="!subtask.editing; else editSubtaskForm" class="subtask-title-view">
+              <span
+                [class.completed]="subtask.status === 'completed'"
+                (click)="subtask.status !== 'completed' && startEditSubtask(subtask)"  class="clickable-subtask-title"
+                [class.no-edit]="subtask.status === 'completed'">
+                {{ subtask.title }}
+              </span>
+            </div>
+            <ng-template #editSubtaskForm>
+              <div class="edit-subtask-form-controls">
+                <mat-form-field appearance="outline" class="compact-form-field subtask-edit-input">
+                  <mat-label>Edit Subtask Title</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="subtask.tempTitle"
+                    required
+                    (keyup.enter)="saveEditSubtask(task.id, subtask)"
+                    (keyup.escape)="cancelEditSubtask(subtask)"
+                  />
+                </mat-form-field>
+                <button
+                  mat-icon-button
+                  color="primary"
+                  (click)="saveEditSubtask(task.id, subtask)"
+                  [disabled]="!subtask.tempTitle?.trim()"
+                >
+                  <mat-icon>save</mat-icon>
+                </button>
+                <button mat-icon-button (click)="cancelEditSubtask(subtask)">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </div>
+            </ng-template>
+
             <button mat-button color="warn" (click)="deleteSubtask(task.id, subtask.id)">
               <mat-icon>delete</mat-icon>
             </button>
