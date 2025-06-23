@@ -18,6 +18,7 @@ export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
   subtasks: Subtask[] = [];
   token: string | null = null;
+  newTaskTitle: string='';
   newSubtaskTitle: { [taskId: number]: string } = {}; // subtask input tracking
 
   constructor(
@@ -30,6 +31,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
+    this.loadTasks();
 
     if (this.token) {
       this.taskService.getTasks(this.token).subscribe({
@@ -102,6 +104,27 @@ export class TaskListComponent implements OnInit {
     }
   }
 
+  //load tasks
+  loadTasks():void{
+    if(this.token){
+      this.taskService.getTasks(this.token).subscribe({
+        next:(data)=>{
+          this.tasks=data.map(task=>({
+            ...task, showDetails:false
+          }));
+          this.tasks.forEach(task=>{
+            if(task.id){
+              this.loadSubtasks(task);
+            }
+          });
+        },
+        error:(err)=>{console.error('Error fetching tasks:', err)}
+      });
+    }else{
+      console.error('No token found. User may not be logged in.');
+    }
+  }
+
   // Toggle visibility of subtasks
   toggleDetails(task: Task): void {
     task.showDetails = !task.showDetails;
@@ -116,6 +139,22 @@ export class TaskListComponent implements OnInit {
         error: (err) => console.error('Error fetching subtasks:', err)
       });
     }
+  }
+
+  createTask():void{
+    if(!this.newTaskTitle.trim()||!this.token) return;
+
+    this.taskService.createTask({title:this.newTaskTitle.trim()},this.token).subscribe({
+      next:()=>{
+        this.toastService.showSuccess('Task created successfully.');
+        this.newTaskTitle='';
+        this.loadTasks();
+      },
+      error:(err)=>{
+        this.toastService.showError('Error creating task');
+        console.error('Error creating task:', err);
+      }
+    });
   }
 
   deleteTask(taskId: number): void {

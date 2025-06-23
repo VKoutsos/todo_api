@@ -1,9 +1,13 @@
 <h2 class="heading">Task List</h2>
 
-<div class="add-task-btn">
-  <button mat-raised-button color="primary" [routerLink]="['/tasks/add']">
+<div class="add-task-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>New Task Title</mat-label>
+    <input matInput [(ngModel)]="newTaskTitle" (keyup.enter)="createTask()" placeholder="Enter task title"/>
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="createTask()" [disabled]="!newTaskTitle.trim()">
     <mat-icon>add</mat-icon>
-    New Task
+    Add Task
   </button>
 </div>
 
