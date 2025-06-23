@@ -40,7 +40,7 @@ exports.getAllTasks=async(req,res)=> {
 exports.getUserTasks =async(req, res) => {
     const { userId } = req.params;
     try {
-        const tasks = await queryDatabase("SELECT * FROM tasks WHERE user_id = ?", [userId]);
+        const tasks = await queryDatabase("SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC", [userId]);
         if (tasks.length === 0) return res.status(404).json({message: "No tasks found for this user"});
 
         res.status(200).json(tasks);

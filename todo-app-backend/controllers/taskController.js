@@ -7,7 +7,7 @@ const {queryDatabase}=require("../utils/dbHelpers");
 exports.getTasks=async(req,res)=> {
     try {
         const userId = req.user.id;
-        const tasks = await queryDatabase("SELECT * FROM tasks WHERE user_id=?", [userId]);
+        const tasks = await queryDatabase("SELECT * FROM tasks WHERE user_id=? ORDER BY created_at DESC", [userId]);
 
         if (tasks.length === 0) return res.status(404).json({message: "No tasks found"});
 

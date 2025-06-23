@@ -62,7 +62,7 @@ export class TaskListComponent implements OnInit {
 
           //task created
           this.socketService.listen('task_created').subscribe((newTask: Task)=>{
-            this.tasks.push({
+            this.tasks.unshift({
               ...newTask,
               showDetails:false
             });
