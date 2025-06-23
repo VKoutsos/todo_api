@@ -79,6 +79,8 @@ export class TaskListComponent implements OnInit {
             if(task){
               if(!task.subtasks) task.subtasks=[];
               task.subtasks.push(newSubtask);
+              task.showDetails=true;
+
               this.toastService.showSuccess('A subtask was created by the admin!');
             }
           });
