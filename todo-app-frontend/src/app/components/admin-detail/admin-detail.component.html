@@ -49,16 +49,64 @@
 
           <mat-list *ngIf="task.subtasks?.length">
             <h3 mat-subheader>Subtasks</h3>
-            <mat-list-item *ngFor="let subtask of task.subtasks">
-              <span mat-line>{{ subtask.title }}</span>
-              <button
-                mat-icon-button
-                color="warn"
-                (click)="deleteSubtask(task.id, subtask.id)"
-                matTooltip="Delete subtask"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
+            <mat-list-item *ngFor="let subtask of task.subtasks" class="subtask-item">
+              <div *ngIf="editingSubtaskId !== subtask.id; else editSubtaskForm" class="subtask-content-view">
+                <span
+                  class="subtask-title-display"
+                  (click)="startEditSubtask(subtask)"
+                  matTooltip="Click to edit"
+                >
+                  {{ subtask.title }}
+                </span>
+                <button
+                  mat-icon-button
+                  color="warn"
+                  (click)="deleteSubtask(task.id, subtask.id)"
+                  matTooltip="Delete subtask"
+                  class="small-icon-button"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+              <ng-template #editSubtaskForm>
+                <div class="edit-subtask-form-controls">
+                  <input
+                    matInput
+                    [(ngModel)]="tempSubtaskTitle"
+                    class="subtask-edit-input"
+                    (keyup.enter)="saveEditSubtask(task.id, subtask)"
+                    (keyup.escape)="cancelEditSubtask()"
+                  />
+                  <button
+                    mat-icon-button
+                    color="primary"
+                    (click)="saveEditSubtask(task.id, subtask)"
+                    [disabled]="!tempSubtaskTitle.trim()"
+                    matTooltip="Save"
+                    class="small-icon-button"
+                  >
+                    <mat-icon>save</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    (click)="cancelEditSubtask()"
+                    matTooltip="Cancel"
+                    class="small-icon-button"
+                  >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    color="warn"
+                    (click)="deleteSubtask(task.id, subtask.id)"
+                    matTooltip="Delete subtask"
+                    class="small-icon-button"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </ng-template>
             </mat-list-item>
           </mat-list>
         </div>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdminService } from '../../services/admin.service';
 import { Task } from '../../models/task.model';
+import { Subtask } from '../../models/subtask.model';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
@@ -17,6 +18,8 @@ export class AdminDetailComponent implements OnInit {
   newSubtaskTitles: { [taskId: number]: string } = {};
   editingTaskId:number|null = null;
   tempTaskTitle='';
+  editingSubtaskId:number|null=null;
+  tempSubtaskTitle:string='';
 
   constructor(
     private route: ActivatedRoute,
@@ -162,6 +165,7 @@ export class AdminDetailComponent implements OnInit {
     }
   }
 
+  //task inline editing
   startEdit(task:Task):void{
     this.editingTaskId=task.id;
     this.tempTaskTitle=task.title;
@@ -182,6 +186,39 @@ export class AdminDetailComponent implements OnInit {
       error:(err)=>{
         this.toastService.showError('Failed to update task.');
         console.error('Error updating task:', err)
+      }
+    });
+  }
+
+  //subtask inline editing
+  startEditSubtask(subtask: Subtask):void{
+    this.editingSubtaskId=subtask.id;
+    this.tempSubtaskTitle=subtask.title;
+  }
+
+  cancelEditSubtask():void{
+    this.editingSubtaskId=null;
+    this.tempSubtaskTitle='';
+  }
+
+  saveEditSubtask(taskId:number,subtask: Subtask):void{
+    if(!this.tempSubtaskTitle.trim()){
+      this.toastService.showError('Subtask title cannot be empty.');
+      return;
+    }
+
+    const updatedSubtask={...subtask,title:this.tempSubtaskTitle};
+    this.adminService.updateUserSubtask(taskId,updatedSubtask.id,updatedSubtask).subscribe({
+      next:()=>{
+        this.toastService.showSuccess('Subtask updated successfully.');
+        this.cancelEditSubtask();
+
+        const task=this.tasks.find(t=>t.id===taskId);
+        if (task) this.loadSubtasks(task);
+      },
+      error:(err)=>{
+        this.toastService.showError('Failed to update subtask.');
+        console.error('Error updating subtask:', err);
       }
     });
   }

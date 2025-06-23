@@ -78,6 +78,4 @@ export class AdminService {
       headers:this.getAuthHeaders()
     });
   }
-
-
 }

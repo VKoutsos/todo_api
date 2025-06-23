@@ -117,7 +117,8 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
 .subtasks-section {
   margin-top: 15px;
   padding: 15px;
-  background-color: rgba(0,0,0,0.02);
+  /* Corrected background color to card-bg as per previous discussions */
+  background-color: var(--card-bg);
   border-radius: 8px;
 }
 
@@ -125,21 +126,101 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-bottom: 10px; /* Added spacing */
 }
 
 .subtasks-section .add-subtask-form mat-form-field {
   flex-grow: 1;
+  margin-top: 0; /* Align with button */
 }
 
-.subtasks-section mat-list-item {
+/* MODIFIED: Subtask list item for inline editing */
+.subtask-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
+  justify-content: space-between;
+  padding: 8px 0;
   border-bottom: 1px solid rgba(101, 48, 36, 0.1);
+  gap: 8px; /* Spacing between elements */
 }
 
-/* Form field customization */
+.subtask-item:last-child {
+  border-bottom: none; /* No border for the last item */
+}
+
+.subtask-content-view {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 8px;
+}
+
+.subtask-title-display {
+  flex-grow: 1;
+  cursor: pointer;
+  padding: 2px 4px; /* Add slight padding for click area */
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.subtask-title-display:hover {
+  background-color: rgba(0,0,0,0.05); /* Light hover effect */
+}
+
+/* Removed: No longer needed as completion status is not displayed here */
+/* .subtask-title-display.completed {
+  text-decoration: line-through;
+  color: #888;
+} */
+
+/* Subtask inline edit form controls */
+.edit-subtask-form-controls {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  gap: 4px; /* Reduced gap for a more compact look between input and buttons */
+}
+
+/* Styles for the subtask edit input (similar to task-list component) */
+.subtask-edit-input {
+  flex-grow: 1;
+  border: none;
+  border-bottom: 1px solid var(--accent-color);
+  outline: none;
+  background-color: var(--card-bg); /* Interior color of the input box */
+  box-sizing: border-box;
+  color: var(--text-color);
+  font-size: 1em;
+  line-height: 1.5;
+  padding: 4px 12px; /* Padding inside the input box */
+}
+
+.subtask-edit-input:focus {
+  border-bottom: 2px solid var(--accent-color);
+}
+
+/* Styles for smaller icon buttons (Save, Cancel, Delete) */
+.small-icon-button {
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 !important;
+  min-width: unset !important;
+}
+
+.small-icon-button mat-icon {
+  font-size: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+}
+
+/* Removed: No longer needed as checkbox is removed from HTML */
+/* .subtask-checkbox {
+  margin-right: 8px;
+} */
+
+
+/* Form field customization (already present, ensuring consistency) */
 .mat-form-field-appearance-outline .mat-form-field-outline {
   color: var(--accent-color);
 }
@@ -160,4 +241,33 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
   background-color: var(--card-bg);
   border-radius: 8px;
   color: var(--text-color);
+}
+
+/* Global Material Overrides (copy from task-list.component.css) */
+/* Adjust padding within the input element inside mat-form-field */
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0 !important;
+}
+
+::ng-deep .mat-form-field-infix {
+  padding: 0.8em 12px !important;
+  border-top: none !important;
+}
+
+/* Adjust the floating label's position to align with new padding */
+::ng-deep .mat-form-field-label-wrapper .mat-form-field-label {
+  left: 12px !important;
+  top: 0.8em !important;
+}
+
+/* Adjust outline position to match new padding (if you still use outline appearance) */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-end,
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-gap {
+  border-color: var(--accent-color) !important;
+}
+
+/* Adjust vertical alignment of content within the form field flex container */
+::ng-deep .mat-form-field-flex {
+  align-items: center !important;
 }
