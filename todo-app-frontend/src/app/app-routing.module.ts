@@ -6,7 +6,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { authGuard} from './guards/auth.guard';
 import { loginGuard } from './guards/login.guard';
 import { adminGuard } from './guards/admin.guard';
-import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 import { AdminDetailComponent} from './components/admin-detail/admin-detail.component';
 import { LogsComponent } from './components/logs/logs.component';
@@ -17,8 +16,7 @@ const routes: Routes = [
   {path:'register',component:RegisterComponent, canActivate: [loginGuard]},
 
   //Protected task routes
-  {path:'tasks',component: TaskListComponent,canActivate: [authGuard]},//protect the tasks
-  {path:'tasks/edit/:id',component: TaskEditComponent, canActivate: [authGuard]},
+  {path:'tasks',component: TaskListComponent,canActivate: [authGuard]},
 
   //protected log route
   {path:'users/logs',component:LogsComponent,canActivate: [authGuard]},
