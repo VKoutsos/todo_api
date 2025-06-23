@@ -70,7 +70,7 @@
         <div class="subtask-form-row">
           <mat-form-field appearance="outline" class="subtask-input">
             <mat-label>New subtask title</mat-label>
-            <input matInput class="subtask-input-text" [(ngModel)]="newSubtaskTitle[task.id]"/>
+            <input matInput class="subtask-input-text" [(ngModel)]="newSubtaskTitle[task.id]" (keyup.enter)="addSubtask(task.id)"/>
           </mat-form-field>
           <button mat-icon-button color="primary" (click)="addSubtask(task.id)" aria-label="Add Subtask">
             <mat-icon>add</mat-icon>
