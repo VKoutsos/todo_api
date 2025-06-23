@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { Subtask} from '../../models/subtask.model';
 import { SubtaskService } from '../../services/subtask.service';
 import { AuthService } from '../../services/auth.service';
 import { MatCheckboxChange} from '@angular/material/checkbox';
@@ -15,6 +16,7 @@ import { SocketService } from '../../services/socket.service';
 })
 export class TaskListComponent implements OnInit {
   tasks: Task[] = [];
+  subtasks: Subtask[] = [];
   token: string | null = null;
   newSubtaskTitle: { [taskId: number]: string } = {}; // subtask input tracking
 
@@ -69,6 +71,25 @@ export class TaskListComponent implements OnInit {
           this.socketService.listen('task_deleted').subscribe((data: {taskId:number})=>{
             this.tasks=this.tasks.filter(task=>task.id!==data.taskId);
             this.toastService.showSuccess('A task was deleted by the admin!');
+          });
+
+          //subtask created
+          this.socketService.listen('subtask_created').subscribe((newSubtask: Subtask)=>{
+            const task=this.tasks.find(t=>t.id===newSubtask.task_id);
+            if(task){
+              if(!task.subtasks) task.subtasks=[];
+              task.subtasks.push(newSubtask);
+              this.toastService.showSuccess('A subtask was created by the admin!');
+            }
+          });
+
+          //subtask deleted
+          this.socketService.listen('subtask_deleted').subscribe((data:{subtaskId:number, taskId:number})=>{
+            const task=this.tasks.find(t=>t.id===data.taskId);
+            if(task&&task.subtasks){
+              task.subtasks=task.subtasks.filter(s=>s.id!==data.subtaskId);
+              this.toastService.showSuccess('A subtask was deleted by the admin!');
+            }
           });
 
         },
