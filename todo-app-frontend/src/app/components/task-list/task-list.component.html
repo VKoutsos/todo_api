@@ -10,7 +10,7 @@
   </button>
 </div>
 
-<div class="task-container" (click)="closeAllSubtaskEdits()">
+<div class="task-container" (click)="closeAllSubtaskEdits(); closeAllTaskEdits()">
   <div class="task-wrapper">
     <ng-container *ngIf="tasks.length; else noTasks">
       <mat-card class="task-item" *ngFor="let task of tasks">
@@ -24,7 +24,7 @@
               <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
             </div>
             <ng-template #editTaskForm>
-              <div class="edit-form">
+              <div class="edit-form" (click)="$event.stopPropagation()">
                 <mat-form-field appearance="outline" class="compact-form-field">
                   <mat-label>Edit Task Title</mat-label>
                   <input matInput [(ngModel)]="task.tempTitle" required (keyup.enter)="saveEdit(task)">
@@ -121,7 +121,7 @@
           <button
             mat-button
             color="accent"
-            (click)="startEdit(task)"
+            (click)="startEdit(task); $event.stopPropagation()"
             aria-label="Edit Task"
             [disabled]="task.editing || task.status === 'completed'"
           >

@@ -365,6 +365,7 @@ export class TaskListComponent implements OnInit {
     const clickedInside=this.elRef.nativeElement.contains(event.target);
     if(!clickedInside){
       this.closeAllSubtaskEdits();
+      this.closeAllTaskEdits();
     }
   }
 
@@ -375,6 +376,14 @@ export class TaskListComponent implements OnInit {
           this.cancelEditSubtask(subtask);
         }
       });
+    });
+  }
+
+  closeAllTaskEdits(){
+    this.tasks.forEach(task=>{
+      if(task.editing) {
+        this.cancelEdit(task);
+      }
     });
   }
 }
