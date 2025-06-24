@@ -32,6 +32,10 @@ body {
   padding: 2rem;
 }
 
+.task-edit-input{
+  padding: 0 1rem;
+}
+
 .task-placeholder{
   padding: 1rem;
 }
