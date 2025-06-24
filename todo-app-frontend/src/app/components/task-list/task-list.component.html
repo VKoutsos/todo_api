@@ -10,7 +10,7 @@
   </button>
 </div>
 
-<div class="task-container">
+<div class="task-container" (click)="closeAllSubtaskEdits()">
   <div class="task-wrapper">
     <ng-container *ngIf="tasks.length; else noTasks">
       <mat-card class="task-item" *ngFor="let task of tasks">
@@ -63,7 +63,7 @@
             <div *ngIf="!subtask.editing; else editSubtaskForm" class="subtask-title-view">
               <span
                 [class.completed]="subtask.status === 'completed'"
-                (click)="subtask.status !== 'completed' && startEditSubtask(subtask)"
+                (click)="subtask.status !== 'completed' && startEditSubtask(subtask); $event.stopPropagation()"
                 class="clickable-subtask-title"
                 [class.no-edit]="subtask.status === 'completed'"
               >
@@ -76,6 +76,7 @@
                   matInput
                   [(ngModel)]="subtask.tempTitle"
                   required
+                  (click)="$event.stopPropagation()"
                   (keyup.enter)="saveEditSubtask(task.id, subtask)"
                   (keyup.escape)="cancelEditSubtask(subtask)"
                   class="subtask-edit-input" placeholder="Edit Subtask Title"
@@ -83,14 +84,14 @@
                 <button
                   mat-icon-button
                   color="primary"
-                  (click)="saveEditSubtask(task.id, subtask)"
+                  (click)="saveEditSubtask(task.id, subtask); $event.stopPropagation()"
                   [disabled]="!subtask.tempTitle?.trim()"
                   class="small-icon-button" >
                   <mat-icon>save</mat-icon>
                 </button>
                 <button
                   mat-icon-button
-                  (click)="cancelEditSubtask(subtask)"
+                  (click)="cancelEditSubtask(subtask); $event.stopPropagation()"
                   class="small-icon-button" >
                   <mat-icon>cancel</mat-icon>
                 </button>

@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatCheckboxChange} from '@angular/material/checkbox';
 import { ToastService} from '../../services/toast.service';
 import { SocketService } from '../../services/socket.service';
+import {HostListener, ElementRef} from '@angular/core';
 
 @Component({
   selector: 'app-task-list',
@@ -27,6 +28,7 @@ export class TaskListComponent implements OnInit {
     private authService: AuthService,
     private toastService: ToastService,
     private socketService: SocketService,
+    private elRef: ElementRef,
   ) {}
 
   ngOnInit(): void {
@@ -340,22 +342,39 @@ export class TaskListComponent implements OnInit {
     }
 
     const updatedSubtaskData: Partial<Subtask> = {
-      id: subtask.id, // Ensure ID is part of the object if needed by service
+      id: subtask.id,
       title: subtask.tempTitle.trim(),
-      // status: subtask.status // Include other relevant fields if your API expects them
     };
 
     this.subtaskService.updateSubtask(subtask.id, updatedSubtaskData, this.token).subscribe({
       next: () => {
         this.toastService.showSuccess('Subtask updated successfully.');
-        subtask.title = updatedSubtaskData.title!; // Update the actual subtask title
-        subtask.editing = false; // Exit editing mode
-        subtask.tempTitle = ''; // Clear tempTitle
+        subtask.title = updatedSubtaskData.title!;
+        subtask.editing = false;
+        subtask.tempTitle = '';
       },
       error: (err) => {
         this.toastService.showError('Failed to update subtask.');
         console.error('Error updating subtask:', err);
       }
+    });
+  }
+
+  @HostListener('document:click',['$event'])
+  onClickOutside(event: MouseEvent): void {
+    const clickedInside=this.elRef.nativeElement.contains(event.target);
+    if(!clickedInside){
+      this.closeAllSubtaskEdits();
+    }
+  }
+
+  closeAllSubtaskEdits() {
+    this.tasks.forEach(task => {
+      task.subtasks?.forEach(subtask => {
+        if (subtask.editing) {
+          this.cancelEditSubtask(subtask);
+        }
+      });
     });
   }
 }
