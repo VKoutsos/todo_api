@@ -4,6 +4,10 @@
 }
 
 .clickable-row:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: white;
   transition: background-color 0.2s ease;
+}
+
+.admin-users{
+  padding: 1rem;
 }
