@@ -83,7 +83,6 @@
                 />
                 <button
                   mat-icon-button
-                  color="primary"
                   (click)="saveEditSubtask(task.id, subtask); $event.stopPropagation()"
                   [disabled]="!subtask.tempTitle?.trim()"
                   class="small-icon-button" >
@@ -98,7 +97,7 @@
               </div>
             </ng-template>
 
-            <button mat-icon-button color="warn" (click)="deleteSubtask(task.id, subtask.id)" class="small-icon-button">
+            <button mat-icon-button (click)="deleteSubtask(task.id, subtask.id)" class="small-icon-button">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

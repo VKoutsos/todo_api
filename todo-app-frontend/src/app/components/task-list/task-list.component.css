@@ -37,7 +37,7 @@ body {
 }
 
 .task-placeholder{
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .task-clicked-placeholder{
@@ -261,7 +261,7 @@ button.mat-stroked-button:hover {
   margin-left: 12px;
 }
 .subtask-placeholder{
-  padding:1rem;
+  padding:0.5rem;
 }
 
 /* Task actions (delete/edit) */

@@ -23,11 +23,54 @@ h2 {
   color: var(--text-color);
 }
 
+h3{
+  margin-top: 0;
+  margin-left:-1rem;
+  margin-bottom: 0.5rem;
+}
+
 .add-task-form {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 2rem;
+  padding: 2rem;
+}
+
+.task-placeholder{
+  padding:0.5rem;
+}
+
+.task-clicked-placeholder{
+  padding:0 1rem;
+}
+
+.task-list{
+  padding: 2rem 4rem;
+}
+
+.task-title-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+}
+
+.task-title {
+  font-weight: 500;
+  font-size: 1.1rem;
+  flex-grow: 1;
+}
+
+.subtask-placeholder{
+  padding:0.5rem;
+}
+
+.subtask-clicked-placeholder{
+  padding:0 1rem;
+}
+
+.task-edit-input{
+  padding:0 1rem;
 }
 
 .add-task-form mat-form-field {
@@ -79,6 +122,11 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
   padding: 16px;
   margin-bottom: 20px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease-in-out;
+}
+
+.task-card:hover {
+  transform: translateY(-3px);
 }
 
 .task-card mat-card-title {
@@ -119,7 +167,7 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 10px;
+
 }
 
 .add-subtask-form mat-form-field {
@@ -226,4 +274,9 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
 
 ::ng-deep .mat-form-field-flex {
   align-items: center !important;
+}
+
+.heading {
+  margin: 1.5rem 1rem 0.5rem;
+  font-size: 2rem;
 }

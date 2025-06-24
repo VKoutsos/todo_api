@@ -1,12 +1,12 @@
-<div class="admin-detail-container">
-  <h2>Manage Tasks for User ID: {{ userId }}</h2>
+
+  <h2 class="heading">Manage Tasks for User ID: {{ userId }}</h2>
 
   <div class="add-task-form">
     <mat-form-field appearance="outline" class="full-width">
-      <mat-label>New Task Title</mat-label>
-      <input matInput [(ngModel)]="newTaskTitle" (keyup.enter)="createTask()" />
+      <mat-label class="task-placeholder">New Task Title</mat-label>
+      <input class="task-clicked-placeholder" matInput [(ngModel)]="newTaskTitle" (keyup.enter)="createTask()" />
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="createTask()">
+    <button mat-icon-button color="primary" (click)="createTask()">
       <mat-icon>add</mat-icon>
     </button>
   </div>
@@ -15,8 +15,8 @@
     <mat-card class="task-card" *ngFor="let task of tasks">
       <mat-card-header>
         <mat-card-title>
-          <div *ngIf="editingTaskId !== task.id; else editForm" class="task-title-view">
-            <span>{{ task.title }}</span>
+          <div *ngIf="editingTaskId !== task.id; else editForm" class="task-title-row">
+            <span class="task-title">{{ task.title }}</span>
             <button mat-icon-button (click)="startEdit(task)">
               <mat-icon>edit</mat-icon>
             </button>
@@ -25,7 +25,7 @@
             <div class="edit-form">
               <mat-form-field appearance="outline" class="compact-form-field">
                 <mat-label>Edit Title</mat-label>
-                <input matInput [(ngModel)]="tempTaskTitle" required (keyup.enter)="saveEdit(task)">
+                <input class="task-edit-input" matInput [(ngModel)]="tempTaskTitle" required (keyup.enter)="saveEdit(task)">
               </mat-form-field>
               <button mat-icon-button color="primary" (click)="saveEdit(task)" [disabled]="!tempTaskTitle.trim()">
                 <mat-icon>save</mat-icon>
@@ -43,10 +43,12 @@
         <div *ngIf="task.showDetails" class="subtasks-section">
           <div class="add-subtask-form">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>New Subtask Title</mat-label>
-              <input matInput [(ngModel)]="newSubtaskTitles[task.id]" (keyup.enter)="createSubtask(task.id)" />
+              <mat-label class="subtask-placeholder">New Subtask Title</mat-label>
+              <input class="subtask-clicked-placeholder" matInput [(ngModel)]="newSubtaskTitles[task.id]" (keyup.enter)="createSubtask(task.id)" />
             </mat-form-field>
-            <button mat-raised-button (click)="createSubtask(task.id)">Add Subtask</button>
+            <button mat-icon-button (click)="createSubtask(task.id)">
+              <mat-icon>add</mat-icon>
+            </button>
           </div>
 
           <mat-list *ngIf="task.subtasks?.length">
@@ -129,4 +131,4 @@
   <ng-template #noTasks>
     <p class="no-tasks-message">No tasks found for this user.</p>
   </ng-template>
-</div>
+
