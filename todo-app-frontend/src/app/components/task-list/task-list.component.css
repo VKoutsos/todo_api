@@ -270,26 +270,3 @@ button mat-icon {
   color: #aaa;
 }
 
-button[color="warn"], .mat-stroked-button[color="warn"] {
-  border-color: var(--warn-color);
-  color: var(--warn-color);
-  background-color: transparent;
-}
-
-button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
-  background-color: var(--warn-color);
-  color: white;
-}
-
-.mat-icon-button {
-  background-color: transparent;
-  border: none;
-}
-
-.mat-icon-button[color="primary"] {
-  color: var(--accent-color);
-}
-
-.mat-icon-button[color="warn"] {
-  color: var(--warn-color);
-}
