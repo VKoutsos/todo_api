@@ -21,6 +21,7 @@ export class TaskListComponent implements OnInit {
   token: string | null = null;
   newTaskTitle: string='';
   newSubtaskTitle: { [taskId: number]: string } = {}; // subtask input tracking
+  editingSubtaskId:number|null = null;
 
   constructor(
     private taskService: TaskService,
@@ -326,13 +327,13 @@ export class TaskListComponent implements OnInit {
 
   // --- Subtask In-place editing methods ---
   startEditSubtask(subtask: Subtask): void {
-    subtask.editing = true;
-    subtask.tempTitle = subtask.title;
+    this.editingSubtaskId=subtask.id;
+    subtask.tempTitle=subtask.title;
   }
 
   cancelEditSubtask(subtask: Subtask): void {
-    subtask.editing = false;
-    subtask.tempTitle = '';
+    this.editingSubtaskId=null;
+    subtask.tempTitle='';
   }
 
   saveEditSubtask(taskId: number, subtask: Subtask): void {
@@ -349,8 +350,8 @@ export class TaskListComponent implements OnInit {
     this.subtaskService.updateSubtask(subtask.id, updatedSubtaskData, this.token).subscribe({
       next: () => {
         this.toastService.showSuccess('Subtask updated successfully.');
-        subtask.title = updatedSubtaskData.title!;
-        subtask.editing = false;
+        subtask.title=updatedSubtaskData.title!;
+        this.editingSubtaskId=null;
         subtask.tempTitle = '';
       },
       error: (err) => {
@@ -370,14 +371,14 @@ export class TaskListComponent implements OnInit {
   }
 
   closeAllSubtaskEdits() {
+    this.editingSubtaskId = null;
     this.tasks.forEach(task => {
       task.subtasks?.forEach(subtask => {
-        if (subtask.editing) {
-          this.cancelEditSubtask(subtask);
-        }
+        subtask.tempTitle = '';
       });
     });
   }
+
 
   closeAllTaskEdits(){
     this.tasks.forEach(task=>{

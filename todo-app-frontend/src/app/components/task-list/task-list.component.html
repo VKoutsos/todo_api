@@ -59,7 +59,8 @@
               (change)="completeSubtask(task.id, subtask.id, $event)">
             </mat-checkbox>
 
-            <div *ngIf="!subtask.editing; else editSubtaskForm" class="subtask-title-view">
+            <div *ngIf="editingSubtaskId !== subtask.id; else editSubtaskForm" class="subtask-title-view">
+
               <span
                 [class.completed]="subtask.status === 'completed'"
                 (click)="subtask.status !== 'completed' && startEditSubtask(subtask); $event.stopPropagation()"
