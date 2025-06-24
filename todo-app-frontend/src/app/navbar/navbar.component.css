@@ -1,12 +1,11 @@
 /* Remove any conflicting Material theme overrides */
 .mat-toolbar.mat-primary {
-  background: #653024 !important;
+  background: #30323D !important;
   color: white !important;
 }
 
-/* Ensure your custom class takes precedence */
 .custom-toolbar {
-  background-color: #653024 !important;
+  background-color: #36E7E4 !important;
   color: white !important;
 }
 

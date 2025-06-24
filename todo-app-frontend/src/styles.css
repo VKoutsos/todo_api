@@ -4,8 +4,8 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 body{
-  background-color: #e7ceb5;
-  color: #653024;
+  background-color: #F8F6F2 ;
+  color: #30323D;
 }
 
 .mat-icon-button:hover{

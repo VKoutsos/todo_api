@@ -1,9 +1,9 @@
 :root {
-  --primary-bg: #e7ceb5;      /* Beige */
-  --card-bg: #f5e2cf;         /* Lighter beige or soft tan */
-  --text-color: #653024;      /* Deep brown */
-  --accent-color: #a67b5b;    /* Soft brown/gold */
-  --hover-bg: white;        /* Hover effect on beige */
+  --primary-bg: #F8F6F2;
+  --card-bg: #13A4A2;
+  --text-color: #30323D;
+  --accent-color: #F8F6F2;
+  --hover-bg: white;
 }
 
 body {
@@ -29,8 +29,15 @@ body {
 .add-task-form {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
+  padding: 2rem;
+}
+
+.task-placeholder{
+  padding: 1rem;
+}
+
+.task-clicked-placeholder{
+  padding: 0 1rem;
 }
 
 .add-task-form .full-width {
@@ -121,12 +128,6 @@ button:hover {
   background-color: var(--hover-bg);
 }
 
-/* Specific styling for Material Design buttons in common use */
-button.mat-raised-button,
-button.mat-stroked-button {
-  background-color: var(--accent-color);
-  color: var(--text-color);
-}
 
 button.mat-raised-button:hover,
 button.mat-stroked-button:hover {
@@ -246,11 +247,14 @@ button.mat-stroked-button:hover {
 .subtask-input {
   flex: 1;
   background-color: var(--card-bg);
-  margin-left: 8px;
+  margin-left: 1rem;
 }
 .subtask-input-text {
   color: var(--text-color);
   margin-left: 12px;
+}
+.subtask-placeholder{
+  padding:1rem;
 }
 
 /* Task actions (delete/edit) */
