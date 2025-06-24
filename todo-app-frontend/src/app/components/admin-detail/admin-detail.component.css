@@ -180,7 +180,6 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
   align-items: center;
   justify-content: space-between;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   gap: 8px;
 }
 
@@ -279,4 +278,19 @@ button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
 .heading {
   margin: 1.5rem 1rem 0.5rem;
   font-size: 2rem;
+}
+
+.subtasks-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, padding 0.3s ease;
+  padding: 0 16px;
+}
+
+.subtasks-container.show {
+  max-height: 500px; /* Adjust based on your content */
+  padding: 16px;
+  background-color: var(--primary-bg);
+  border-radius: 8px;
+  margin-top: 15px;
 }

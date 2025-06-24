@@ -40,7 +40,7 @@
       </mat-card-header>
 
       <mat-card-content>
-        <div *ngIf="task.showDetails" class="subtasks-section">
+        <div [class.subtasks-container]="true" [class.show]="task.showDetails">
           <div class="add-subtask-form">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label class="subtask-placeholder">New Subtask Title</mat-label>
