@@ -4,6 +4,7 @@
   --text-color: #30323D;
   --accent-color: #F8F6F2;
   --hover-bg: white;
+  --warn-color: #d9534f;
 }
 
 body {

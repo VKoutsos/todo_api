@@ -6,7 +6,9 @@
       <mat-label>New Task Title</mat-label>
       <input matInput [(ngModel)]="newTaskTitle" (keyup.enter)="createTask()" />
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="createTask()">Add Task</button>
+    <button mat-raised-button color="primary" (click)="createTask()">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 
   <div *ngIf="tasks.length > 0; else noTasks" class="task-list">
@@ -15,7 +17,7 @@
         <mat-card-title>
           <div *ngIf="editingTaskId !== task.id; else editForm" class="task-title-view">
             <span>{{ task.title }}</span>
-            <button mat-icon-button (click)="startEdit(task)" matTooltip="Edit task">
+            <button mat-icon-button (click)="startEdit(task)">
               <mat-icon>edit</mat-icon>
             </button>
           </div>
@@ -54,7 +56,7 @@
                 <span
                   class="subtask-title-display"
                   (click)="startEditSubtask(subtask)"
-                  matTooltip="Click to edit"
+                  matTooltip="click to edit"
                 >
                   {{ subtask.title }}
                 </span>
@@ -62,7 +64,6 @@
                   mat-icon-button
                   color="warn"
                   (click)="deleteSubtask(task.id, subtask.id)"
-                  matTooltip="Delete subtask"
                   class="small-icon-button"
                 >
                   <mat-icon>delete</mat-icon>
