@@ -20,8 +20,8 @@
               [checked]="task.status === 'completed'"
               (change)="onCompleteTask(task.id, $event)">
             </mat-checkbox>
-            <div *ngIf="!task.editing; else editTaskForm" class="task-title-view">
-              <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
+            <div *ngIf="editingTaskId !== task.id; else editTaskForm" class="task-title-view">
+            <span [class.completed]="task.status === 'completed'">{{ task.title }}</span>
             </div>
             <ng-template #editTaskForm>
               <div class="edit-form" (click)="$event.stopPropagation()">

@@ -22,6 +22,7 @@ export class TaskListComponent implements OnInit {
   newTaskTitle: string='';
   newSubtaskTitle: { [taskId: number]: string } = {}; // subtask input tracking
   editingSubtaskId:number|null = null;
+  editingTaskId:number|null = null;
 
   constructor(
     private taskService: TaskService,
@@ -220,12 +221,12 @@ export class TaskListComponent implements OnInit {
   }
 
   startEdit(task:Task):void{
-    task.editing=true;
+    this.editingTaskId=task.id;
     task.tempTitle=task.title;
   }
 
   cancelEdit(task:Task):void{
-    task.editing=false;
+    this.editingTaskId=null;
     task.tempTitle='';
   }
 
@@ -242,7 +243,7 @@ export class TaskListComponent implements OnInit {
       next:()=>{
         this.toastService.showSuccess('Task updated successfully.');
         task.title=updatedTask.title;
-        task.editing=false;
+        this.editingTaskId=null;
         task.tempTitle='';
       },
       error:(err) => {
@@ -380,11 +381,10 @@ export class TaskListComponent implements OnInit {
   }
 
 
-  closeAllTaskEdits(){
-    this.tasks.forEach(task=>{
-      if(task.editing) {
-        this.cancelEdit(task);
-      }
+  closeAllTaskEdits(): void {
+    this.editingTaskId = null;
+    this.tasks.forEach(task => {
+      task.tempTitle = '';
     });
   }
 }
