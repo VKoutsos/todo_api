@@ -8,10 +8,6 @@ body{
   color: #30323D;
 }
 
-.mat-icon-button:hover{
-  color:#8a5f3f!important;
-}
-
 .mat-mdc-snack-bar-container {
   --mdc-snackbar-supporting-text-color:white;
 

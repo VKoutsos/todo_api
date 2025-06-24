@@ -58,7 +58,6 @@
                 <span
                   class="subtask-title-display"
                   (click)="startEditSubtask(subtask)"
-                  matTooltip="click to edit"
                 >
                   {{ subtask.title }}
                 </span>
@@ -86,7 +85,6 @@
                     color="primary"
                     (click)="saveEditSubtask(task.id, subtask)"
                     [disabled]="!tempSubtaskTitle.trim()"
-                    matTooltip="Save"
                     class="small-icon-button"
                   >
                     <mat-icon>save</mat-icon>
@@ -94,7 +92,6 @@
                   <button
                     mat-icon-button
                     (click)="cancelEditSubtask()"
-                    matTooltip="Cancel"
                     class="small-icon-button"
                   >
                     <mat-icon>cancel</mat-icon>
@@ -103,7 +100,6 @@
                     mat-icon-button
                     color="warn"
                     (click)="deleteSubtask(task.id, subtask.id)"
-                    matTooltip="Delete subtask"
                     class="small-icon-button"
                   >
                     <mat-icon>delete</mat-icon>

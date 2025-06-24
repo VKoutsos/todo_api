@@ -4,7 +4,7 @@
   --text-color: #30323D;
   --accent-color: #F8F6F2;
   --hover-bg: white;
-  --warn-color: #d9534f;
+  --warn-color: #ff0700;
 }
 
 body {
@@ -116,39 +116,11 @@ body {
 }
 
 /* Buttons - General Styling */
-button {
-  padding: 6px 12px;
-  border: none;
-  background-color: var(--accent-color);
-  color: var(--text-color);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
 
-button:hover {
-  background-color: var(--hover-bg);
-}
-
-
-button.mat-raised-button:hover,
-button.mat-stroked-button:hover {
-  background-color: var(--hover-bg);
-}
-
-/* Toggle Button */
-.toggle-btn {
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  background-color: var(--accent-color);
-  color: var(--text-color);
-}
 
 .toggle-btn:hover {
   background-color: var(--hover-bg);
 }
-
-/* --- Subtasks Section --- */
 
 /* Subtasks section with animation */
 .subtasks-container {
@@ -273,8 +245,6 @@ button.mat-stroked-button:hover {
   margin-top: auto;
 }
 
-/* --- Material Component Overrides --- */
-
 mat-card.task-item {
   margin-bottom: 20px;
   padding: 16px;
@@ -300,27 +270,26 @@ button mat-icon {
   color: #aaa;
 }
 
-/* Material Form Field Internal Padding Adjustments */
-::ng-deep .mat-form-field-wrapper {
-  padding-bottom: 0 !important;
+button[color="warn"], .mat-stroked-button[color="warn"] {
+  border-color: var(--warn-color);
+  color: var(--warn-color);
+  background-color: transparent;
 }
 
-::ng-deep .mat-form-field-infix {
-  padding: 0.8em 12px !important;
-  border-top: none !important;
+button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
+  background-color: var(--warn-color);
+  color: white;
 }
 
-::ng-deep .mat-form-field-label-wrapper .mat-form-field-label {
-  left: 12px !important;
-  top: 0.8em !important;
+.mat-icon-button {
+  background-color: transparent;
+  border: none;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-start,
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-end,
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-gap {
-  border-color: var(--accent-color) !important;
+.mat-icon-button[color="primary"] {
+  color: var(--accent-color);
 }
 
-::ng-deep .mat-form-field-flex {
-  align-items: center !important;
+.mat-icon-button[color="warn"] {
+  color: var(--warn-color);
 }
