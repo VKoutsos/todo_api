@@ -1,4 +1,4 @@
-:root {
+:root { /*it was host this whole time!!!!*/
   --primary-bg: #F8F6F2;
   --card-bg: #13A4A2;
   --text-color: #30323D;
@@ -192,18 +192,18 @@ h4{
   gap: 4px;
 }
 
-/* Styles for the subtask edit input (removed mat-form-field) */
+/* Styles for the subtask edit input */
 .subtask-edit-input {
   flex-grow: 1;
   border: none;
-  border-bottom: 1px solid var(--accent-color); /* Border color using accent-color */
+  border-bottom: 1px solid var(--accent-color);
   outline: none;
-  background-color: white; /* Interior color of the input box using card-bg */
+  background-color: white;
   box-sizing: border-box;
   color: var(--text-color);
   font-size: 1em;
   line-height: 1.5;
-  padding: 4px 12px; /* Padding inside the input box */
+  padding: 4px 12px;
 }
 
 .subtask-edit-input:focus {
@@ -223,6 +223,15 @@ h4{
   font-size: 18px !important;
   width: 18px !important;
   height: 18px !important;
+  transition: color 0.2s ease-in-out;
+}
+
+.small-icon-button[color="blue"]:hover mat-icon{
+  color:#13A4A2;
+}
+
+.small-icon-button[color="red"]:hover mat-icon{
+  color:red;
 }
 
 /* subtask form for new subtasks */
@@ -251,8 +260,9 @@ h4{
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-  padding: 8px 16px 16px;
+  padding: 1rem 1rem 1rem;
   margin-top: auto;
+  border-top: 1px solid rgba(101, 48, 36, 0.2);
 }
 
 mat-card.task-item {
