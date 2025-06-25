@@ -54,7 +54,7 @@
             <mat-label class="subtask-placeholder">New Subtask</mat-label>
             <input matInput class="subtask-input-text" [(ngModel)]="newSubtaskTitle[task.id]" (keyup.enter)="addSubtask(task.id)"/>
           </mat-form-field>
-          <button mat-icon-button color="primary" (click)="addSubtask(task.id)">
+          <button mat-icon-button (click)="addSubtask(task.id)">
             <mat-icon>add</mat-icon>
           </button>
         </div>
@@ -105,30 +105,32 @@
               </div>
             </ng-template>
 
-            <button mat-icon-button color="warn" (click)="deleteSubtask(task.id, subtask.id)" class="small-icon-button">
+            <button mat-icon-button (click)="deleteSubtask(task.id, subtask.id)" class="small-icon-button">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
         </div>
 
         <div class="task-actions">
-          <button mat-button color="warn" (click)="deleteTask(task.id)">
-            <mat-icon>delete</mat-icon>
+          <button mat-stroked-button color="warn" (click)="deleteTask(task.id)">
+            <mat-icon>delete_outline</mat-icon>
+            Delete Task
           </button>
           <button
-            mat-button
+            mat-stroked-button
             color="accent"
             (click)="startEdit(task); $event.stopPropagation()"
             [disabled]="task.editing || task.status === 'completed'"
           >
             <mat-icon>edit</mat-icon>
+            Edit
           </button>
         </div>
       </mat-card>
     </ng-container>
 
     <ng-template #noTasks>
-      <p>No tasks found.</p>
+      <p class="no-tasks-message">No tasks found.</p>
     </ng-template>
 
   </div>

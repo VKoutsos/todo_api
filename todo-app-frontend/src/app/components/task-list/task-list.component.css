@@ -26,6 +26,10 @@ body {
   font-size: 2rem;
 }
 
+h4{
+  margin-top: 0;
+}
+
 .add-task-form {
   display: flex;
   align-items: center;
@@ -116,10 +120,16 @@ body {
 }
 
 /* Buttons - General Styling */
-
+.toggle-btn{
+  border-radius: 50%;
+  border:1px solid transparent;
+  transition: background 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
 
 .toggle-btn:hover {
-  background-color: var(--hover-bg);
+  background-color: #13A4A2;
+  border-color: #13A4A2;
+  color:white;
 }
 
 /* Subtasks section with animation */
@@ -220,8 +230,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 10px;
-  padding: 0 16px;
+  margin-top: 0;
+  padding: 0 1rem;
 }
 .subtask-input {
   flex: 1;
@@ -267,6 +277,56 @@ button mat-icon {
 .no-tasks-message {
   text-align: center;
   margin-top: 2rem;
-  color: #aaa;
+  padding: 2rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  color: var(--text-color);
 }
 
+button, .mat-raised-button, .mat-stroked-button {
+  background-color: var(--accent-color);
+  color: var(--text-color);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+button:hover, .mat-raised-button:hover, .mat-stroked-button:hover {
+  background-color: var(--hover-bg);
+  color: var(--text-color);
+}
+
+button[color="warn"], .mat-stroked-button[color="warn"] {
+  border-color: var(--warn-color);
+  color: var(--warn-color);
+  background-color: transparent;
+}
+
+button[color="warn"]:hover, .mat-stroked-button[color="warn"]:hover {
+  background-color: red;
+  color: white;
+}
+
+button[color="accent"], .mat-stroked-button[color="warn"] {
+  border-color: var(--warn-color);
+  color: var(--warn-color);
+  background-color: transparent;
+}
+
+button[color="accent"]:hover, .mat-stroked-button[color="warn"]:hover {
+  background-color: #13A4A2;
+  color: white;
+}
+
+.mat-icon-button {
+  background-color: transparent;
+  border: none;
+}
+
+.mat-icon-button[color="primary"] {
+  color: var(--accent-color);
+}
+
+.mat-icon-button[color="warn"] {
+  color: var(--warn-color);
+}
