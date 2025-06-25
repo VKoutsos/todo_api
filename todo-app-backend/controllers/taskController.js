@@ -29,7 +29,7 @@ exports.createTask=async(req,res)=>{
         const result=await queryDatabase(sql,[userId,title,description]);
 
         logAction(userId,`Created task: ${title}`);
-       /* notify(req.user.email,"Task Created",`Task "${title}" has been created. (User ID: ${userId})`);*/
+        notify(req.user.email,"Task Created",`Task "${title}" has been created. (User ID: ${userId})`);
         res.status(201).json({message:"Task created successfully",taskId:result.insertId});
     }catch(err){
         res.status(500).json({error:err.message});
@@ -49,7 +49,7 @@ exports.updateTask=async(req,res)=>{
         if(result.affectedRows===0) return res.status(404).json({error:"Task not found or unauthorized "});
 
         logAction(userId,`Updated task ID ${taskId}: New Title - ${title}`);
-        /*notify(req.user.email,"Task Updated",`Task "${title}" has been updated. (User ID: ${userId})`);*/
+        notify(req.user.email,"Task Updated",`Task "${title}" has been updated. (User ID: ${userId})`);
 
         res.status(200).json({message:"Task updated successfully"});
     }catch(err){
@@ -69,7 +69,7 @@ exports.deleteTask=async(req,res)=>{
         if(result.affectedRows===0) return res.status(404).json({error:"Task not found or unauthorized"});
 
         logAction(userId,`Deleted task ID ${taskId}`);
-        /*notify(req.user.email,"Task Deleted",`Task "${taskId}" has been deleted. (User ID: ${userId})`);*/
+        notify(req.user.email,"Task Deleted",`Task "${taskId}" has been deleted. (User ID: ${userId})`);
 
         res.status(200).json({message:"Task deleted successfully"});
     }catch(err){
@@ -89,7 +89,7 @@ exports.completeTask =async(req, res) => {
         if (result.affectedRows === 0) return res.status(404).json({error: "Task not found or unauthorized"});
 
         logAction(req.user.id, `Completed task ID ${taskId}`);
-        /*notify(req.user.email, "Task Completed", `Task "${taskId}" has been marked as completed. (User ID: ${userId}) `);*/
+        notify(req.user.email, "Task Completed", `Task "${taskId}" has been marked as completed. (User ID: ${userId}) `);
 
         res.status(200).json({message: "Task marked as completed"});
     }catch(err){
