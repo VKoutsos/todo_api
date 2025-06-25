@@ -70,8 +70,15 @@ h3{
 }
 
 .task-edit-input{
-  padding:0 1rem;
-}
+    padding: 0 1rem;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
 
 .add-task-form mat-form-field {
   flex-grow: 1;
