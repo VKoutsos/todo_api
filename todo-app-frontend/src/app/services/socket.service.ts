@@ -12,6 +12,8 @@ export class SocketService {
   constructor(private authService: AuthService) {}
 
   connect(): void {
+    if (this.socket&&this.socket.connected) return;//prevent double connection
+
     this.socket = io('http://localhost:5000', {
       transports: ['websocket']
     });
@@ -43,7 +45,9 @@ export class SocketService {
 
   disconnect(): void {
     if (this.socket) {
+      this.socket.removeAllListeners();//clear all listeners
       this.socket.disconnect();
+      console.log('Socket disconnected and listeners removed');
     }
   }
 }

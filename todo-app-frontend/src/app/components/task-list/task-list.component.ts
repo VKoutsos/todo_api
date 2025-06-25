@@ -35,95 +35,79 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit(): void {
     this.token = this.authService.getToken();
-    this.loadTasks();
 
     if (this.token) {
+      this.socketService.connect();
+      this.initializeSocketListeners();
+
       this.taskService.getTasks(this.token).subscribe({
         next: (data) => {
-          // Initialize tasks with showDetails set to false
           this.tasks = data.map(task => ({
             ...task,
             showDetails: false
           }));
-
-          // Load subtasks for each task
           this.tasks.forEach(task => this.loadSubtasks(task));
-
-          //connect socket after loading tasks
-          this.socketService.connect();
-
-          //task updated
-          this.socketService.listen('task_updated').subscribe((updatedTask: Task)=>{
-            const index=this.tasks.findIndex(t=>t.id===updatedTask.id);
-            if(index!==-1){
-              this.tasks[index]={
-                ...this.tasks[index],
-                ...updatedTask
-              };
-              this.toastService.showSuccess("A task was updated by the admin!");
-            }
-          });
-
-          //task created
-          this.socketService.listen('task_created').subscribe((newTask: Task)=>{
-            this.tasks.unshift({
-              ...newTask,
-              showDetails:false
-            });
-            this.toastService.showSuccess('A new task was created by the admin!');
-          });
-
-          //task deleted
-          this.socketService.listen('task_deleted').subscribe((data: {taskId:number})=>{
-            this.tasks=this.tasks.filter(task=>task.id!==data.taskId);
-            this.toastService.showSuccess('A task was deleted by the admin!');
-          });
-
-          //subtask created
-          this.socketService.listen('subtask_created').subscribe((newSubtask: Subtask)=>{
-            const task=this.tasks.find(t=>t.id===newSubtask.task_id);
-            if(task){
-              if(!task.subtasks) task.subtasks=[];
-              task.subtasks.push(newSubtask);
-              task.showDetails=true;
-
-              this.toastService.showSuccess('A subtask was created by the admin!');
-            }
-          });
-
-          //subtask deleted
-          this.socketService.listen('subtask_deleted').subscribe((data:{subtaskId:number, taskId:number})=>{
-            const task=this.tasks.find(t=>t.id===data.taskId);
-            if(task&&task.subtasks){
-              task.subtasks=task.subtasks.filter(s=>s.id!==data.subtaskId);
-              this.toastService.showSuccess('A subtask was deleted by the admin!');
-            }
-          });
-
-          //subtask updated
-          this.socketService.listen('subtask_updated').subscribe((updatedSubtask: Subtask)=>{
-            const task=this.tasks.find(t=>t.id===updatedSubtask.task_id);
-            if (task&&task.subtasks){
-              const subtaskIndex=task.subtasks.findIndex(t=>t.id===updatedSubtask.id);
-              if(subtaskIndex!==-1){
-                task.subtasks[subtaskIndex]={
-                  ...task.subtasks[subtaskIndex],
-                  ...updatedSubtask,
-                  editing:false,
-                  tempTitle:''
-                };
-                task.showDetails=true;
-
-                this.toastService.showSuccess('A subtask was updated by the admin!');
-              }
-            }
-          });
         },
         error: (err) => console.error('Error fetching tasks:', err)
       });
     } else {
       console.error('No token found. User may not be logged in.');
     }
+  }
+
+  initializeSocketListeners(): void {
+    this.socketService.listen('task_updated').subscribe((updatedTask: Task) => {
+      const index = this.tasks.findIndex(t => t.id === updatedTask.id);
+      if (index !== -1) {
+        this.tasks[index] = { ...this.tasks[index], ...updatedTask };
+        this.toastService.showSuccess('A task was updated by the admin!');
+      }
+    });
+
+    this.socketService.listen('task_created').subscribe((newTask: Task) => {
+      this.tasks.unshift({ ...newTask, showDetails: false });
+      this.toastService.showSuccess('A new task was created by the admin!');
+    });
+
+    this.socketService.listen('task_deleted').subscribe((data: { taskId: number }) => {
+      this.tasks = this.tasks.filter(task => task.id !== data.taskId);
+      this.toastService.showSuccess('A task was deleted by the admin!');
+    });
+
+    this.socketService.listen('subtask_created').subscribe((newSubtask: Subtask) => {
+      const task = this.tasks.find(t => t.id === newSubtask.task_id);
+      if (task) {
+        if (!task.subtasks) task.subtasks = [];
+        task.subtasks.push(newSubtask);
+        task.showDetails = true;
+        this.toastService.showSuccess('A subtask was created by the admin!');
+      }
+    });
+
+    this.socketService.listen('subtask_deleted').subscribe((data: { subtaskId: number; taskId: number }) => {
+      const task = this.tasks.find(t => t.id === data.taskId);
+      if (task && task.subtasks) {
+        task.subtasks = task.subtasks.filter(s => s.id !== data.subtaskId);
+        this.toastService.showSuccess('A subtask was deleted by the admin!');
+      }
+    });
+
+    this.socketService.listen('subtask_updated').subscribe((updatedSubtask: Subtask) => {
+      const task = this.tasks.find(t => t.id === updatedSubtask.task_id);
+      if (task && task.subtasks) {
+        const subtaskIndex = task.subtasks.findIndex(s => s.id === updatedSubtask.id);
+        if (subtaskIndex !== -1) {
+          task.subtasks[subtaskIndex] = {
+            ...task.subtasks[subtaskIndex],
+            ...updatedSubtask,
+            editing: false,
+            tempTitle: ''
+          };
+          task.showDetails = true;
+          this.toastService.showSuccess('A subtask was updated by the admin!');
+        }
+      }
+    });
   }
 
   //load tasks

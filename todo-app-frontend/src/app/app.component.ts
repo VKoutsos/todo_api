@@ -26,7 +26,8 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.navigate(['/login']);
     }
 
-    this.socketService.connect();
+    /*//connect socket globally
+    this.socketService.connect();*/
 
     this.socketService.listen('task_created').subscribe((data) => {
       console.log('Task Created:', data);
