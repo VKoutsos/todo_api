@@ -11,13 +11,13 @@
     </button>
   </div>
 
-  <div *ngIf="tasks.length > 0; else noTasks" class="task-list">
+  <div *ngIf="tasks.length > 0; else noTasks" class="task-list" (click)="closeAllSubtaskEdits(); closeAllTaskEdits()">
     <mat-card class="task-card" *ngFor="let task of tasks">
       <mat-card-header>
         <mat-card-title>
           <div *ngIf="editingTaskId !== task.id; else editForm" class="task-title-row">
             <span class="task-title">{{ task.title }}</span>
-            <button mat-icon-button (click)="startEdit(task)">
+            <button mat-icon-button (click)="startEdit(task); $event.stopPropagation()">
               <mat-icon>edit</mat-icon>
             </button>
           </div>
@@ -25,12 +25,17 @@
             <div class="edit-form">
               <mat-form-field appearance="outline" class="compact-form-field">
                 <mat-label>Edit Title</mat-label>
-                <input class="task-edit-input" matInput [(ngModel)]="tempTaskTitle" required (keyup.enter)="saveEdit(task)">
+                <input class="task-edit-input" matInput [(ngModel)]="tempTaskTitle"
+                       required
+                       (click)="$event.stopPropagation()"
+                       (keyup.escape)="cancelEdit()"
+                       (keyup.enter)="saveEdit(task)">
               </mat-form-field>
-              <button mat-icon-button color="primary" (click)="saveEdit(task)" [disabled]="!tempTaskTitle.trim()">
+              <button mat-icon-button color="primary" (click)="saveEdit(task); $event.stopPropagation()"
+                      [disabled]="!tempTaskTitle.trim()">
                 <mat-icon>save</mat-icon>
               </button>
-              <button mat-icon-button (click)="cancelEdit()">
+              <button mat-icon-button (click)="cancelEdit(); $event.stopPropagation()">
                 <mat-icon>cancel</mat-icon>
               </button>
             </div>
@@ -44,7 +49,8 @@
           <div class="add-subtask-form">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label class="subtask-placeholder">New Subtask Title</mat-label>
-              <input class="subtask-clicked-placeholder" matInput [(ngModel)]="newSubtaskTitles[task.id]" (keyup.enter)="createSubtask(task.id)" />
+              <input class="subtask-clicked-placeholder" matInput [(ngModel)]="newSubtaskTitles[task.id]"
+                     (keyup.enter)="createSubtask(task.id)" />
             </mat-form-field>
             <button mat-icon-button (click)="createSubtask(task.id)">
               <mat-icon>add</mat-icon>
@@ -57,7 +63,7 @@
               <div *ngIf="editingSubtaskId !== subtask.id; else editSubtaskForm" class="subtask-content-view">
                 <span
                   class="subtask-title-display"
-                  (click)="startEditSubtask(subtask)"
+                  (click)="startEditSubtask(subtask); $event.stopPropagation()"
                 >
                   {{ subtask.title }}
                 </span>
@@ -77,13 +83,14 @@
                     matInput
                     [(ngModel)]="tempSubtaskTitle"
                     class="subtask-edit-input"
+                    (click)="$event.stopPropagation()"
                     (keyup.enter)="saveEditSubtask(task.id, subtask)"
                     (keyup.escape)="cancelEditSubtask()"
                   />
                   <button
                     mat-icon-button
                     color="primary"
-                    (click)="saveEditSubtask(task.id, subtask)"
+                    (click)="saveEditSubtask(task.id, subtask); $event.stopPropagation()"
                     [disabled]="!tempSubtaskTitle.trim()"
                     class="small-icon-button"
                   >
@@ -91,7 +98,7 @@
                   </button>
                   <button
                     mat-icon-button
-                    (click)="cancelEditSubtask()"
+                    (click)="cancelEditSubtask(); $event.stopPropagation()"
                     class="small-icon-button"
                   >
                     <mat-icon>cancel</mat-icon>

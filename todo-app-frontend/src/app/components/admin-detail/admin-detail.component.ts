@@ -4,6 +4,7 @@ import { AdminService } from '../../services/admin.service';
 import { Task } from '../../models/task.model';
 import { Subtask } from '../../models/subtask.model';
 import { ToastService } from '../../services/toast.service';
+import { ElementRef, HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-admin-detail',
@@ -25,6 +26,7 @@ export class AdminDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private adminService: AdminService,
     private toastService: ToastService,
+    private elRef: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -221,5 +223,28 @@ export class AdminDetailComponent implements OnInit {
         console.error('Error updating subtask:', err);
       }
     });
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent): void {
+    const clickedInside = this.elRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.closeAllSubtaskEdits();
+      this.closeAllTaskEdits();
+    }
+  }
+
+  closeAllSubtaskEdits(): void {
+    this.editingSubtaskId = null;
+    this.tasks.forEach(task => {
+      task.subtasks?.forEach(subtask => {
+        subtask.tempTitle = '';
+      });
+    });
+  }
+
+  closeAllTaskEdits(): void {
+    this.editingTaskId = null;
+    this.tempTaskTitle = '';
   }
 }
