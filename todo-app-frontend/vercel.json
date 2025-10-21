@@ -1,4 +1,6 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "outputDirectory": "dist/todo-app-frontend",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
