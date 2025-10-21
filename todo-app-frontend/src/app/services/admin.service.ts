@@ -7,7 +7,7 @@ import {AuthService} from './auth.service';
   providedIn: 'root'
 })
 export class AdminService {
-  private baseUrl='http://localhost:5000/admin';
+  private baseUrl='https://todo-app-hk86.onrender.com/admin';
 
   constructor(
     private http: HttpClient,

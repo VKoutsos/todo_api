@@ -17,7 +17,7 @@ export interface LoginUser{
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl:string='http://localhost:5000/auth';
+  private apiUrl:string='https://todo-app-hk86.onrender.com/auth';
 
   constructor(private http: HttpClient){}
 

@@ -8,7 +8,7 @@ import { Log } from "../models/log.model";
   providedIn: "root",
 })
 export class LogService {
-  private baseUrl='http://localhost:5000/users/logs';
+  private baseUrl='https://todo-app-hk86.onrender.com/logs';
 
   constructor(
     private http: HttpClient,

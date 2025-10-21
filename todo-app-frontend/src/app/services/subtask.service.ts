@@ -7,7 +7,7 @@ import { Subtask } from '../models/subtask.model';
   providedIn: 'root'
 })
 export class SubtaskService {
-  private apiUrl='http://localhost:5000/subtasks';
+  private apiUrl='https://todo-app-hk86.onrender.com/subtasks';
 
   constructor(private http:HttpClient) { }
 

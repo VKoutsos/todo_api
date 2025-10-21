@@ -7,7 +7,7 @@ import { Task } from '../models/task.model';
   providedIn: 'root'
 })
 export class TaskService {
-  private apiUrl:string='http://localhost:5000/tasks';
+  private apiUrl:string='https://todo-app-hk86.onrender.com/tasks';
 
   constructor(private http:HttpClient) { }
 

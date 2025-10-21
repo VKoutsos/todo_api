@@ -14,7 +14,7 @@ export class SocketService {
   connect(): void {
     if (this.socket&&this.socket.connected) return;//prevent double connection
 
-    this.socket = io('http://localhost:5000', {
+    this.socket = io('https://todo-app-hk86.onrender.com', {
       transports: ['websocket']
     });
 
