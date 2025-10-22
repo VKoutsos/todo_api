@@ -34,7 +34,7 @@ and **Backend** deployed with [Render](https://render.com)
 
 | Page | Screenshot |
 |------|-------------|
-| **Login Page** | _Your Screenshot Here_ |
+| **Login Page** |
 | **User Dashboard** | _Your Screenshot Here_ |
 | **Admin Dashboard** | _Your Screenshot Here_ |
 
@@ -179,6 +179,7 @@ todo-app/
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
 
 
 
