@@ -25,8 +25,7 @@ This is a **robust portfolio project** designed to showcase a wide range of mode
 ---
 
 ## 🖼️ Screenshots & Demo
-
-A live demo is the best way to showcase the project.  
+ 
 **Frontend** deployed at [Vercel](https://vercel.com), 
 and **Backend** deployed at [Render](https://render.com) 
 
@@ -181,5 +180,6 @@ todo-app/
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
 
 
