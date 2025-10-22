@@ -27,10 +27,10 @@ This is a **robust portfolio project** designed to showcase a wide range of mode
 ## 🖼️ Screenshots & Demo
 
 A live demo is the best way to showcase the project.  
-Deploy the **frontend** to [Vercel](https://vercel.com) or [Netlify](https://www.netlify.com),  
-and the **backend** to [Render](https://render.com) or [Heroku](https://www.heroku.com).
+Deploy the **Frontend** deployed at [Vercel](https://vercel.com), 
+and **Backend** deployed at [Render](https://render.com) 
 
-🔗 **[➡️ Add Your Live Demo Link Here ⬅️]**
+🔗 **[➡️ https://todo-api-neon.vercel.app/login ⬅️]**
 
 Add screenshots here to give recruiters a quick visual overview:
 
@@ -181,3 +181,4 @@ todo-app/
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
