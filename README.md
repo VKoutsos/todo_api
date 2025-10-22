@@ -34,13 +34,11 @@ and **Backend** deployed with [Render](https://render.com)
 
 | Page | Screenshot |
 |------|-------------|
-| **Login Page** |  ![login_screen](https://github.com/user-attachments/assets/06a9c33e-6baa-4fbb-aeff-cac8a2427405)
+| **Login Page** | ![Login Screen](https://github.com/user-attachments/assets/06a9c33e-6baa-4fbb-aeff-cac8a2427405) |
+| **User Dashboard** | ![User Dashboard](https://github.com/user-attachments/assets/a9940ce7-4270-4ca8-94ad-e8cba8a0ddd3) |
+| **Admin Dashboard** | ![Admin Dashboard](https://github.com/user-attachments/assets/37e96878-01cf-47a5-8ae1-fd2bed0d5ae0) |
 
-
-| **User Dashboard** |  ![admin_screen](https://github.com/user-attachments/assets/a9940ce7-4270-4ca8-94ad-e8cba8a0ddd3)
-
-
-| **Admin Dashboard** |  ![admin_tasks](https://github.com/user-attachments/assets/37e96878-01cf-47a5-8ae1-fd2bed0d5ae0)
+---
 
 
 ---
@@ -178,13 +176,14 @@ todo-app/
 ## 🧑‍💻 Author
 
 **Vasilis Koutsos**  
-🎓 *MSc Student in Robotics, Cognition, and Intelligence at TUM* 
+🎓 MSc Student in Robotics, Cognition, and Intelligence at TUM
 📍 Full-Stack Developer Intern at YSoft, Thessaloniki  
 💼 [GitHub Profile](https://github.com/VKoutsos)
 
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
 
 
 
