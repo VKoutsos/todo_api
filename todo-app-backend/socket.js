@@ -3,11 +3,15 @@ const { Server } = require("socket.io");
 function initSocket(server) {
     const io = new Server(server, {
         cors: {
-            origin: "*",
+            origin: [
+                'http://localhost:4200',
+                'https://todo-api-neon.vercel.app'
+            ],
+            credentials: true,
             methods: ["GET", "POST", "DELETE"]
         }
     });
-
+    
     const connectedUsers = new Map();
 
     io.on("connection", (socket) => {

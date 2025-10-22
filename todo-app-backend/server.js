@@ -23,7 +23,13 @@ app.set('io',io);//lets routes access io
 app.set('connectedUsers',connectedUsers);//share online users
 
 //Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'https://todo-api-neon.vercel.app'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 //Routes
