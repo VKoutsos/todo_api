@@ -29,7 +29,7 @@ This is a **robust portfolio project** designed to showcase a wide range of mode
 **Frontend** deployed at [Vercel](https://vercel.com), 
 and **Backend** deployed at [Render](https://render.com) 
 
-🔗 **[➡️ https://todo-api-neon.vercel.app/login ⬅️]**
+🔗 **[➡️ https://todo-api-neon.vercel.app/ ⬅️]**
 
 Add screenshots here to give recruiters a quick visual overview:
 
@@ -180,6 +180,7 @@ todo-app/
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
 
 
 
