@@ -31,7 +31,6 @@ and **Backend** deployed at [Render](https://render.com)
 
 🔗 **[➡️ https://todo-api-neon.vercel.app/ ⬅️]**
 
-Add screenshots here to give recruiters a quick visual overview:
 
 | Page | Screenshot |
 |------|-------------|
@@ -180,6 +179,7 @@ todo-app/
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
 
 
 
