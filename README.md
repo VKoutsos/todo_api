@@ -175,13 +175,14 @@ todo-app/
 ## 🧑‍💻 Author
 
 **Vasilis Koutsos**  
-🎓 MSc Student in Robotics, Cognition, and Intelligence at TUM
-📍 Full-Stack Developer Intern at YSoft, Thessaloniki  
-💼 [GitHub Profile](https://github.com/VKoutsos)
+-🎓 MSc Student in Robotics, Cognition, and Intelligence at TUM
+-📍 Full-Stack Developer Intern at YSoft, Thessaloniki  
+-💼 [GitHub Profile](https://github.com/VKoutsos)
 
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
 
 
 
