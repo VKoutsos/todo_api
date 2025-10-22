@@ -34,8 +34,10 @@ and **Backend** deployed with [Render](https://render.com)
 
 | Page | Screenshot |
 |------|-------------|
-| **Login Page** |
-| **User Dashboard** | _Your Screenshot Here_ |
+| **Login Page** |![login_screen](https://github.com/user-attachments/assets/fa778789-f747-4141-8f01-e0c0d9fb73a1)
+
+| **User Dashboard** |![task_list](https://github.com/user-attachments/assets/2798f4ba-3b67-47ce-a998-f007683ac992)
+
 | **Admin Dashboard** | _Your Screenshot Here_ |
 
 ---
@@ -179,6 +181,7 @@ todo-app/
 ---
 
 ⭐ **If you found this project useful, don’t forget to give it a star!**
+
 
 
 
