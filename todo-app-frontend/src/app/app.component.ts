@@ -26,6 +26,10 @@ export class AppComponent implements OnInit, OnDestroy {
       this.router.navigate(['/login']);
     }
 
+    if (this.authService.isLoggedIn()){
+      this.socketService.connect();
+    }
+
 
     this.socketService.listen('task_created').subscribe((data) => {
       console.log('Task Created:', data);
