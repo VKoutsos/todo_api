@@ -24,10 +24,19 @@ app.set('connectedUsers',connectedUsers);//share online users
 
 //Middleware
 app.use(cors({
-  origin: [
-    'http://localhost:4200',
-    'https://todo-api-neon.vercel.app'
-  ],
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:4200',
+      'https://todo-api-neon.vercel.app'
+    ];
+    
+    // Allow all Vercel preview deployments
+    if (!origin || allowedOrigins.includes(origin) || origin.includes('vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
